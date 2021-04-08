@@ -22,7 +22,10 @@ public class Database {
 
   public Database() {}
 
-  /** Establishes connection to database */
+  /**
+   * Establishes connection to database and saves file to the dedicated resources folder with system
+   * independent source path.
+   */
   public void connect() {
     try {
       Class.forName("org.sqlite.JDBC");
@@ -46,8 +49,8 @@ public class Database {
   }
 
   /**
-   * Method to create the only table in the database to save user profiles.
-   * Won't create new table if it already exists
+   * Method to create the only table in the database to save user profiles. Won't create new table
+   * if it already exists
    */
   public void createUserTable() {
     try (Statement statement = connection.createStatement()) {
@@ -60,7 +63,7 @@ public class Database {
               + "Games INTEGER NOT NULL, "
               + "Wins INTEGER NOT NULL, "
               + "Loses INTEGER NOT NULL, "
-              + "Points INTEGER NOT NULL)";
+              + "Score INTEGER NOT NULL)";
       statement.executeUpdate(sql);
       statement.close();
       System.out.println("User Table created!");
@@ -85,17 +88,18 @@ public class Database {
   }
 
   /**
-   * Method to add a user to existing table in database.
-   * Sets non-parameter values to Integer = 0, String = "".
+   * Method to add a user to existing table in database. Sets non-parameter values to Integer = 0,
+   * String = "".
+   *
    * @param name
    * @param password
-   * @return returns true if user was added to database
-   *         returns false if user was not added to database
+   * @return returns true if user was added to database, returns false if user was not added to
+   *     database
    */
   public boolean addUser(String name, String password) {
     try {
       sql =
-          "INSERT INTO Users (Name, Password, Image, Games, Wins, Loses, Points) VALUES (?,?,?,?,?,?,?);";
+          "INSERT INTO Users (Name, Password, Image, Games, Wins, Loses, Score) VALUES (?,?,?,?,?,?,?);";
       pstmt = connection.prepareStatement(sql);
       pstmt.setString(1, name);
       pstmt.setString(2, password);
@@ -119,8 +123,8 @@ public class Database {
    * Method to delete an existing user from database
    *
    * @param name
-   * @return returns true if user was deleted successfully
-   *         returns false if user was not deleted successfully
+   * @return returns true if user was deleted successfully, returns false if user was not deleted
+   *     successfully
    */
   public boolean deleteUser(String name) {
     try {
@@ -143,8 +147,8 @@ public class Database {
    *
    * @param username
    * @param newUsername
-   * @return returns true if username was updated successfully
-   *         returns false if username was not updated successfully
+   * @return returns true if username was updated successfully, returns false if username was not
+   *     updated successfully
    */
   public boolean changeUsername(String username, String newUsername) {
     try {
@@ -168,8 +172,8 @@ public class Database {
    *
    * @param username
    * @param newPassword
-   * @return returns true if password was changed successfully
-   *         returns false if password was not changed successfully
+   * @return returns true if password was changed successfully, returns false if password was not
+   *     changed successfully
    */
   public boolean changePassword(String username, String newPassword) {
     try {
@@ -193,8 +197,7 @@ public class Database {
    *
    * @param username
    * @param image is path to image
-   * @return returns true if image was updated
-   *         returns false if image was not updated
+   * @return returns true if image was updated, returns false if image was not updated
    */
   public boolean changeImage(String username, String image) {
     try {
@@ -217,8 +220,7 @@ public class Database {
    * Method to check if a user already exists.
    *
    * @param username
-   * @return returns true if user already exists
-   *         returns false if username is already taken
+   * @return returns true if user already exists, returns false if username is already taken
    */
   public boolean userExists(String username) {
     try {
@@ -293,15 +295,15 @@ public class Database {
    * @param username
    * @return returns -1 if user doesn't exist
    */
-  public int getPoints(String username) {
+  public int getScore(String username) {
     int points = -1;
     try {
-      sql = "SELECT Points FROM Users WHERE Name = ?;";
+      sql = "SELECT Score FROM Users WHERE Name = ?;";
       pstmt = connection.prepareStatement(sql);
       pstmt.setString(1, username);
       rs = pstmt.executeQuery();
       while (rs.next()) {
-        points = rs.getInt("Points");
+        points = rs.getInt("Score");
       }
       return points;
     } catch (SQLException throwables) {
@@ -381,26 +383,28 @@ public class Database {
 
   /**
    * Method to update current points of a game to database
+   *
    * @param username
-   * @param currentPoints which is old points plus new gained points
+   * @param currentScore which is old score plus additional gained points through the new word
    */
-  public void updatePoints(String username, int currentPoints) {
+  public void updateScore(String username, int currentScore) {
     try {
-      sql = "UPDATE Users SET Points = ? WHERE Name = ?;";
+      sql = "UPDATE Users SET Score = ? WHERE Name = ?;";
       pstmt = connection.prepareStatement(sql);
-      pstmt.setInt(1, currentPoints);
+      pstmt.setInt(1, currentScore);
       pstmt.setString(2, username);
       pstmt.executeUpdate();
-      System.out.println("Points updated");
+      System.out.println("Score updated");
       pstmt.close();
     } catch (SQLException throwables) {
       throwables.printStackTrace();
-      System.out.println("Could not update Points");
+      System.out.println("Could not update Score");
     }
   }
 
   /**
    * Method to increment amount of wins and total games played
+   *
    * @param username
    */
   public void incrementWins(String username) {
@@ -419,6 +423,7 @@ public class Database {
 
   /**
    * Method to increment amount of loses and total games played
+   *
    * @param username
    */
   public void incrementLoses(String username) {
@@ -437,20 +442,21 @@ public class Database {
 
   /**
    * Method to reset points of a user after a game ends
+   *
    * @param username
    */
-  public void resetPoints(String username) {
+  public void resetScore(String username) {
     try {
-      sql = "UPDATE Users SET Points = ? WHERE Name = ?;";
+      sql = "UPDATE Users SET Score = ? WHERE Name = ?;";
       pstmt = connection.prepareStatement(sql);
       pstmt.setInt(1, 0);
       pstmt.setString(2, username);
       pstmt.executeUpdate();
-      System.out.println("Points reset successful");
+      System.out.println("Score reset successful");
       pstmt.close();
     } catch (SQLException throwables) {
       throwables.printStackTrace();
-      System.out.println("Could not update Points");
+      System.out.println("Could not update Score");
     }
   }
 }
