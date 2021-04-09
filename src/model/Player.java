@@ -14,8 +14,9 @@ public abstract class Player {
 
   public abstract void startTurn();
 
-  /** Method to end a turn, especially to pass a turn */
   public abstract void endTurn();
+
+  public abstract void pass();
 
   public abstract void draw();
 

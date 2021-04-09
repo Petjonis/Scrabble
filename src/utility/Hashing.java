@@ -29,8 +29,7 @@ public class Hashing {
       md.update(salt);
       byte[] hash = md.digest(password.getBytes(StandardCharsets.UTF_8));
       return bytesToString(hash);
-    } catch (NoSuchAlgorithmException e) {
-      e.printStackTrace();
+    } catch (NoSuchAlgorithmException notPossible) {
       return null;
     }
   }

@@ -15,6 +15,9 @@ public class HumanPlayer extends Player {
   public void endTurn() {}
 
   @Override
+  public void pass() {}
+
+  @Override
   public void draw() {}
 
   @Override

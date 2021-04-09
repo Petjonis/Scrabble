@@ -21,9 +21,9 @@ public class Database {
           + "resources"
           + System.getProperty("file.separator")
           + "scrabble.db";
-  protected Connection connection;
-  protected PreparedStatement pstmt;
-  protected ResultSet rs;
+  private Connection connection;
+  private PreparedStatement pstmt;
+  private ResultSet rs;
   private String sql;
 
   public Database() {}
