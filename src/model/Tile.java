@@ -117,27 +117,27 @@ public class Tile {
       newTiles[count] = new Tile('Y', 4, TileType.LETTER);
       count++;
     }
-    while (count < 95) {
+    while (count < 94) {
       newTiles[count] = new Tile('K', 5, TileType.LETTER);
       count++;
     }
-    while (count < 96) {
+    while (count < 95) {
       newTiles[count] = new Tile('J', 8, TileType.LETTER);
       count++;
     }
-    while (count < 97) {
+    while (count < 96) {
       newTiles[count] = new Tile('X', 8, TileType.LETTER);
       count++;
     }
-    while (count < 98) {
+    while (count < 97) {
       newTiles[count] = new Tile('Q', 10, TileType.LETTER);
       count++;
     }
-    while (count < 99) {
+    while (count < 98) {
       newTiles[count] = new Tile('Z', 10, TileType.LETTER);
       count++;
     }
-    while (count <= 100) {
+    while (count < 100) {
       newTiles[count] = new Tile(' ', 10, TileType.BLANK);
       count++;
     }
