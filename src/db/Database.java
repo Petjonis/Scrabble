@@ -1,6 +1,11 @@
 package db;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 /**
  * This class contains all necessary methods to communicate with database for given context.
@@ -9,6 +14,7 @@ import java.sql.*;
  * @version 1.0
  */
 public class Database {
+  // System independent filepath to database file
   private static final String filepath =
       System.getProperty("user.dir")
           + System.getProperty("file.separator")
@@ -99,7 +105,15 @@ public class Database {
   public boolean addUser(String name, String password) {
     try {
       sql =
-          "INSERT INTO Users (Name, Password, Image, Games, Wins, Loses, Score) VALUES (?,?,?,?,?,?,?);";
+          "INSERT INTO Users ("
+              + "Name, "
+              + "Password, "
+              + "Image, "
+              + "Games, "
+              + "Wins, "
+              + "Loses, "
+              + "Score) "
+              + "VALUES (?,?,?,?,?,?,?);";
       pstmt = connection.prepareStatement(sql);
       pstmt.setString(1, name);
       pstmt.setString(2, password);
@@ -122,22 +136,22 @@ public class Database {
   /**
    * Method to delete an existing user from database
    *
-   * @param name
+   * @param username is name of user
    * @return returns true if user was deleted successfully, returns false if user was not deleted
    *     successfully
    */
-  public boolean deleteUser(String name) {
+  public boolean deleteUser(String username) {
     try {
       sql = "DELETE FROM Users WHERE Name = ?;";
       pstmt = connection.prepareStatement(sql);
-      pstmt.setString(1, name);
+      pstmt.setString(1, username);
       pstmt.executeUpdate();
-      System.out.println("Deleted User -> " + name + " successfully!");
+      System.out.println("Deleted User -> " + username + " successfully!");
       pstmt.close();
       return true;
     } catch (SQLException throwables) {
       throwables.printStackTrace();
-      System.out.println("Could not delete user -> " + name + "");
+      System.out.println("Could not delete user -> " + username + "");
       return false;
     }
   }
@@ -145,8 +159,8 @@ public class Database {
   /**
    * Method to change a username of an existing user *
    *
-   * @param username
-   * @param newUsername
+   * @param username is name of user
+   * @param newUsername is new name of user
    * @return returns true if username was updated successfully, returns false if username was not
    *     updated successfully
    */
@@ -170,8 +184,8 @@ public class Database {
   /**
    * Method to change password of an existing user.
    *
-   * @param username
-   * @param newPassword
+   * @param username is name of user
+   * @param newPassword is new password of user
    * @return returns true if password was changed successfully, returns false if password was not
    *     changed successfully
    */
@@ -195,7 +209,7 @@ public class Database {
   /**
    * Method to change image of an existing user. Doesn't check if filepath is valid!
    *
-   * @param username
+   * @param username is name of user
    * @param image is path to image
    * @return returns true if image was updated, returns false if image was not updated
    */
@@ -219,7 +233,7 @@ public class Database {
   /**
    * Method to check if a user already exists.
    *
-   * @param username
+   * @param username is name of user
    * @return returns true if user already exists, returns false if username is already taken
    */
   public boolean userExists(String username) {
@@ -246,7 +260,7 @@ public class Database {
   /**
    * Method to get user id of user.
    *
-   * @param username
+   * @param username is name of user
    * @return returns -1 if user doesn't exist
    */
   public int getId(String username) {
@@ -269,7 +283,7 @@ public class Database {
   /**
    * Method to get the password of a user.
    *
-   * @param username
+   * @param username is name of user
    * @return returns empty string if user doesn't exist
    */
   public String getPassword(String username) {
@@ -292,7 +306,7 @@ public class Database {
   /**
    * Method to get the amount points of user
    *
-   * @param username
+   * @param username is name of user
    * @return returns -1 if user doesn't exist
    */
   public int getScore(String username) {
@@ -315,7 +329,7 @@ public class Database {
   /**
    * Method to get amount of wins of a user
    *
-   * @param username
+   * @param username is name of user
    * @return returns -1 if user doesn't exist
    */
   public int getWins(String username) {
@@ -338,7 +352,7 @@ public class Database {
   /**
    * Method to get amount of loses of a user
    *
-   * @param username
+   * @param username is name of user
    * @return returns -1 if user doesn't exist
    */
   public int getLoses(String username) {
@@ -361,7 +375,7 @@ public class Database {
   /**
    * Method to get amount of games played of a user
    *
-   * @param username
+   * @param username is name of user
    * @return returns -1 if user doesn't exist
    */
   public int getGames(String username) {
@@ -384,7 +398,7 @@ public class Database {
   /**
    * Method to update current points of a game to database
    *
-   * @param username
+   * @param username is name of user
    * @param currentScore which is old score plus additional gained points through the new word
    */
   public void updateScore(String username, int currentScore) {
@@ -405,7 +419,7 @@ public class Database {
   /**
    * Method to increment amount of wins and total games played
    *
-   * @param username
+   * @param username is name of user
    */
   public void incrementWins(String username) {
     try {
@@ -424,7 +438,7 @@ public class Database {
   /**
    * Method to increment amount of loses and total games played
    *
-   * @param username
+   * @param username is name of user
    */
   public void incrementLoses(String username) {
     try {
@@ -443,7 +457,7 @@ public class Database {
   /**
    * Method to reset points of a user after a game ends
    *
-   * @param username
+   * @param username is name of user
    */
   public void resetScore(String username) {
     try {
