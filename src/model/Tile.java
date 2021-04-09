@@ -8,8 +8,8 @@ package model;
  */
 public class Tile {
   private char letter;
-  private final int value;
-  private final TileType type;
+  private int value;
+  private TileType type;
 
   public Tile(char letter, int value, TileType type) {
     this.letter = letter;
