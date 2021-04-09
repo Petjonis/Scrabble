@@ -38,7 +38,7 @@ public class Database {
       connection = DriverManager.getConnection("jdbc:sqlite:" + filepath);
       System.out.println("Connected to DB");
     } catch (ClassNotFoundException e) {
-      e.printStackTrace();
+      System.out.println("Could not find the database driver " + e.getMessage());
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -49,8 +49,8 @@ public class Database {
     try {
       this.connection.close();
       System.out.println("Disconnected DB");
-    } catch (SQLException throwables) {
-      throwables.printStackTrace();
+    } catch (SQLException e) {
+      e.printStackTrace();
     }
   }
 
@@ -88,8 +88,8 @@ public class Database {
       sql = "DROP TABLE IF EXISTS " + name;
       statement.executeUpdate(sql);
       System.out.println("Dropped Table -> " + name);
-    } catch (SQLException throwables) {
-      throwables.printStackTrace();
+    } catch (SQLException e) {
+      e.printStackTrace();
     }
   }
 
@@ -97,8 +97,8 @@ public class Database {
    * Method to add a user to existing table in database. Sets non-parameter values to Integer = 0,
    * String = "".
    *
-   * @param name
-   * @param password
+   * @param name is name of user
+   * @param password is password of user
    * @return returns true if user was added to database, returns false if user was not added to
    *     database
    */
@@ -126,8 +126,8 @@ public class Database {
       System.out.println("Added User -> " + name + " successfully!");
       pstmt.close();
       return true;
-    } catch (SQLException throwables) {
-      throwables.printStackTrace();
+    } catch (SQLException e) {
+      e.printStackTrace();
       System.out.println("Could not add user -> " + name + "");
       return false;
     }
@@ -149,8 +149,8 @@ public class Database {
       System.out.println("Deleted User -> " + username + " successfully!");
       pstmt.close();
       return true;
-    } catch (SQLException throwables) {
-      throwables.printStackTrace();
+    } catch (SQLException e) {
+      e.printStackTrace();
       System.out.println("Could not delete user -> " + username + "");
       return false;
     }
@@ -174,8 +174,8 @@ public class Database {
       System.out.println(username + "changed username to -> " + newUsername + " successfully!");
       pstmt.close();
       return true;
-    } catch (SQLException throwables) {
-      throwables.printStackTrace();
+    } catch (SQLException e) {
+      e.printStackTrace();
       System.out.println("Could not change username -> " + username + " to " + newUsername);
       return false;
     }
@@ -199,8 +199,8 @@ public class Database {
       System.out.println(username + " changed password successfully!");
       pstmt.close();
       return true;
-    } catch (SQLException throwables) {
-      throwables.printStackTrace();
+    } catch (SQLException e) {
+      e.printStackTrace();
       System.out.println("Could not change password of -> " + username);
       return false;
     }
@@ -223,8 +223,8 @@ public class Database {
       System.out.println(username + " changed image successfully!");
       pstmt.close();
       return true;
-    } catch (SQLException throwables) {
-      throwables.printStackTrace();
+    } catch (SQLException e) {
+      e.printStackTrace();
       System.out.println("Could not change image of -> " + username);
       return false;
     }
@@ -250,8 +250,8 @@ public class Database {
       }
       System.out.println("Username -> " + username + " not taken!");
       return false;
-    } catch (SQLException throwables) {
-      throwables.printStackTrace();
+    } catch (SQLException e) {
+      e.printStackTrace();
       System.out.println("Something went wrong");
       return true;
     }
@@ -274,8 +274,8 @@ public class Database {
         id = rs.getInt("ID");
       }
       return id;
-    } catch (SQLException throwables) {
-      throwables.printStackTrace();
+    } catch (SQLException e) {
+      e.printStackTrace();
       return id;
     }
   }
@@ -297,8 +297,8 @@ public class Database {
         pw = rs.getString("Password");
       }
       return pw;
-    } catch (SQLException throwables) {
-      throwables.printStackTrace();
+    } catch (SQLException e) {
+      e.printStackTrace();
       return pw;
     }
   }
@@ -320,8 +320,8 @@ public class Database {
         points = rs.getInt("Score");
       }
       return points;
-    } catch (SQLException throwables) {
-      throwables.printStackTrace();
+    } catch (SQLException e) {
+      e.printStackTrace();
       return points;
     }
   }
@@ -343,8 +343,8 @@ public class Database {
         wins = rs.getInt("Wins");
       }
       return wins;
-    } catch (SQLException throwables) {
-      throwables.printStackTrace();
+    } catch (SQLException e) {
+      e.printStackTrace();
       return wins;
     }
   }
@@ -366,8 +366,8 @@ public class Database {
         loses = rs.getInt("Loses");
       }
       return loses;
-    } catch (SQLException throwables) {
-      throwables.printStackTrace();
+    } catch (SQLException e) {
+      e.printStackTrace();
       return loses;
     }
   }
@@ -389,8 +389,8 @@ public class Database {
         games = rs.getInt("Games");
       }
       return games;
-    } catch (SQLException throwables) {
-      throwables.printStackTrace();
+    } catch (SQLException e) {
+      e.printStackTrace();
       return games;
     }
   }
@@ -410,8 +410,8 @@ public class Database {
       pstmt.executeUpdate();
       System.out.println("Score updated");
       pstmt.close();
-    } catch (SQLException throwables) {
-      throwables.printStackTrace();
+    } catch (SQLException e) {
+      e.printStackTrace();
       System.out.println("Could not update Score");
     }
   }
@@ -429,8 +429,8 @@ public class Database {
       pstmt.executeUpdate();
       System.out.println("Wins incremented");
       pstmt.close();
-    } catch (SQLException throwables) {
-      throwables.printStackTrace();
+    } catch (SQLException e) {
+      e.printStackTrace();
       System.out.println("Could not update Wins");
     }
   }
@@ -448,8 +448,8 @@ public class Database {
       pstmt.executeUpdate();
       System.out.println("Loses incremented");
       pstmt.close();
-    } catch (SQLException throwables) {
-      throwables.printStackTrace();
+    } catch (SQLException e) {
+      e.printStackTrace();
       System.out.println("Could not update Loses");
     }
   }
@@ -468,8 +468,8 @@ public class Database {
       pstmt.executeUpdate();
       System.out.println("Score reset successful");
       pstmt.close();
-    } catch (SQLException throwables) {
-      throwables.printStackTrace();
+    } catch (SQLException e) {
+      e.printStackTrace();
       System.out.println("Could not update Score");
     }
   }
