@@ -1,14 +1,13 @@
 package db;
 
+import settings.GlobalSettings;
+import utility.Hashing;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.SQLException;
-
-import settings.GlobalSettings;
-import utility.Hashing;
 
 /**
  * This class contains all necessary methods to communicate with database for given context.
@@ -497,6 +496,38 @@ public class Database {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Method checks if password string is the salted-hashed password
+     * in the database.
+     *
+     * @param username is name of user
+     * @param password is password of user
+     *
+     * @return Returns true if password is correct
+     */
+    public boolean checkPassword(String username, String password){
+        String pw = null;
+        String salt = null;
+        try {
+            sql = "SELECT Password, Salt FROM Users WHERE Name = ?;";
+            pstmt = connection.prepareStatement(sql);
+            pstmt.setString(1, username);
+            rs = pstmt.executeQuery();
+            while(rs.next()){
+                pw = rs.getString("Password");
+                salt = rs.getString("Salt");
+            }
+            rs.close();
+            pstmt.close();
+            if(Hashing.generateHash(password, Hashing.stringToBytes(salt)).equals(pw)){
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     /**
