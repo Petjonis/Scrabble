@@ -8,21 +8,21 @@ package model;
  */
 public class HumanPlayer extends Player {
 
-  @Override
-  public void startTurn() {}
+    @Override
+    public void startTurn() {}
 
-  @Override
-  public void endTurn() {}
+    @Override
+    public void endTurn() {}
 
-  @Override
-  public void pass() {}
+    @Override
+    public void pass() {}
 
-  @Override
-  public void draw() {}
+    @Override
+    public void draw() {}
 
-  @Override
-  public void swap() {}
+    @Override
+    public void swap() {}
 
-  @Override
-  public void put() {}
+    @Override
+    public void put() {}
 }

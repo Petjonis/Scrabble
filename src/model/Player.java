@@ -7,20 +7,20 @@ package model;
  * @version 1.0
  */
 public abstract class Player {
-  private String username;
-  private TileBag bag;
-  private int score;
-  private int passCount;
+    private String username;
+    private TileBag bag;
+    private int score;
+    private int passCount;
 
-  public abstract void startTurn();
+    public abstract void startTurn();
 
-  public abstract void endTurn();
+    public abstract void endTurn();
 
-  public abstract void pass();
+    public abstract void pass();
 
-  public abstract void draw();
+    public abstract void draw();
 
-  public abstract void swap();
+    public abstract void swap();
 
-  public abstract void put();
+    public abstract void put();
 }
