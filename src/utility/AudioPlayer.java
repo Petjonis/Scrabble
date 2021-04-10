@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
  * Audio clip kills itself when no MessageDialog comes up :/
  * Hopefully listener/threads will help out...
  */
-public class AudioPlayer {
+public class AudioPlayer implements Runnable{
     // System independent path to resource folder
     private static final String path =
             System.getProperty("user.dir")
@@ -20,6 +20,11 @@ public class AudioPlayer {
                     + "resources"
                     + System.getProperty("file.separator");
 
+    /**
+     * Method to play a sound.
+     *
+     * @param audioFile is name of audio file.
+     */
     public void playAudio(String audioFile){
         File audioFilePath = new File(path+audioFile);
         try {
@@ -31,5 +36,9 @@ public class AudioPlayer {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void run() {
     }
 }

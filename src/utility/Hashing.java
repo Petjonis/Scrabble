@@ -58,7 +58,8 @@ public class Hashing {
 
     /**
      * Method to parse String to byte array in UTF_8 encoding.
-     * Not needed for now, maybe useful later.
+     * Needed to parse database salt value to string to validate
+     * password of user for login.
      *
      * @param string String to parse.
      * @return Returns String as a byte array.
@@ -66,4 +67,6 @@ public class Hashing {
     public static byte[] stringToBytes(String string) {
         return Base64.getDecoder().decode(string);
     }
+
+
 }

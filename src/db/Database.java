@@ -134,7 +134,7 @@ public class Database {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        System.out.println("Could not add user -> " + name + "");
+        System.out.println("Could not add user -> " + name);
         return false;
     }
 
@@ -195,14 +195,16 @@ public class Database {
      *     changed successfully.
      */
     public boolean changePassword(String username, String newPassword) {
+        byte[] salt = Hashing.generateSalt();
         try {
-            sql = "UPDATE Users SET Password = ? WHERE Name = ?;";
+            sql = "UPDATE Users SET Password = ?, Salt = ? WHERE Name = ?;";
             pstmt = connection.prepareStatement(sql);
-            pstmt.setString(1, Hashing.generateHash(newPassword, Hashing.generateSalt()));
-            pstmt.setString(2, username);
+            pstmt.setString(1, Hashing.generateHash(newPassword, salt));
+            pstmt.setString(2, Hashing.bytesToString(salt));
+            pstmt.setString(3, username);
             pstmt.executeUpdate();
-            System.out.println(username + " changed password successfully!");
             pstmt.close();
+            System.out.println(username + " changed password successfully!");
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -287,7 +289,7 @@ public class Database {
      * Method to get the password of a user.
      *
      * @param username is name of user.
-     * @return Returns password string or null if user does not exist.
+     * @return Returns null if user does not exist.
      */
     public String getPassword(String username) {
         String pw = null;
@@ -311,7 +313,7 @@ public class Database {
      * Method to get the salt of the salted and hashed password.
      *
      * @param username is name of user.
-     * @return Returns salt string or null if user does not exist.
+     * @return Returns null if user does not exist.
      */
     public String getSalt(String username) {
         String salt = null;
