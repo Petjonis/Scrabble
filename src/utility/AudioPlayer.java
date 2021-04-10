@@ -4,13 +4,9 @@ import java.io.File;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.Clip;
-import javax.swing.JOptionPane;
 
 /**
  * Class to play 16bit .wav audio files
- * Waiting for Listener to implement this properly
- * Audio clip kills itself when no MessageDialog comes up :/
- * Hopefully listener/threads will help out...
  */
 public class AudioPlayer implements Runnable{
     // System independent path to resource folder
@@ -22,7 +18,7 @@ public class AudioPlayer implements Runnable{
 
     /**
      * Method to play a sound.
-     *
+     * Thread.sleep() method is needed so audio won't kill itself
      * @param audioFile is name of audio file.
      */
     public void playAudio(String audioFile){
@@ -32,7 +28,7 @@ public class AudioPlayer implements Runnable{
             Clip audio = AudioSystem.getClip();
             audio.open(input);
             audio.start();
-            JOptionPane.showMessageDialog(null, "Press OK to stop playing");
+            Thread.sleep(audio.getMicrosecondLength() / 1000);
         } catch (Exception e) {
             e.printStackTrace();
         }

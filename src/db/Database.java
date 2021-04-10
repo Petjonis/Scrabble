@@ -503,4 +503,30 @@ public class Database {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Method to print all database entries
+     * Not formatted!
+     */
+    public void printDatabase(){
+        try(Statement statement = connection.createStatement()) {
+            sql = "SELECT * FROM Users";
+            rs = statement.executeQuery(sql);
+            while(rs.next()){
+                System.out.print("ID: "+rs.getString("ID")+" | ");
+                System.out.print("Name: "+rs.getString("Name")+" | ");
+                System.out.print("Password: "+rs.getString("Password")+" | ");
+                System.out.print("Image: "+rs.getString("Image")+" | ");
+                System.out.print("Games: "+rs.getString("Games")+" | ");
+                System.out.print("Wins: "+rs.getString("Wins")+" | ");
+                System.out.print("Loses: "+rs.getString("Loses")+" | ");
+                System.out.print("Score: "+rs.getString("Score")+" | ");
+                System.out.print("Salt: "+rs.getString("Salt")+" | ");
+                System.out.println();
+            }
+            rs.close();
+        } catch (java.sql.SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
