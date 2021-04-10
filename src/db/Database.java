@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.SQLException;
+
+import settings.GlobalSettings;
 import utility.Hashing;
 
 /**
@@ -15,13 +17,6 @@ import utility.Hashing;
  * @version 1.1
  */
 public class Database {
-    // System independent filepath to database file
-    private static final String filepath =
-            System.getProperty("user.dir")
-                    + System.getProperty("file.separator")
-                    + "resources"
-                    + System.getProperty("file.separator")
-                    + "scrabble.db";
     private Connection connection;
     private PreparedStatement pstmt;
     private ResultSet rs;
@@ -36,7 +31,7 @@ public class Database {
     public void connect() {
         try {
             Class.forName("org.sqlite.JDBC");
-            connection = DriverManager.getConnection("jdbc:sqlite:" + filepath);
+            connection = DriverManager.getConnection("jdbc:sqlite:" + GlobalSettings.filepath + "scrabble.db");
             System.out.println("Connected to DB");
         } catch (ClassNotFoundException e) {
             System.out.println("Could not find the database driver " + e.getMessage());
