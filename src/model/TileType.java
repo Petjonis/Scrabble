@@ -6,7 +6,4 @@ package model;
  * @author fpetek
  * @version 1.0
  */
-public enum TileType {
-  LETTER,
-  BLANK
-}
+public enum TileType { LETTER, BLANK }
