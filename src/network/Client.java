@@ -15,6 +15,7 @@ public class Client extends Thread{
     private ObjectInputStream in;
     private boolean running = true;
 
+    /**ClientUI is missing */
     public Client(String ip, int port, String username) {
         try {
             this.username = username;
