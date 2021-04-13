@@ -1,11 +1,11 @@
-package model;
-
 /**
  * Class represents a tile piece
  *
  * @author fpetek
  * @version 1.0
- */
+ **/
+package model;
+
 public class Tile {
   private char letter;
   private int value;
@@ -29,7 +29,7 @@ public class Tile {
    * 10 points: Q ×1, Z ×1
    *
    * @return Returns a tile array with hundred tiles.
-   */
+   **/
   public static Tile[] createClassicTiles() {
     Tile[] newTiles = new Tile[100];
     int count = 0;

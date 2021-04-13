@@ -3,7 +3,7 @@ package model;
 import settings.GlobalSettings;
 
 public class Squares {
-    private char [][] squares = new char[GlobalSettings.row][GlobalSettings.columns];
+    private char [][] squares = new char[GlobalSettings.ROWS][GlobalSettings.COLUMNS];
     private TileType tType ;
     private boolean occupied = false ;
     private SquareType sqType;
@@ -16,7 +16,7 @@ public class Squares {
 
 
     public void setOccupied(){
-        this.occupied = true ;
+        this.occupied = true;
     }
 
 }

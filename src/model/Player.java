@@ -1,11 +1,11 @@
-package model;
-
 /**
  * This abstract class contains common attributes and methods for player types.
  *
  * @author fpetek
  * @version 1.0
- */
+ **/
+package model;
+
 public abstract class Player {
   private String username;
   private TileBag bag;

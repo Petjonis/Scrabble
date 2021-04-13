@@ -1,14 +1,19 @@
+/** Class for reusable stuff needed across the project
+ *
+ * @author fpetek
+ * @version 1.0
+ * */
 package settings;
 
-/** Class for reusable stuff needed across the project **/
 public class GlobalSettings {
 
-  /** final int for board spaces */
-  public static final int row = 15;
+  /** final int for board spaces **/
+  public static final int ROWS = 15;
+  public static final int COLUMNS = 15;
+  /** final int for maxium tiles in a tilebag **/
+  public static final int MAXTILES = 100;
 
-  public static final int columns = 15;
-
-  // System independent filepath to resources folder
+  /* System independent filepath to resources folder */
   public static final String filepath =
       System.getProperty("user.dir")
           + System.getProperty("file.separator")

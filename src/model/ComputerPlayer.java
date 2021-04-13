@@ -1,11 +1,11 @@
-package model;
-
 /**
  * Class represents the computer player and inherits from abstract Player class.
  *
  * @author fpetek
  * @version 1.0
- */
+ **/
+package model;
+
 public class ComputerPlayer extends Player {
 
   @Override
