@@ -8,24 +8,25 @@ import java.io.*;
 import java.net.*;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.ArrayList;
 import messages.*;
-import network.*;
+import settings.*;
 
 public class Server {
    private ServerSocket hostSocket;
     private boolean running ;
 
     /** collects all connected clients in a HashMap*/
-    private HashMap<String, ServerProtocol> clients = new HashMap<>();
+    private final HashMap<String, ServerProtocol> clients = new HashMap<>();
 
     public synchronized void removeClient(String clientName){
         this.clients.remove(clientName);
     }
 
     public synchronized boolean userExistsP(String name){
-        return this.clients.keySet().contains(name);
+        return this.clients.containsKey(name);
     }
 
     public synchronized void addClient(String name, ServerProtocol protocol){
@@ -43,7 +44,7 @@ public class Server {
         try {
             hostSocket = new ServerSocket(ServerSettings.port);
             System.out.println("Server runs") ;
-            /** open streams */
+
             while(running) {
                 Socket clientSocket = hostSocket.accept();
 
@@ -75,14 +76,14 @@ public class Server {
     }
     /** send to all clients */
     public void sendToAll(Message m){
-    sendTo(new ArrayList<String>(getClientNames(),(Message)(m.clone())));
+    sendTo(new ArrayList<String> (getClientNames()),(Message)(m.clone()));
     }
     /** send to all clients except for one */
     public void sendToAllBut(String name, Message m){
         synchronized (this.clients){
             Set<String> senderList = getClientNames();
             senderList.remove(name);
-            sendTo(new ArrayList<String>(senderList),m);
+            sendTo(new ArrayList<String> (senderList),m);
         }
     }
 

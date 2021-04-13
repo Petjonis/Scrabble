@@ -9,6 +9,7 @@ import java.io.*;
 import java.net.*;
 import messages.*;
 import network.*;
+import settings.*;
 
 public class Client extends Thread{
     private String username;
