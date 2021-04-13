@@ -123,15 +123,23 @@ public class Tile {
     return newTiles;
   }
 
-  /**
-   * Method to set the letter on the blank tile. Checks if letter is blank or not. Throws no
-   * NullPointerException!
-   *
-   * @param letter is the letter to set.
-   */
-  public void setBlankLetter(char letter) {
-    if (this.type == TileType.BLANK) {
-      this.letter = letter;
-    }
+  public char getLetter() {
+    return letter;
   }
+
+  public void setLetter(char letter) {
+    this.letter = letter;
+  }
+
+  public int getValue() {
+    return value;
+  }
+
+  public void setValue(int value) {
+    this.value = value;
+  }
+
+
+
+
 }

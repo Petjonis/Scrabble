@@ -7,7 +7,7 @@ package model;
  * @version 1.0
  */
 public class TileBag {
-  static final int MAX = 100;
+  private static final int MAX = 100;
   private Tile[] tiles = new Tile[MAX];
 
   /**
@@ -20,9 +20,18 @@ public class TileBag {
   /**
    * Constructor to initialize a set of tiles with own value and frequency distribution.
    *
-   * @param tiles Own tileset to initialize
+   * @param tiles own tileset to initialize
    */
   public TileBag(Tile[] tiles) {
+    this.tiles = tiles;
+  }
+
+
+  public Tile[] getTiles() {
+    return tiles;
+  }
+
+  public void setTiles(Tile[] tiles) {
     this.tiles = tiles;
   }
 }
