@@ -1,5 +1,7 @@
 package model;
 
+import settings.GlobalSettings;
+
 public class Squares {
     private char [][] squares = new char[GlobalSettings.row][GlobalSettings.columns];
     private TileType tType ;
