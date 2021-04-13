@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import de.jensd.fx.glyphs.materialicons.MaterialIconView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" style="-fx-background-color: #312E2B;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
+   <left>
+      <AnchorPane prefHeight="768.0" prefWidth="165.0" style="-fx-background-color: #272522;" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER" prefHeight="45.0" prefWidth="164.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <ImageView fitHeight="31.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/login.png" />
+                     </image>
+                  </ImageView>
+                  <Label text="PlayScrabble" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <VBox layoutY="70.0" prefHeight="170.0" prefWidth="165.0" AnchorPane.bottomAnchor="528.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
+               <children>
+                  <JFXButton fx:id="playButton" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="10.0" layoutX="10.0" layoutY="10.0" onAction="#openPlay" prefHeight="50.0" prefWidth="165.0" text="Play" textFill="#ababab">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                     <graphic>
+                        <MaterialIconView fill="#ababab" glyphName="PLAY_CIRCLE_OUTLINE" size="25" />
+                     </graphic>
+                  </JFXButton>
+                  <JFXButton fx:id="learnButton" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="10.0" layoutX="10.0" layoutY="10.0" onAction="#openLearn" prefHeight="50.0" prefWidth="165.0" text="Learn" textFill="#ababab">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                     <graphic>
+                        <MaterialIconView fill="#ababab" glyphName="SCHOOL" size="25" />
+                     </graphic>
+                  </JFXButton>
+                  <JFXButton fx:id="rulebookButton" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="10.0" layoutX="10.0" layoutY="55.0" onAction="#openRulebook" prefHeight="50.0" prefWidth="165.0" text="Rule Book" textFill="#ababab">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIconView fill="#ababab" glyphName="BOOK" size="25" />
+                     </graphic>
+                  </JFXButton>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" layoutY="305.0" prefHeight="158.0" prefWidth="165.0" spacing="10.0">
+               <children>
+                  <JFXButton fx:id="loginButton" focusTraversable="false" onAction="#login" prefHeight="50.0" prefWidth="100.0" style="-fx-background-color: #312E2B;" text="Login" textFill="#dbd9d7">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton fx:id="signupButton" focusTraversable="false" layoutX="43.0" layoutY="55.0" onAction="#signup" prefHeight="50.0" prefWidth="100.0" style="-fx-background-color: #312E2B;" text="Sign Up" textFill="#dbd9d7">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </JFXButton>
+               </children>
+            </VBox>
+            <JFXButton fx:id="logoutButton" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="10.0" layoutY="718.0" onAction="#logout" prefHeight="50.0" prefWidth="165.0" text="Logout" textFill="#ababab" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+               <graphic>
+                  <MaterialIconView fill="#ababab" glyphName="LOCK_OPEN" size="20" />
+               </graphic>
+            </JFXButton>
+         </children>
+      </AnchorPane>
+   </left>
+   <center>
+      <StackPane prefHeight="150.0" prefWidth="200.0">
+         <children>
+            <fx:include fx:id="registerPane" source="Register.fxml" />
+            <fx:include fx:id="loginPane" source="Login.fxml" />
+            <fx:include fx:id="startPane" source="Start.fxml" StackPane.alignment="CENTER" />
+         </children>
+      </StackPane>
+   </center>
+</BorderPane>
