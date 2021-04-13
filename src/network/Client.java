@@ -7,6 +7,7 @@ package network;
  */
 import java.io.*;
 import java.net.*;
+import messages.Message;
 
 public class Client extends Thread{
     private String username;

@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.ArrayList;
+import messages.Message;
 
 public class Server {
    private ServerSocket hostSocket;

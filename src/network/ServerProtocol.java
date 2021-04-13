@@ -8,6 +8,7 @@ package network;
 
 import java.io.*;
 import java.net.*;
+import messages.Message;
 
 public class ServerProtocol extends Thread {
     private Socket socket;
