@@ -8,7 +8,10 @@ package network;
 
 import java.io.*;
 import java.net.*;
-import messages.Message;
+import messages.*;
+import settings.*;
+import network.*;
+import messages.*;
 
 public class ServerProtocol extends Thread {
     private Socket socket;
@@ -23,7 +26,7 @@ public class ServerProtocol extends Thread {
         this.server = server;
         try{
             out = new ObjectOutputStream(socket.getOutputStream());
-            int = new ObjectInputStream(socket.getInputStream());
+            in = new ObjectInputStream(socket.getInputStream());
         }catch(IOException e){
             e.printStackTrace();
         }
@@ -51,9 +54,9 @@ public class ServerProtocol extends Thread {
         try {
             m = (Message) in.readObject();
             if(m.getMessageType() == MessageType.CONNECT){
-                String form = m.getFrom();
+                String from = m.getFrom();
                 this.clientName = from;
-                server.addCLient(from, this);
+                server.addClient(from, this);
             }else {
                 disconnect();
             }

@@ -10,7 +10,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.ArrayList;
-import messages.Message;
+import messages.*;
+import network.*;
 
 public class Server {
    private ServerSocket hostSocket;
@@ -49,7 +50,7 @@ public class Server {
             }
         }catch(IOException e){
             if (hostSocket != null && hostSocket.isClosed()){
-                System,out.println("Server stopped.");
+                System.out.println("Server stopped.");
             }else{
                 e.printStackTrace();
             }
