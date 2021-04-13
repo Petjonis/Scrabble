@@ -15,58 +15,55 @@ import java.util.Base64;
  */
 public class Hashing {
 
-    /**
-     * Method to generate a salted hash value with MD5 hashing-algorithm and salt.
-     *
-     * @param password is user password.
-     * @param salt a 16 byte salt -> please use generateSalt() method to get unique values.
-     * @return Returns the hashed password with a pinch of salt.
-     */
-    public static String generateHash(String password, byte[] salt) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            md.reset();
-            md.update(salt);
-            byte[] hash = md.digest(password.getBytes(StandardCharsets.UTF_8));
-            return bytesToString(hash);
-        } catch (NoSuchAlgorithmException notPossible) {
-            return null;
-        }
+  /**
+   * Method to generate a salted hash value with MD5 hashing-algorithm and salt.
+   *
+   * @param password is user password.
+   * @param salt a 16 byte salt -> please use generateSalt() method to get unique values.
+   * @return Returns the hashed password with a pinch of salt.
+   */
+  public static String generateHash(String password, byte[] salt) {
+    try {
+      MessageDigest md = MessageDigest.getInstance("MD5");
+      md.reset();
+      md.update(salt);
+      byte[] hash = md.digest(password.getBytes(StandardCharsets.UTF_8));
+      return bytesToString(hash);
+    } catch (NoSuchAlgorithmException notPossible) {
+      return null;
     }
+  }
 
-    /**
-     * Method to generate a unique salt value with 16 bytes to guarantee a collision free hash value.
-     *
-     * @return Returns the salt.
-     */
-    public static byte[] generateSalt() {
-        SecureRandom random = new SecureRandom();
-        byte[] bytes = new byte[16];
-        random.nextBytes(bytes);
-        return bytes;
-    }
+  /**
+   * Method to generate a unique salt value with 16 bytes to guarantee a collision free hash value.
+   *
+   * @return Returns the salt.
+   */
+  public static byte[] generateSalt() {
+    SecureRandom random = new SecureRandom();
+    byte[] bytes = new byte[16];
+    random.nextBytes(bytes);
+    return bytes;
+  }
 
-    /**
-     * Method to parse bytes to string in UTF_8 encoding.
-     *
-     * @param bytes are bytes to parse.
-     * @return Returns bytes as a String.
-     */
-    public static String bytesToString(byte[] bytes) {
-        return Base64.getEncoder().encodeToString(bytes);
-    }
+  /**
+   * Method to parse bytes to string in UTF_8 encoding.
+   *
+   * @param bytes are bytes to parse.
+   * @return Returns bytes as a String.
+   */
+  public static String bytesToString(byte[] bytes) {
+    return Base64.getEncoder().encodeToString(bytes);
+  }
 
-    /**
-     * Method to parse String to byte array in UTF_8 encoding.
-     * Needed to parse database salt value to string to validate
-     * password of user for login.
-     *
-     * @param string String to parse.
-     * @return Returns String as a byte array.
-     */
-    public static byte[] stringToBytes(String string) {
-        return Base64.getDecoder().decode(string);
-    }
-
-
+  /**
+   * Method to parse String to byte array in UTF_8 encoding. Needed to parse database salt value to
+   * string to validate password of user for login.
+   *
+   * @param string String to parse.
+   * @return Returns String as a byte array.
+   */
+  public static byte[] stringToBytes(String string) {
+    return Base64.getDecoder().decode(string);
+  }
 }
