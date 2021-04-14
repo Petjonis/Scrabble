@@ -7,11 +7,13 @@ package network;
  * @version 1.0
  */
 
-import java.io.*;
-import java.net.*;
-import messages.*;
-import network.*;
-import settings.*;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
+import java.net.Socket;
+import messages.Message;
+import messages.DisconnectMessage;
+import messages.ConnectMessage;
 
 public class Client extends Thread {
 
@@ -21,8 +23,10 @@ public class Client extends Thread {
   private ObjectInputStream in;
   private boolean running = true;
 
-  /**ClientUI is missing */
-  public Client(String ip, int port, String username) {
+  /**
+   * ClientUI is missing
+   */
+  public Client(String ip, int port, String username) throws IOException {
     try {
       this.username = username;
       this.clientSocket = new Socket(ip, port);
@@ -37,7 +41,9 @@ public class Client extends Thread {
     }
   }
 
-  /**checks if the connection is alright.*/
+  /**
+   * checks if the connection is alright.
+   */
   public boolean isOk() {
     return (clientSocket != null) && (clientSocket.isConnected()) && !(clientSocket.isClosed());
   }
@@ -58,7 +64,9 @@ public class Client extends Thread {
     out.reset();
   }
 
-  /** clients disconnects and closes sockets.*/
+  /**
+   * clients disconnects and closes sockets.
+   */
   public void disconnect() {
     running = false;
     try {

@@ -7,22 +7,27 @@ package network;
  * @version 1.0
  */
 
-import java.io.*;
-import java.net.*;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.ArrayList;
-import messages.*;
-import settings.*;
+import messages.Message;
+import settings.ServerSettings;
 
 public class Server {
 
   private ServerSocket hostSocket;
   private boolean running;
 
-  /** collects all connected clients in a HashMap*/
+  /**
+   * collects all connected clients in a HashMap
+   */
   private final HashMap<String, ServerProtocol> clients = new HashMap<>();
 
   public synchronized void removeClient(String clientName) {
@@ -42,8 +47,10 @@ public class Server {
     return new HashSet<String>(clientNames);
   }
 
-  /** setup server + listen to connection requests from clients*/
-  public void listen() {
+  /**
+   * setup server + listen to connection requests from clients
+   */
+  public void listen() throws IOException {
     running = true;
     try {
       hostSocket = new ServerSocket(ServerSettings.port);
@@ -81,12 +88,16 @@ public class Server {
     }
   }
 
-  /** send to all clients */
+  /**
+   * send to all clients
+   */
   public void sendToAll(Message m) {
     sendTo(new ArrayList<String>(getClientNames()), (Message) (m.clone()));
   }
 
-  /** send to all clients except for one */
+  /**
+   * send to all clients except for one
+   */
   public void sendToAllBut(String name, Message m) {
     synchronized (this.clients) {
       Set<String> senderList = getClientNames();
@@ -95,7 +106,9 @@ public class Server {
     }
   }
 
-  /** stops the server*/
+  /**
+   * stops the server
+   */
   public void stopServer() {
     running = false;
     if (!hostSocket.isClosed()) {

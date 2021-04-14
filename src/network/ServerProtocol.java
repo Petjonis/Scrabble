@@ -7,12 +7,12 @@ package network;
  * @version 1.0
  */
 
-import java.io.*;
-import java.net.*;
-import messages.*;
-import settings.*;
-import network.*;
-import messages.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import messages.Message;
+import messages.MessageType;
 
 public class ServerProtocol extends Thread {
 
@@ -23,7 +23,7 @@ public class ServerProtocol extends Thread {
   private String clientName;
   private boolean running = true;
 
-  ServerProtocol(Socket client, Server server) {
+  ServerProtocol(Socket client, Server server) throws IOException {
     this.socket = client;
     this.server = server;
     try {
@@ -34,14 +34,18 @@ public class ServerProtocol extends Thread {
     }
   }
 
-  /** sends to this client */
+  /**
+   * sends to this client
+   */
   public void sendToClient(Message m) throws IOException {
     this.out.writeObject(m);
     out.flush();
     out.reset();
   }
 
-  /** close streams and socket */
+  /**
+   * close streams and socket
+   */
   public void disconnect() {
     running = false;
     try {
@@ -51,6 +55,9 @@ public class ServerProtocol extends Thread {
     }
   }
 
+  /**
+   * Clients will be connected to the server only when they send the Connect-Message
+   */
   public void run() {
     Message m;
     try {
