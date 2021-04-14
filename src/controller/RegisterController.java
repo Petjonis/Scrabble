@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 
 public class RegisterController {
     @FXML
@@ -37,7 +38,8 @@ public class RegisterController {
 
     @FXML
     void close(ActionEvent event) {
-        
+        Stage stage = (Stage) closeButton.getScene().getWindow();
+        stage.close();
     }
 
     @FXML

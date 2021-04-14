@@ -87,8 +87,6 @@
    <center>
       <StackPane prefHeight="150.0" prefWidth="200.0">
          <children>
-            <fx:include fx:id="registerPane" source="Register.fxml" />
-            <fx:include fx:id="loginPane" source="Login.fxml" />
             <fx:include fx:id="startPane" source="Start.fxml" StackPane.alignment="CENTER" />
          </children>
       </StackPane>

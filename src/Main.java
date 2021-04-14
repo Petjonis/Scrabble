@@ -18,7 +18,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         stg = primaryStage;
         //primaryStage.setResizable(false);
-        Parent root = FXMLLoader.load(getClass().getResource("view/Main.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/view/Main.fxml"));
         primaryStage.setTitle("Scrabble");
         primaryStage.setScene(new Scene(root, 1024, 768));
         primaryStage.show();
