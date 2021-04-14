@@ -1,14 +1,15 @@
 package model;
 
 import settings.GlobalSettings;
+import model.Tile;
 
-public class Squares {
-    private char [][] squares = new char[GlobalSettings.ROWS][GlobalSettings.COLUMNS];
+public class Board {
+    private Tile [][] squares = new Tile[GlobalSettings.ROWS][GlobalSettings.COLUMNS];
     private TileType tType ;
     private boolean occupied = false ;
     private SquareType sqType;
 
-    public Squares (boolean o, TileType tt, SquareType st){
+    public Board(boolean o, TileType tt, SquareType st){
         this.occupied = o;
         this.tType = tt ;
         this.sqType = st;
