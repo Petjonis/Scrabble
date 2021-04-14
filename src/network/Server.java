@@ -52,6 +52,8 @@ public class Server {
       while (running) {
         Socket clientSocket = hostSocket.accept();
 
+        ServerProtocol clientConnectionThread = new ServerProtocol(clientSocket, this);
+        clientConnectionThread.start();
       }
     } catch (IOException e) {
       if (hostSocket != null && hostSocket.isClosed()) {
