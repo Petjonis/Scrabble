@@ -4,6 +4,7 @@
  * @author fpetek
  * @version 1.0
  **/
+
 package model;
 
 public class HumanPlayer extends Player {

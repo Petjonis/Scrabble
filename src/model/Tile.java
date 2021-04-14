@@ -4,6 +4,7 @@
  * @author fpetek
  * @version 1.0
  **/
+
 package model;
 
 public class Tile {
@@ -11,6 +12,13 @@ public class Tile {
   private int value;
   private TileType type;
 
+  /**
+   * Constructor for a tile piece
+   *
+   * @param letter Is the letter
+   * @param value Is value of tile
+   * @param type Is enumtype of tile
+   **/
   public Tile(char letter, int value, TileType type) {
     this.letter = letter;
     this.value = value;

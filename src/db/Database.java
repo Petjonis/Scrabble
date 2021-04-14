@@ -4,14 +4,15 @@
  * @author fpetek
  * @version 1.1
  **/
+
 package db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.sql.SQLException;
+import java.sql.Statement;
 import settings.GlobalSettings;
 import utility.Hashing;
 
@@ -40,7 +41,9 @@ public class Database {
     }
   }
 
-  /** Closes connection to database **/
+  /**
+   * Closes connection to database
+   **/
   public void disconnect() {
     try {
       this.connection.close();
