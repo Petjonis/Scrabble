@@ -17,23 +17,22 @@ import messages.Message;
 
 public class Client extends Thread {
 
-  private String username;
   private Socket clientSocket;
   private ObjectOutputStream out;
   private ObjectInputStream in;
   private boolean running = true;
 
   /**
-   * ClientUI is missing
+   * Constructor for the client.
    */
-  public Client(String ip, int port, String username) throws IOException {
+  public Client(String ip, int port) throws IOException {
     try {
-      this.username = username;
+
       this.clientSocket = new Socket(ip, port);
       this.out = new ObjectOutputStream(clientSocket.getOutputStream());
       this.in = new ObjectInputStream(clientSocket.getInputStream());
 
-      this.out.writeObject(new ConnectMessage(this.username));
+      this.out.writeObject(new ConnectMessage(new String ("user")));
       out.flush();
     } catch (IOException e) {
       System.out.println(e.getMessage());
@@ -77,7 +76,7 @@ public class Client extends Thread {
     running = false;
     try {
       if (!clientSocket.isClosed()) {
-        this.out.writeObject(new DisconnectMessage(this.username));
+        this.out.writeObject(new DisconnectMessage(new String ("user")));
         clientSocket.close();
       }
     } catch (IOException e) {
