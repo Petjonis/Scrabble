@@ -13,6 +13,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import messages.Message;
 import messages.MessageType;
+import messages.SendTileMessage;
+import model.Tile;
 
 public class ServerProtocol extends Thread {
 
@@ -70,11 +72,23 @@ public class ServerProtocol extends Thread {
         disconnect();
       }
 
-      /**while(running){
-       * }
-       *
-       *
-       */
+      while(running){
+        m = (Message) in.readObject();
+        switch (m.getMessageType()){
+          case SEND_TILE:
+            SendTileMessage stMsg = (SendTileMessage) m ;
+            Tile tile = ((SendTileMessage) m).getTile();
+            Tile [][] position = ((SendTileMessage) m).getPosition();
+            String from = stMsg.getFrom();
+
+            server.sendToAll(stMsg);
+            break;
+        }
+
+      }
+
+
+
 
     } catch (IOException e) {
       running = false;
