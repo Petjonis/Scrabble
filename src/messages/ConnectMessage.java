@@ -1,7 +1,7 @@
 package messages;
 
 /**
- * ConnectMessage which will be sent if the client connects with the server successfully
+ * ConnectMessage which will be sent if the client connects with the server successfully.
  *
  * @author socho
  * @version 1.0

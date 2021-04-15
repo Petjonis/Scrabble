@@ -1,19 +1,19 @@
 package network;
 
 /**
- * This class establish the connection to the server and operates the client-side..
+ * This class establish the connection to the server and operates the client-side.
  *
  * @author socho
  * @version 1.0
  */
 
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
-import messages.Message;
-import messages.DisconnectMessage;
 import messages.ConnectMessage;
+import messages.DisconnectMessage;
+import messages.Message;
 
 public class Client extends Thread {
 
@@ -48,6 +48,9 @@ public class Client extends Thread {
     return (clientSocket != null) && (clientSocket.isConnected()) && !(clientSocket.isClosed());
   }
 
+  /**
+   * this method is crucial for getting the info for the client-side.
+   */
   public void run() {
     /**while(running){
      try{
@@ -58,6 +61,9 @@ public class Client extends Thread {
      }*/
   }
 
+  /**
+   * method for sending out a message to the server.
+   */
   public void sendToServer(Message m) throws IOException {
     this.out.writeObject(m);
     out.flush();

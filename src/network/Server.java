@@ -8,15 +8,16 @@ package network;
  */
 
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.ArrayList;
+
 import messages.Message;
 import settings.ServerSettings;
 
@@ -26,7 +27,7 @@ public class Server {
   private boolean running;
 
   /**
-   * collects all connected clients in a HashMap
+   * collects all connected clients in a HashMap.
    */
   private final HashMap<String, ServerProtocol> clients = new HashMap<>();
 
@@ -48,7 +49,7 @@ public class Server {
   }
 
   /**
-   * setup server + listen to connection requests from clients
+   * setup server + listen to connection requests from clients.
    */
   public void listen() throws IOException {
     running = true;
@@ -71,32 +72,35 @@ public class Server {
     }
   }
 
+  /**
+   * method for sending messages.
+   */
   private synchronized void sendTo(List<String> clientNames, Message m) {
-    List<String> cFails = new ArrayList<String>();
-    for (String cName : clientNames) {
+    List<String> clientFails = new ArrayList<String>();
+    for (String clName : clientNames) {
       try {
-        ServerProtocol c = clients.get(cName);
+        ServerProtocol c = clients.get(clName);
         c.sendToClient((Message) (m.clone()));
       } catch (IOException e) {
-        cFails.add(cName);
+        clientFails.add(clName);
         continue;
       }
     }
-    for (String c : cFails) {
+    for (String c : clientFails) {
       System.out.println("Client " + c + " removed (because of send failure).");
       removeClient(c);
     }
   }
 
   /**
-   * send to all clients
+   * send to all clients.
    */
   public void sendToAll(Message m) {
     sendTo(new ArrayList<String>(getClientNames()), (Message) (m.clone()));
   }
 
   /**
-   * send to all clients except for one
+   * send to all clients except for one.
    */
   public void sendToAllBut(String name, Message m) {
     synchronized (this.clients) {
@@ -107,7 +111,7 @@ public class Server {
   }
 
   /**
-   * stops the server
+   * stops the server.
    */
   public void stopServer() {
     running = false;

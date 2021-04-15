@@ -1,7 +1,7 @@
 package messages;
 
 /**
- * DisconnectMessage will be sent if the client disconnect from the server
+ * DisconnectMessage will be sent if the client disconnect from the server.
  *
  * @author socho
  * @version 1.0

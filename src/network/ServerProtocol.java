@@ -1,7 +1,7 @@
 package network;
 
 /**
- * This class contains all functions which is connected with the client(s)
+ * This class contains all functions which is connected with the client(s).
  *
  * @author socho
  * @version 1.0
@@ -35,7 +35,7 @@ public class ServerProtocol extends Thread {
   }
 
   /**
-   * sends to this client
+   * sends to this client.
    */
   public void sendToClient(Message m) throws IOException {
     this.out.writeObject(m);
@@ -44,7 +44,7 @@ public class ServerProtocol extends Thread {
   }
 
   /**
-   * close streams and socket
+   * close streams and socket.
    */
   public void disconnect() {
     running = false;
@@ -56,7 +56,7 @@ public class ServerProtocol extends Thread {
   }
 
   /**
-   * Clients will be connected to the server only when they send the Connect-Message
+   * Clients will be connected to the server only when they send the Connect-Message.
    */
   public void run() {
     Message m;

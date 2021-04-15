@@ -1,7 +1,7 @@
 package messages;
 
 /**
- * This abstract class represents the messages which will be send between server and client
+ * This abstract class represents the messages which will be send between the server and client(s).
  *
  * @author socho
  * @version 1.0
@@ -13,16 +13,16 @@ public abstract class Message implements Serializable, Cloneable {
 
   private static final long serialVersionUID = 1L;
 
-  private MessageType mType;
+  private MessageType meType;
   private String from;
 
   public Message(MessageType type, String from) {
-    this.mType = type;
+    this.meType = type;
     this.from = new String(from);
   }
 
   public MessageType getMessageType() {
-    return this.mType;
+    return this.meType;
   }
 
   public String getFrom() {
@@ -38,8 +38,9 @@ public abstract class Message implements Serializable, Cloneable {
     try {
       clone = (Message) super.clone();
     } catch (CloneNotSupportedException e) {
+      e.printStackTrace();
     }
-    clone.mType = mType;
+    clone.meType = meType;
     clone.from = new String(from);
     return clone;
   }

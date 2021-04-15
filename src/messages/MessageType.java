@@ -1,7 +1,7 @@
 package messages;
 
 /**
- * This class contains all messagetypes between server and client as enums
+ * This class contains all messagetypes between server and client as enums.
  *
  * @author socho
  * @version 1.0
