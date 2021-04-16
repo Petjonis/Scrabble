@@ -19,6 +19,8 @@ public class Board {
     this.occupied = occupied;
     this.tiType = tileType;
   }
+  
+  
 
   public void initializeBoard() {
 
