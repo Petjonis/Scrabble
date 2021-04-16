@@ -85,10 +85,13 @@
       </AnchorPane>
    </left>
    <center>
-      <StackPane prefHeight="150.0" prefWidth="200.0">
+      <StackPane fx:id="centerPane" prefHeight="150.0" prefWidth="200.0">
          <children>
             <fx:include fx:id="startPane" source="Start.fxml" StackPane.alignment="CENTER" />
          </children>
       </StackPane>
    </center>
+   <right>
+      <StackPane fx:id="rightPane" prefHeight="768.0" prefWidth="308.0" BorderPane.alignment="CENTER" />
+   </right>
 </BorderPane>

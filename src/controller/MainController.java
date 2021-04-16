@@ -40,13 +40,13 @@ public class MainController {
     private BorderPane borderPane;
 
     @FXML
-    private StackPane registerPane;
-
-    @FXML
-    private StackPane loginPane;
-
-    @FXML
     private FlowPane startPane;
+
+    @FXML
+    StackPane centerPane;
+
+    @FXML
+    StackPane rightPane;
 
     @FXML
     void logout(ActionEvent event) {
@@ -59,8 +59,12 @@ public class MainController {
     }
 
     @FXML
-    void openPlay(ActionEvent event) {
-        startPane.toFront();
+    void openPlay(ActionEvent event) throws IOException {
+
+        centerPane.getChildren().clear();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/GameBoard.fxml"));
+        Parent gBoard = (Parent) fxmlLoader.load();
+        centerPane.getChildren().add(gBoard);
     }
 
     @FXML
