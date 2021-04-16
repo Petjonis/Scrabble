@@ -10,13 +10,17 @@ package model;
 public class HumanPlayer extends Player {
 
   @Override
-  public void startTurn() {}
+  public void startTurn() {
+  }
 
   @Override
   public void endTurn() {}
 
   @Override
-  public void pass() {}
+  public void pass() {
+    this.incrementPassCount();
+    this.endTurn();
+  }
 
   @Override
   public void draw() {}

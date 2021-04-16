@@ -24,4 +24,49 @@ public abstract class Player {
   public abstract void swap();
 
   public abstract void put();
+
+  public int getScore() {
+    return score;
+  }
+
+  public void setScore(int score) {
+    this.score = score;
+  }
+
+  public int getPassCount() {
+    return passCount;
+  }
+
+  public void incrementPassCount() {
+    this.passCount++;
+  }
+
+  public void resetPassCount() {
+    this.passCount = 0;
+  }
+
+  public TileBag getBag() {
+    return bag;
+  }
+
+  public void setBag(TileBag bag) {
+    this.bag = bag;
+  }
+
+  public String getUsername() {
+    return username;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
+  /**
+   * This method initializes the Tilebag attribute with a field of Tiles.
+   *
+   * @param tiles is a Tile-Array with maximum of 100 Tiles.
+   */
+  public void createTileBag(Tile[] tiles) {
+    this.bag.setTiles(tiles);
+  }
 }

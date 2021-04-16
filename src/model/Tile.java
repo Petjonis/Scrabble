@@ -36,6 +36,8 @@ public class Tile {
    * 8 points: J ×1, X ×1
    * 10 points: Q ×1, Z ×1
    *
+   * Should to be optimized.
+   *
    * @return Returns a tile array with hundred tiles.
    */
   public static Tile[] createClassicTiles() {

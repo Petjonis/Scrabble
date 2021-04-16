@@ -16,7 +16,10 @@ public class ComputerPlayer extends Player {
   public void endTurn() {}
 
   @Override
-  public void pass() {}
+  public void pass() {
+    this.incrementPassCount();
+    this.endTurn();
+  }
 
   @Override
   public void draw() {}
