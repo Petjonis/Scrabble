@@ -14,7 +14,7 @@ public class TileBag {
 
   /**
    * Constructor uses createClassicTiles method from Tile.java to initialize a classic set of tiles.
-   **/
+   */
   public TileBag() {
     this.tiles = Tile.createClassicTiles();
   }
@@ -23,7 +23,7 @@ public class TileBag {
    * Constructor to initialize a set of tiles with own value and frequency distribution.
    *
    * @param tiles Own tileset to initialize.
-   **/
+   */
   public TileBag(Tile[] tiles) {
     this.tiles = tiles;
   }

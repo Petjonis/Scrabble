@@ -27,7 +27,7 @@ public class Database {
   /**
    * Establishes connection to database and saves file to the dedicated resources folder with system
    * independent source path.
-   **/
+   */
   public void connect() {
     try {
       Class.forName("org.sqlite.JDBC");
@@ -42,8 +42,8 @@ public class Database {
   }
 
   /**
-   * Closes connection to database
-   **/
+   * Closes connection to database.
+   */
   public void disconnect() {
     try {
       this.connection.close();
@@ -56,7 +56,7 @@ public class Database {
   /**
    * Method to create the only table in the database to save user profiles. Won't create new table
    * if it already exists.
-   **/
+   */
   public void createUserTable() {
     try (Statement statement = connection.createStatement()) {
       sql =
@@ -82,7 +82,7 @@ public class Database {
    * Method to drop/delete table with given name.
    *
    * @param name of table.
-   **/
+   */
   public void dropTable(String name) {
     try (Statement statement = connection.createStatement()) {
       sql = "DROP TABLE IF EXISTS " + name;
@@ -101,7 +101,7 @@ public class Database {
    * @param password is password of user.
    * @return Returns true if user was added to database, returns false if user was not added to
    *     database.
-   **/
+   */
   public boolean addUser(String username, String password) {
     byte[] salt = Hashing.generateSalt();
     try {
@@ -142,7 +142,7 @@ public class Database {
    * @param username is name of user.
    * @return Returns true if user was deleted successfully, returns false if user was not deleted
    *     successfully.
-   **/
+   */
   public boolean deleteUser(String username) {
     try {
       sql = "DELETE FROM Users WHERE Name = ?;";
@@ -166,7 +166,7 @@ public class Database {
    * @param newUsername is new name of user.
    * @return Returns true if username was updated successfully, returns false if username was not
    *     updated successfully.
-   **/
+   */
   public boolean changeUsername(String username, String newUsername) {
     try {
       sql = "UPDATE Users SET Name = ? WHERE Name = ?;";
@@ -191,7 +191,7 @@ public class Database {
    * @param newPassword is new password of user.
    * @return Returns true if password was changed successfully, returns false if password was not
    *     changed successfully.
-   **/
+   */
   public boolean changePassword(String username, String newPassword) {
     byte[] salt = Hashing.generateSalt();
     try {
@@ -217,7 +217,7 @@ public class Database {
    * @param username is name of user.
    * @param image is path to image.
    * @return Returns true if image was updated, returns false if image was not updated.
-   **/
+   */
   public boolean changeImage(String username, String image) {
     try {
       sql = "UPDATE Users SET Image = ? WHERE Name = ?;";
@@ -240,7 +240,7 @@ public class Database {
    *
    * @param username is name of user.
    * @return Returns true if user already exists, returns false if username is available.
-   **/
+   */
   public boolean userExists(String username) {
     try (Statement statement = connection.createStatement()) {
       sql = "SELECT Name FROM Users;";
@@ -264,7 +264,7 @@ public class Database {
    *
    * @param username is name of user.
    * @return Returns -1 if user doesn't exist.
-   **/
+   */
   public int getId(String username) {
     int id = -1;
     try {
@@ -288,7 +288,7 @@ public class Database {
    *
    * @param username is name of user.
    * @return Returns null if user does not exist.
-   **/
+   */
   public String getPassword(String username) {
     String pw = null;
     try {
@@ -312,7 +312,7 @@ public class Database {
    *
    * @param username is name of user.
    * @return Returns null if user does not exist.
-   **/
+   */
   public String getSalt(String username) {
     String salt = null;
     try {
@@ -336,7 +336,7 @@ public class Database {
    *
    * @param username is name of user.
    * @return Returns -1 if user doesn't exist.
-   **/
+   */
   public int getScore(String username) {
     int points = -1;
     try {
@@ -360,7 +360,7 @@ public class Database {
    *
    * @param username is name of user.
    * @return Returns -1 if user doesn't exist.
-   **/
+   */
   public int getWins(String username) {
     int wins = -1;
     try {
@@ -384,7 +384,7 @@ public class Database {
    *
    * @param username is name of user.
    * @return Returns -1 if user doesn't exist.
-   **/
+   */
   public int getLoses(String username) {
     int loses = -1;
     try {
@@ -408,7 +408,7 @@ public class Database {
    *
    * @param username is name of user.
    * @return Returns -1 if user doesn't exist.
-   **/
+   */
   public int getGames(String username) {
     int games = -1;
     try {
@@ -432,7 +432,7 @@ public class Database {
    *
    * @param username is name of user.
    * @param currentScore which is old score plus additional gained points.
-   **/
+   */
   public void updateScore(String username, int currentScore) {
     try {
       sql = "UPDATE Users SET Score = ? WHERE Name = ?;";
@@ -451,7 +451,7 @@ public class Database {
    * Method to increment amount of wins and total games played.
    *
    * @param username is name of user.
-   **/
+   */
   public void incrementWins(String username) {
     try {
       sql = "UPDATE Users SET Wins = Wins +1, Games = Games +1 WHERE Name = ?;";
@@ -469,7 +469,7 @@ public class Database {
    * Method to increment amount of loses and total games played.
    *
    * @param username is name of user.
-   **/
+   */
   public void incrementLoses(String username) {
     try {
       sql = "UPDATE Users SET Loses = Loses +1, Games = Games +1 WHERE Name = ?;";
@@ -487,7 +487,7 @@ public class Database {
    * Method to reset points of a user after a game ends.
    *
    * @param username is name of user.
-   **/
+   */
   public void resetScore(String username) {
     try {
       sql = "UPDATE Users SET Score = ? WHERE Name = ?;";
@@ -508,7 +508,7 @@ public class Database {
    * @param username is name of user
    * @param password is password of user
    * @return Returns true if password is correct
-   **/
+   */
   public boolean checkPassword(String username, String password) {
     String dbPassword = null;
     String salt = null;
@@ -532,7 +532,7 @@ public class Database {
     return false;
   }
 
-  /** Method to print all database entries. Not formatted! **/
+  /** Method to print all database entries. Not formatted! */
   public void printDatabase() {
     try (Statement statement = connection.createStatement()) {
       sql = "SELECT * FROM Users";

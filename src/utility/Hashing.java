@@ -22,7 +22,7 @@ public class Hashing {
    * @param password is user password.
    * @param salt a 16 byte salt -> please use generateSalt() method to get unique values.
    * @return Returns the hashed password with a pinch of salt.
-   **/
+   */
   public static String generateHash(String password, byte[] salt) {
     try {
       MessageDigest md = MessageDigest.getInstance("MD5");
@@ -39,7 +39,7 @@ public class Hashing {
    * Method to generate a unique salt value with 16 bytes to guarantee a collision free hash value.
    *
    * @return Returns the salt.
-   **/
+   */
   public static byte[] generateSalt() {
     SecureRandom random = new SecureRandom();
     byte[] bytes = new byte[16];
@@ -52,7 +52,7 @@ public class Hashing {
    *
    * @param bytes are bytes to parse.
    * @return Returns bytes as a String.
-   **/
+   */
   public static String bytesToString(byte[] bytes) {
     return Base64.getEncoder().encodeToString(bytes);
   }
@@ -63,7 +63,7 @@ public class Hashing {
    *
    * @param string String to parse.
    * @return Returns String as a byte array.
-   **/
+   */
   public static byte[] stringToBytes(String string) {
     return Base64.getDecoder().decode(string);
   }

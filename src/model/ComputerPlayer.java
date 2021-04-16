@@ -3,7 +3,8 @@
  *
  * @author fpetek
  * @version 1.0
- **/
+ */
+
 package model;
 
 public class ComputerPlayer extends Player {

@@ -2,7 +2,7 @@
  *
  * @author fpetek
  * @version 1.0
- **/
+ */
 
 package utility;
 
@@ -16,7 +16,7 @@ import settings.GlobalSettings;
 public class AudioPlayer implements Runnable {
   public Clip audio;
 
-  /** Method to play a sound. Thread.sleep() method is needed so audio won't kill itself. **/
+  /** Method to play a sound. Thread.sleep() method is needed so audio won't kill itself. */
   public void playAudio() {
     try {
       audio.start();
@@ -30,7 +30,7 @@ public class AudioPlayer implements Runnable {
    * Method to load an audio file into class variable.
    *
    * @param audioFile is name of file, has to be .wav
-   **/
+   */
   public void loadAudio(String audioFile) {
     File audioFilePath = new File(GlobalSettings.filepath + audioFile);
     try {
@@ -43,10 +43,10 @@ public class AudioPlayer implements Runnable {
   }
 
   /**
-   * Method to set volume of audio clip
+   * Method to set volume of audio clip.
    *
    * @param level has to be between 6 and -80, otherwise it throws exception
-   **/
+   */
   public void setVolume(int level) {
     FloatControl volume = (FloatControl) this.audio.getControl(FloatControl.Type.MASTER_GAIN);
     volume.setValue((float) level);
