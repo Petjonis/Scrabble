@@ -34,7 +34,7 @@ public class Client extends Thread {
 
       this.out.writeObject(new ConnectMessage(new String("user")));
       out.flush();
-    } catch(IOException e) {
+    } catch (IOException e) {
       System.out.println(e.getMessage());
       System.out.println("Could not establish connection to " + ip + ":" + port);
     }
@@ -75,11 +75,11 @@ public class Client extends Thread {
   public void disconnect() {
     running = false;
     try {
-      if(!clientSocket.isClosed()) {
+      if (!clientSocket.isClosed()) {
         this.out.writeObject(new DisconnectMessage(new String("user")));
         clientSocket.close();
       }
-    } catch(IOException e) {
+    } catch (IOException e) {
       e.printStackTrace();
     }
   }

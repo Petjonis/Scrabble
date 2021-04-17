@@ -72,16 +72,17 @@ public class ServerProtocol extends Thread {
         disconnect();
       }
 
-      while(running){
+      while (running) {
         m = (Message) in.readObject();
-        switch (m.getMessageType()){
+        switch (m.getMessageType()) {
           case SEND_TILE:
-            SendTileMessage stMsg = (SendTileMessage) m ;
+            SendTileMessage stMsg = (SendTileMessage) m;
             Tile tile = ((SendTileMessage) m).getTile();
-            Tile [][] position = ((SendTileMessage) m).getPosition();
+            Tile[][] position = ((SendTileMessage) m).getPosition();
             String from = stMsg.getFrom();
-
             server.sendToAll(stMsg);
+            break;
+          default:
             break;
         }
 
