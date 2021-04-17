@@ -65,6 +65,11 @@ public class MainController {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/GameBoard.fxml"));
         Parent gBoard = (Parent) fxmlLoader.load();
         centerPane.getChildren().add(gBoard);
+
+        rightPane.getChildren().clear();
+        fxmlLoader = new FXMLLoader(getClass().getResource("/view/PlayOnline.fxml"));
+        Parent playTab = (Parent) fxmlLoader.load();
+        rightPane.getChildren().add(playTab);
     }
 
     @FXML
