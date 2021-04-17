@@ -60,16 +60,8 @@ public class MainController {
 
     @FXML
     void openPlay(ActionEvent event) throws IOException {
-
-        centerPane.getChildren().clear();
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/GameBoard.fxml"));
-        Parent gBoard = (Parent) fxmlLoader.load();
-        centerPane.getChildren().add(gBoard);
-
-        rightPane.getChildren().clear();
-        fxmlLoader = new FXMLLoader(getClass().getResource("/view/PlayOnline.fxml"));
-        Parent playTab = (Parent) fxmlLoader.load();
-        rightPane.getChildren().add(playTab);
+        changePane(centerPane, "/view/GameBoard.fxml");
+        changePane(rightPane, "/view/PlayOnline.fxml");
     }
 
     @FXML
@@ -103,5 +95,12 @@ public class MainController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void changePane(StackPane pane, String fxmlPath) throws IOException {
+        pane.getChildren().clear();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlPath));
+        Parent parent = (Parent) fxmlLoader.load();
+        pane.getChildren().add(parent);
     }
 }
