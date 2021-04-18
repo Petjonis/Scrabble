@@ -1,13 +1,13 @@
 package controller;
 
 import com.jfoenix.controls.JFXButton;
-import com.sun.tools.javac.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.StackPane;
+
+import java.io.IOException;
 
 
 public class PlayOnlineController {
@@ -41,8 +41,8 @@ public class PlayOnlineController {
     }
 
     @FXML
-    void host(ActionEvent event) {
-
+    void host(ActionEvent event) throws IOException {
+        MainController.mainController.changePane(MainController.mainController.getRightPane(), "/view/GameInfo.fxml");
     }
 
     @FXML

@@ -1,13 +1,20 @@
 package controller;
 
 import com.jfoenix.controls.JFXButton;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.SnapshotParameters;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 public class GameBoardController {
     @FXML
@@ -24,6 +31,15 @@ public class GameBoardController {
 
     @FXML
     private JFXButton passButton;
+
+    @FXML
+    private ProgressBar progressBar;
+
+    private static final Integer STARTTIME   = 120;
+
+    private IntegerProperty timeSeconds = new SimpleIntegerProperty(STARTTIME * 100);
+
+    private Timeline timeline;
 
     @FXML
     void pass(ActionEvent event) {
@@ -58,6 +74,8 @@ public class GameBoardController {
             }
         }
 
+        //start demo progress bar
+        startProgressBar();
 
     }
 
@@ -178,5 +196,13 @@ public class GameBoardController {
 
             event.consume();
         });
+    }
+
+    public void startProgressBar(){
+        progressBar.progressProperty().bind(timeSeconds.divide(STARTTIME * 100.0).subtract(1).multiply(-1));
+        timeSeconds.set((STARTTIME + 1) * 100);
+        timeline = new Timeline();
+        timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(STARTTIME + 1), new KeyValue(timeSeconds, 0)));
+        timeline.playFromStart();
     }
 }

@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -15,9 +16,11 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class MainController {
-
+public class MainController implements Initializable{
+    static MainController mainController;
     @FXML
     private JFXButton playButton;
 
@@ -42,11 +45,17 @@ public class MainController {
     @FXML
     private FlowPane startPane;
 
-    @FXML
-    StackPane centerPane;
 
     @FXML
-    StackPane rightPane;
+    private StackPane centerPane;
+
+    @FXML
+    private StackPane rightPane;
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        mainController = (MainController) this;
+    }
 
     @FXML
     void logout(ActionEvent event) {
@@ -103,4 +112,14 @@ public class MainController {
         Parent parent = (Parent) fxmlLoader.load();
         pane.getChildren().add(parent);
     }
+
+    public StackPane getCenterPane() {
+        return centerPane;
+    }
+
+    public StackPane getRightPane() {
+        return rightPane;
+    }
+
+
 }
