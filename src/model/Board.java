@@ -13,10 +13,9 @@ public class Board {
 
   private Square[][] squares = new Square[GlobalSettings.ROWS][GlobalSettings.COLUMNS];
   private TileType tiType;
-  private boolean occupied = false;
 
-  public Board(boolean occupied, TileType tileType) {
-    this.occupied = occupied;
+
+  public Board(TileType tileType) {
     this.tiType = tileType;
   }
   
@@ -75,9 +74,5 @@ public class Board {
 
   }
 
-
-  public void setOccupied() {
-    this.occupied = true;
-  }
 
 }
