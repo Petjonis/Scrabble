@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<TabPane fx:id="playTabPane" prefHeight="768.0" prefWidth="308.0" style="-fx-background-color: #272522;" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PlayOnlineController">
+<TabPane fx:id="playTabPane" prefHeight="768.0" prefWidth="308.0" style="-fx-background-color: #272522;" stylesheets="@Style.css" tabClosingPolicy="UNAVAILABLE" tabMinHeight="45.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PlayOnlineController">
    <tabs>
       <Tab text="Host Game">
          <content>
@@ -39,6 +39,9 @@
                </children>
             </AnchorPane>
          </content>
+         <graphic>
+            <MaterialIconView fill="#ababab" glyphName="ADD_BOX" size="20" />
+         </graphic>
       </Tab>
       <Tab text="Join Game">
          <content>
@@ -61,11 +64,17 @@
                </children>
             </AnchorPane>
          </content>
+         <graphic>
+            <MaterialIconView fill="#ababab" glyphName="PLAY_CIRCLE_OUTLINE" size="20" />
+         </graphic>
       </Tab>
-      <Tab text="Statistics / Open Lobbys?">
+      <Tab text="Open Lobbys?">
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
          </content>
+         <graphic>
+            <MaterialIconView fill="#ababab" glyphName="SEARCH" size="20" />
+         </graphic>
       </Tab>
    </tabs>
 </TabPane>

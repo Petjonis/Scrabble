@@ -17,27 +17,20 @@ import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 public class GameBoardController {
+    private static final Integer STARTTIME = 120;
     @FXML
     private VBox gameBoard;
-
     @FXML
     private GridPane boardGrid;
-
     @FXML
     private GridPane tileRack;
-
     @FXML
     private JFXButton playButton;
-
     @FXML
     private JFXButton passButton;
-
     @FXML
     private ProgressBar progressBar;
-
-    private static final Integer STARTTIME   = 120;
-
-    private IntegerProperty timeSeconds = new SimpleIntegerProperty(STARTTIME * 100);
+    private final IntegerProperty timeSeconds = new SimpleIntegerProperty(STARTTIME * 100);
 
     private Timeline timeline;
 
@@ -51,18 +44,18 @@ public class GameBoardController {
 
     }
 
-    public void initialize(){
+    public void initialize() {
         //Adding demo Tiles
-        for(int i = 0 ; i< 5;i++){
+        for (int i = 0; i < 5; i++) {
             TileController tc = new TileController();
             setOnDragDetected(tc);
             setOnDragDone(tc);
-            tileRack.add(tc,i,0);
+            tileRack.add(tc, i, 0);
         }
 
         //Adding StackPane to every Cell in the GridPane and Adding the Target Events to each StackPane.
         for (int i = 0; i < 15; i++) {
-            for(int j = 0;j<15;j++) {
+            for (int j = 0; j < 15; j++) {
                 StackPane stackPane = new StackPane();
                 stackPane.setStyle("-fx-background-color: yellow;");
                 setOnDragOver(stackPane);
@@ -80,8 +73,7 @@ public class GameBoardController {
     }
 
     //target event handlers
-    public void setOnDragOver(StackPane target)
-    {
+    public void setOnDragOver(StackPane target) {
         target.setOnDragOver((DragEvent event) -> {
             /* data is dragged over the target */
             System.out.println("onDragOver");
@@ -98,8 +90,7 @@ public class GameBoardController {
         });
     }
 
-    public void setOnDragEntered(StackPane target)
-    {
+    public void setOnDragEntered(StackPane target) {
         target.setOnDragEntered((DragEvent event) -> {
             /* the drag-and-drop gesture entered the target */
             System.out.println("onDragEntered");
@@ -113,8 +104,7 @@ public class GameBoardController {
         });
     }
 
-    public void setOnDragExited(StackPane target)
-    {
+    public void setOnDragExited(StackPane target) {
         target.setOnDragExited((DragEvent event) -> {
             /* mouse moved away, remove the graphical cues */
             target.setStyle("-fx-background-color: yellow;");
@@ -123,8 +113,7 @@ public class GameBoardController {
         });
     }
 
-    public void setOnDragDropped(StackPane target)
-    {
+    public void setOnDragDropped(StackPane target) {
         target.setOnDragDropped((DragEvent event) -> {
             /* data dropped */
             System.out.println("onDragDropped");
@@ -140,7 +129,7 @@ public class GameBoardController {
                 int row = GridPane.getRowIndex(target);
                 int col = GridPane.getColumnIndex(target);
                 boardGrid.getChildren().remove(target);
-                boardGrid.add(tmp,col,row);
+                boardGrid.add(tmp, col, row);
                 success = true;
             }
             /* let the source know whether the string was successfully
@@ -152,7 +141,7 @@ public class GameBoardController {
     }
 
     //source events handlers
-    public void setOnDragDetected(TileController tile){
+    public void setOnDragDetected(TileController tile) {
         tile.setOnDragDetected(
                 (MouseEvent event) -> {
                     /* drag was detected, start drag-and-drop gesture*/
@@ -171,15 +160,15 @@ public class GameBoardController {
                 });
     }
 
-    public void setOnDragDone(TileController tile){
+    public void setOnDragDone(TileController tile) {
         tile.setOnDragDone((DragEvent event) -> {
             /* the drag-and-drop gesture ended */
             System.out.println("onDragDone");
             /* if the data was successfully moved, clear it */
             if (event.getTransferMode() == TransferMode.MOVE) {
-                if(tileRack.getChildren().contains(tile)){
+                if (tileRack.getChildren().contains(tile)) {
                     tileRack.getChildren().remove(tile);
-                }else if(boardGrid.getChildren().contains(tile)){
+                } else if (boardGrid.getChildren().contains(tile)) {
 
                     int row = GridPane.getRowIndex(tile);
                     int col = GridPane.getColumnIndex(tile);
@@ -190,7 +179,7 @@ public class GameBoardController {
                     setOnDragEntered(stackPane);
                     setOnDragExited(stackPane);
                     setOnDragDropped(stackPane);
-                    boardGrid.add(stackPane,col,row);
+                    boardGrid.add(stackPane, col, row);
                 }
             }
 
@@ -198,7 +187,7 @@ public class GameBoardController {
         });
     }
 
-    public void startProgressBar(){
+    public void startProgressBar() {
         progressBar.progressProperty().bind(timeSeconds.divide(STARTTIME * 100.0).subtract(1).multiply(-1));
         timeSeconds.set((STARTTIME + 1) * 100);
         timeline = new Timeline();

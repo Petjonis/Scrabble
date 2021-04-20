@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MainController implements Initializable{
+public class MainController implements Initializable {
     static MainController mainController;
     @FXML
     private JFXButton playButton;
@@ -54,7 +54,7 @@ public class MainController implements Initializable{
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        mainController = (MainController) this;
+        mainController = this;
     }
 
     @FXML
@@ -89,10 +89,10 @@ public class MainController implements Initializable{
         openNewWindow("/view/Login.fxml", "Login");
     }
 
-    public void openNewWindow(String filename, String title){
+    public void openNewWindow(String filename, String title) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(filename));
-            Parent root1 = (Parent) fxmlLoader.load();
+            Parent root1 = fxmlLoader.load();
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.initStyle(StageStyle.TRANSPARENT);
@@ -109,7 +109,7 @@ public class MainController implements Initializable{
     public void changePane(StackPane pane, String fxmlPath) throws IOException {
         pane.getChildren().clear();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlPath));
-        Parent parent = (Parent) fxmlLoader.load();
+        Parent parent = fxmlLoader.load();
         pane.getChildren().add(parent);
     }
 

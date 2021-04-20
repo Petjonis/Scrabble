@@ -3,13 +3,11 @@ package controller;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
 
-public class TileController extends StackPane{
+public class TileController extends StackPane {
     @FXML
     private StackPane tile;
 
@@ -48,7 +46,7 @@ public class TileController extends StackPane{
         this.value.setText(value);
     }
 
-    public void setString(String s){
+    public void setString(String s) {
         String[] split = s.split(",");
         this.setLetter(split[0]);
         this.setValue(split[1]);

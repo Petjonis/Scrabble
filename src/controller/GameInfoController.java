@@ -33,7 +33,7 @@ public class GameInfoController implements Initializable {
     @FXML
     void send(ActionEvent event) {
         //demo
-        chatList.getItems().add("Player2: " +sendText.getText());
+        chatList.getItems().add("Player2: " + sendText.getText());
         sendText.clear();
     }
 

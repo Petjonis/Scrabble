@@ -1,0 +1,66 @@
+.tab-pane .tab-header-area .tab-header-background
+{
+    -fx-background-color:  #312E2B;
+}
+
+.tab-pane
+{
+    -fx-tab-min-height: 45;
+    -fx-tab-max-height: 45;
+
+}
+
+.tab
+{
+    -fx-background-insets: 0 1 0 1,0,0;
+}
+
+.tab-pane .tab
+{
+    -fx-background-color:  #312E2B;
+    -fx-tab-min-height:45px;
+}
+
+.tab-pane .tab:selected
+{
+    -fx-background-color:  #272522;
+    -fx-focus-color: #7FA650;
+    -fx-faint-focus-color: transparent;
+}
+
+.tab .tab-label
+{
+    -fx-content-display: top;
+    -fx-alignment: CENTER;
+    -fx-text-fill: #ababab;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+
+}
+
+.tab:selected .tab-label
+{
+    -fx-content-display: top;
+    -fx-alignment: CENTER;
+    -fx-text-fill:  #7FA650;
+}
+
+.list-cell:filled:selected:focused, .list-cell:filled:selected {
+    -fx-background-color: linear-gradient(#7FA650 0%, #749749 25%, #64803f 75%, #4f6331 100%);
+    -fx-text-fill: white;
+}
+
+.list-cell:even {
+    -fx-background-color: #383431;
+    -fx-text-fill: #dbd9d7;
+}
+
+.list-cell:odd {
+    -fx-background-color: #3e3a37;
+    -fx-text-fill: #dbd9d7;
+}
+
+.list-cell:filled:hover {
+    -fx-background-color: #9c9a9a;
+    -fx-text-fill: #dbd9d7;
+}
