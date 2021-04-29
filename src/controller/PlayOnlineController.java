@@ -48,7 +48,7 @@ public class PlayOnlineController {
   }
 
   /**
-   * method for connecting to the server
+   * method for connecting to the server.
    *
    * @author socho
    */
@@ -60,7 +60,7 @@ public class PlayOnlineController {
   }
 
   /**
-   * method for disconnecting
+   * method for disconnecting.
    *
    * @author socho
    */
@@ -72,7 +72,7 @@ public class PlayOnlineController {
   }
 
   /**
-   * if "host" button is pressed, server runs and waits for clients to connect
+   * if "host" button is pressed, server runs and waits for clients to connect.
    *
    * @author socho
    */
@@ -95,11 +95,18 @@ public class PlayOnlineController {
     new Thread(r).start();
   }
 
+  /**
+   * if "join" button is pressed, client connects to the server and port which he entered before.
+   *
+   * @author socho
+   */
   @FXML
   void join(ActionEvent event) throws IOException {
     connectToServer(ipField.getText(), Integer.parseInt(portField.getText()));
     if (connection.isOk()) {
       System.out.println("Client is connected.");
+    } else {
+      System.out.println("Client cannot connect.");
     }
   }
 
