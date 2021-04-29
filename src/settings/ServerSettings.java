@@ -9,6 +9,9 @@ package settings;
 
 public class ServerSettings {
 
-  public static final int port = 8080;
+  public static int port = 8080;
 
+  public void setPort (int i){
+    this.port = i;
+  }
 }
