@@ -11,7 +11,7 @@ public class ServerSettings {
 
   public static int port = 8080;
 
-  public void setPort (int i){
+  public void setPort(int i) {
     this.port = i;
   }
 }

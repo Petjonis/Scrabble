@@ -10,40 +10,41 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 public class RegisterController {
-    @FXML
-    private JFXButton createButton;
 
-    @FXML
-    private TextField usernameField;
+  @FXML
+  private JFXButton createButton;
 
-    @FXML
-    private PasswordField passwordField;
+  @FXML
+  private TextField usernameField;
 
-    @FXML
-    private PasswordField confirmField;
+  @FXML
+  private PasswordField passwordField;
 
-    @FXML
-    private Button uploadButton;
+  @FXML
+  private PasswordField confirmField;
 
-    @FXML
-    private ImageView previewImage;
+  @FXML
+  private Button uploadButton;
 
-    @FXML
-    private Button closeButton;
+  @FXML
+  private ImageView previewImage;
 
-    @FXML
-    void chooseFile(ActionEvent event) {
+  @FXML
+  private Button closeButton;
 
-    }
+  @FXML
+  void chooseFile(ActionEvent event) {
 
-    @FXML
-    void close(ActionEvent event) {
-        Stage stage = (Stage) closeButton.getScene().getWindow();
-        stage.close();
-    }
+  }
 
-    @FXML
-    void createAccount(ActionEvent event) {
+  @FXML
+  void close(ActionEvent event) {
+    Stage stage = (Stage) closeButton.getScene().getWindow();
+    stage.close();
+  }
 
-    }
+  @FXML
+  void createAccount(ActionEvent event) {
+
+  }
 }

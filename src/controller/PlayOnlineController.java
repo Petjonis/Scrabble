@@ -1,13 +1,13 @@
 package controller;
 
 import com.jfoenix.controls.JFXButton;
+import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 
-import java.io.IOException;
 import network.Client;
 import network.Server;
 import settings.ServerSettings;

@@ -6,25 +6,26 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
 public class StartController {
-    @FXML
-    private JFXButton playOnlineButton;
 
-    @FXML
-    private JFXButton playTutorialButton;
+  @FXML
+  private JFXButton playOnlineButton;
 
-    @FXML
-    private Label gamesPlayedLabel;
+  @FXML
+  private JFXButton playTutorialButton;
 
-    @FXML
-    private Label currentPlayingLabel;
+  @FXML
+  private Label gamesPlayedLabel;
 
-    @FXML
-    void playOnline(ActionEvent event) {
+  @FXML
+  private Label currentPlayingLabel;
 
-    }
+  @FXML
+  void playOnline(ActionEvent event) {
 
-    @FXML
-    void playTutorial(ActionEvent event) {
+  }
 
-    }
+  @FXML
+  void playTutorial(ActionEvent event) {
+
+  }
 }
