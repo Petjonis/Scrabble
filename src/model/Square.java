@@ -3,7 +3,7 @@ package model;
 /**
  * This class represents one square of the board. One board has 15*15 squares
  *
- * @author
+ * @author socho
  * @version 1.0
  */
 
