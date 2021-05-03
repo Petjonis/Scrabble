@@ -7,6 +7,7 @@ package network;
  * @version 1.0
  */
 
+import controller.LoginController;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -17,9 +18,12 @@ import messages.Message;
 
 public class Client extends Thread {
 
+  private String userName;
+  private boolean host = false;
   private Socket clientSocket;
   private ObjectOutputStream out;
   private ObjectInputStream in;
+  private boolean loggedIn = false;
   private boolean running = true;
 
   /**
@@ -32,7 +36,9 @@ public class Client extends Thread {
       this.out = new ObjectOutputStream(clientSocket.getOutputStream());
       this.in = new ObjectInputStream(clientSocket.getInputStream());
 
-      this.out.writeObject(new ConnectMessage(new String("user")));
+      LoginController lc1 = new LoginController();
+      this.userName = lc1.getUserName();
+      this.out.writeObject(new ConnectMessage(new String(userName)));
       out.flush();
     } catch (IOException e) {
       System.out.println(e.getMessage());
@@ -84,5 +90,30 @@ public class Client extends Thread {
     }
   }
 
+  /**
+   * getter and setter method for the boolean "loggedIn".
+   */
+  public void setLoggedIn(boolean logged) {
+    this.loggedIn = logged;
+  }
+
+  public boolean getLoggedIn() {
+    return this.loggedIn;
+  }
+
+  /**
+   * getter and setter method for the boolean "host".
+   */
+  public void setHost(boolean hosting) {
+    this.host = hosting;
+  }
+
+  public boolean getHost() {
+    return this.host;
+  }
+
+  public String getUserName(){
+    return this.userName;
+  }
 
 }
