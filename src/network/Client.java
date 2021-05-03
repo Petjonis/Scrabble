@@ -36,10 +36,14 @@ public class Client extends Thread {
       this.out = new ObjectOutputStream(clientSocket.getOutputStream());
       this.in = new ObjectInputStream(clientSocket.getInputStream());
 
-      LoginController lc1 = new LoginController();
-      this.userName = lc1.getUserName();
-      this.out.writeObject(new ConnectMessage(new String(userName)));
+      /** delete comments-signs "//" when login works // when user has to log in to play.*/
+     // LoginController lc1 = new LoginController();
+     // this.userName = lc1.getUserName();
+     // this.out.writeObject(new ConnectMessage(userName));
+
+      this.out.writeObject(new ConnectMessage(new String("user")));
       out.flush();
+
     } catch (IOException e) {
       System.out.println(e.getMessage());
       System.out.println("Could not establish connection to " + ip + ":" + port);
