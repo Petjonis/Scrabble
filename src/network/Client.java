@@ -40,7 +40,7 @@ public class Client extends Thread {
      // LoginController lc1 = new LoginController();
      // this.userName = lc1.getUserName();
      // this.out.writeObject(new ConnectMessage(userName));
-
+      // this.loggedIn = lc1.getLoggedIn();
       this.out.writeObject(new ConnectMessage(new String("user")));
       out.flush();
 

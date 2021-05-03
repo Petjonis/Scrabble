@@ -10,7 +10,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
 public class LoginController {
-private String userName ;
+private String userName;
+private boolean loggedIn = false;
 
   @FXML
   private JFXButton loginButton;
@@ -43,6 +44,7 @@ private String userName ;
         /** login is successful.*/
         this.userName = usernameField.getText();
         System.out.println("Login successful!");
+        this.loggedIn = true ;
 
         Alert confirmationAlert = new Alert(AlertType.INFORMATION);
         confirmationAlert.setContentText("Welcome " + this.userName + "! \n" + "You are logged in!");
@@ -60,6 +62,7 @@ private String userName ;
         Alert errorAlert = new Alert(AlertType.ERROR);
         errorAlert.setContentText("Sorry, but your password was wrong!" + "\n" + "Try again, please.");
         errorAlert.show();
+        this.loggedIn = false;
       }
     }else {
       /** user does not exist and has to register first.*/
@@ -71,6 +74,7 @@ private String userName ;
       Alert errorAlert = new Alert (AlertType.ERROR);
       errorAlert.setContentText("Sorry, but '" + usernameField.getText() + "' does not exist in the database." + "\n" + "Please register first.");
       errorAlert.show();
+      this.loggedIn = false;
     }
   }
 
@@ -95,5 +99,9 @@ private String userName ;
 
   public String getUserName(){
     return this.userName;
+  }
+
+  public boolean getLoggedIn(){
+    return this.loggedIn;
   }
 }
