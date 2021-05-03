@@ -14,6 +14,7 @@ import java.net.Socket;
 import messages.Message;
 import messages.MessageType;
 import messages.SendTileMessage;
+import model.Square;
 import model.Tile;
 
 public class ServerProtocol extends Thread {
@@ -78,7 +79,7 @@ public class ServerProtocol extends Thread {
           case SEND_TILE:
             SendTileMessage stMsg = (SendTileMessage) m;
             Tile tile = ((SendTileMessage) m).getTile();
-            Tile[][] position = ((SendTileMessage) m).getPosition();
+            Square[][] position = ((SendTileMessage) m).getPosition();
             String from = stMsg.getFrom();
             server.sendToAll(stMsg);
             break;

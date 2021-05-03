@@ -1,5 +1,6 @@
 package messages;
 
+import model.Square;
 import model.Tile;
 
 /**
@@ -13,9 +14,9 @@ public class SendTileMessage extends Message {
 
   private static final long serialVersionUID = 1L;
   private Tile sendingTile;
-  private Tile[][] position;
+  private Square[][] position;
 
-  public SendTileMessage(Tile tile, Tile[][] pos, String from) {
+  public SendTileMessage(Tile tile, Square[][] pos, String from) {
     super(MessageType.SEND_TILE, from);
     this.sendingTile = tile;
     this.position = pos;
@@ -25,7 +26,7 @@ public class SendTileMessage extends Message {
     return this.sendingTile;
   }
 
-  public Tile[][] getPosition() {
+  public Square[][] getPosition() {
     return this.position;
   }
 
