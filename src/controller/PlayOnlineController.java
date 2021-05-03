@@ -16,6 +16,7 @@ import settings.ServerSettings;
 public class PlayOnlineController {
 
   private Server server;
+  private int port;
   private Client connection;
 
   @FXML
