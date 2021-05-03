@@ -105,9 +105,9 @@ public class PlayOnlineController {
   void join(ActionEvent event) throws IOException {
     connectToServer(ipField.getText(), Integer.parseInt(portField.getText()));
     if (connection.isOk()) {
-      System.out.println("Client is connected.");
+      System.out.println(connection.getUserName() + " is connected.");
     } else {
-      System.out.println("Client cannot connect.");
+      System.out.println(connection.getUserName() + " cannot connect.");
     }
   }
 
