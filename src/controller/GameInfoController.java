@@ -12,38 +12,47 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class GameInfoController implements Initializable {
-    @FXML
-    private AnchorPane gameInfoPane;
 
-    @FXML
-    private JFXListView<String> playerList;
+  @FXML
+  private AnchorPane gameInfoPane;
 
-    @FXML
-    private JFXListView<String> lastWordList;
+  @FXML
+  private JFXListView<String> playerList;
 
-    @FXML
-    private JFXListView<String> chatList;
+  @FXML
+  private JFXListView<String> lastWordList;
 
-    @FXML
-    private JFXTextArea sendText;
+  @FXML
+  private JFXListView<String> chatList;
 
-    @FXML
-    private JFXButton sendButton;
+  @FXML
+  private JFXTextArea sendText;
 
-    @FXML
-    void send(ActionEvent event) {
-        //demo
-        chatList.getItems().add("Player2: " + sendText.getText());
-        sendText.clear();
-    }
+  @FXML
+  private JFXButton sendButton;
 
-    //populate lists with demo strings
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        playerList.getItems().add("Player1");
-        playerList.getItems().add("Player2");
-        playerList.getItems().add("Player3");
-        playerList.getItems().add("Player4");
+  @FXML
+  void send(ActionEvent event) {
+    //demo
+    chatList.getItems().add("Player2: " + sendText.getText());
+    sendText.clear();
+  }
 
-        chatList.getItems().add("Player1: Hello");
-    }
+  //populate lists with demo strings
+  public void initialize(URL url, ResourceBundle resourceBundle) {
+
+    /**  no waiting lobby but instead joining into gamelobby ... team-discussion.
+     * for (String player: MainController.mainController.getPlayerList()){
+     playerList.getItems().add(player);
+     } */
+
+    playerList.getItems().add("Player1");
+    playerList.getItems().add("Player2");
+    playerList.getItems().add("Player3");
+    playerList.getItems().add("Player4");
+
+    chatList.getItems().add("Player1: Hello");
+
+
+  }
 }

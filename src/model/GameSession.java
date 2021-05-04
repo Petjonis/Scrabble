@@ -1,6 +1,5 @@
 package model;
 
-import controller.PlayOnlineController;
 import java.util.ArrayList;
 import network.Server;
 
@@ -12,7 +11,6 @@ public class GameSession {
   private ArrayList<String> players;
   private int port;
   private Server server;
-  PlayOnlineController poC1 = new PlayOnlineController();
 
   public GameSession() {
     gameLobbyId++;

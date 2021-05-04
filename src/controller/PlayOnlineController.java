@@ -9,12 +9,9 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 
 import messages.ConnectMessage;
-import network.Client;
-import network.Server;
-import settings.ServerSettings;
-
 
 public class PlayOnlineController {
+
   private int port;
 
 
@@ -74,15 +71,18 @@ public class PlayOnlineController {
   }
 
   /**
-   * if "join" button is pressed, client connects to the server and port which he entered before and sends a ConnectMessage to the server.
+   * if "join" button is pressed, client connects to the server and port which he entered before and
+   * sends a ConnectMessage to the server.
    *
    * @author socho
    */
   @FXML
   void join(ActionEvent event) throws IOException {
-    MainController.mainController.connectToServer(ipField.getText(), Integer.parseInt(portField.getText()));
+    MainController.mainController
+        .connectToServer(ipField.getText(), Integer.parseInt(portField.getText()));
     if (MainController.mainController.getConnection().isOk()) {
-      MainController.mainController.getConnection().sendToServer(new ConnectMessage(MainController.mainController.getUserName()));
+      MainController.mainController.getConnection()
+          .sendToServer(new ConnectMessage(MainController.mainController.getUserName()));
       System.out.println(MainController.mainController.getUserName() + " is connected.");
     } else {
       System.out.println(MainController.mainController.getUserName() + " cannot connect.");
