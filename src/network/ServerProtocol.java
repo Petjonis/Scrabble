@@ -69,6 +69,7 @@ public class ServerProtocol extends Thread {
         String from = m.getFrom();
         this.clientName = from;
         server.addClient(from, this);
+        System.out.println(this.clientName + " was added to the Lobby.");
       } else {
         disconnect();
       }
@@ -88,9 +89,6 @@ public class ServerProtocol extends Thread {
         }
 
       }
-
-
-
 
     } catch (IOException e) {
       running = false;
