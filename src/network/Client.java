@@ -8,10 +8,12 @@ package network;
  */
 
 import controller.LoginController;
+import controller.MainController;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import javafx.fxml.Initializable;
 import messages.ConnectMessage;
 import messages.DisconnectMessage;
 import messages.Message;
@@ -37,11 +39,11 @@ public class Client extends Thread {
       this.in = new ObjectInputStream(clientSocket.getInputStream());
 
       /** delete comments-signs "//" when login works // when user has to log in to play.*/
-     // LoginController lc1 = new LoginController();
-     // this.userName = lc1.getUserName();
-     // this.out.writeObject(new ConnectMessage(userName));
-      // this.loggedIn = lc1.getLoggedIn();
-      this.out.writeObject(new ConnectMessage(new String("user")));
+
+      //this.userName = MainController.class.mainController.getUserName();
+      //System.out.println(mainController.getUserName());
+      //this.loggedIn = this.mainController.getLoggedIn();
+      //this.out.writeObject(new ConnectMessage(this.userName));
       out.flush();
 
     } catch (IOException e) {
@@ -49,6 +51,8 @@ public class Client extends Thread {
       System.out.println("Could not establish connection to " + ip + ":" + port);
     }
   }
+
+
 
   /**
    * checks if the connection is alright.

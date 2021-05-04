@@ -10,8 +10,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
 public class LoginController {
-private String userName;
-private boolean loggedIn = false;
 
   @FXML
   private JFXButton loginButton;
@@ -42,19 +40,22 @@ private boolean loggedIn = false;
     if(db.userExists(usernameField.getText())){
       if (db.checkPassword(usernameField.getText(), passwordField.getText())){
         /** login is successful.*/
-        this.userName = usernameField.getText();
         System.out.println("Login successful!");
-        this.loggedIn = true ;
+
+        MainController.mainController.setUserName(usernameField.getText());
+        MainController.mainController.setLoggedIn(true);
+
+        System.out.println(MainController.mainController.getUserName());
+        System.out.println(MainController.mainController.getLoggedIn());
 
         Alert confirmationAlert = new Alert(AlertType.INFORMATION);
-        confirmationAlert.setContentText("Welcome " + this.userName + "! \n" + "You are logged in!");
+        confirmationAlert.setContentText("Welcome " + MainController.mainController.getUserName() + "! \n" + "You are logged in!");
         confirmationAlert.show();
         Stage stage = (Stage) loginButton.getScene().getWindow();
         stage.close();
       }else {
         /** user exists, but password is wrong.*/
-        MainController mc1 = new MainController();
-        mc1.openNewWindow("/view/Login.fxml", "Login");
+        MainController.mainController.openNewWindow("/view/Login.fxml", "Login");
         Stage stage = (Stage) loginButton.getScene().getWindow();
         stage.close();
 
@@ -62,19 +63,18 @@ private boolean loggedIn = false;
         Alert errorAlert = new Alert(AlertType.ERROR);
         errorAlert.setContentText("Sorry, but your password was wrong!" + "\n" + "Try again, please.");
         errorAlert.show();
-        this.loggedIn = false;
+        MainController.mainController.setLoggedIn(false);
       }
     }else {
       /** user does not exist and has to register first.*/
-      MainController mc1 = new MainController();
-      mc1.openNewWindow("/view/Register.fxml", "Register");
+      MainController.mainController.openNewWindow("/view/Register.fxml", "Register");
       Stage stage = (Stage) loginButton.getScene().getWindow();
       stage.close();
 
       Alert errorAlert = new Alert (AlertType.ERROR);
       errorAlert.setContentText("Sorry, but '" + usernameField.getText() + "' does not exist in the database." + "\n" + "Please register first.");
       errorAlert.show();
-      this.loggedIn = false;
+      MainController.mainController.setLoggedIn(false);
     }
   }
 
@@ -85,8 +85,7 @@ private boolean loggedIn = false;
    */
   @FXML
   void signup(ActionEvent event) {
-    MainController mc1 = new MainController();
-    mc1.openNewWindow("/view/Register.fxml", "Register");
+    MainController.mainController.openNewWindow("/view/Register.fxml", "Register");
     Stage stage = (Stage) signupLink.getScene().getWindow();
     stage.close();
   }
@@ -97,11 +96,4 @@ private boolean loggedIn = false;
     stage.close();
   }
 
-  public String getUserName(){
-    return this.userName;
-  }
-
-  public boolean getLoggedIn(){
-    return this.loggedIn;
-  }
 }

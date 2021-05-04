@@ -18,9 +18,17 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import network.Client;
+import network.Server;
+import settings.ServerSettings;
 
 public class MainController implements Initializable {
     static MainController mainController;
+    private String userName;
+    private boolean loggedIn;
+    private Server server = new Server();
+    private Client connection ;
+
     @FXML
     private JFXButton playButton;
 
@@ -69,6 +77,8 @@ public class MainController implements Initializable {
 
     @FXML
     void openPlay(ActionEvent event) throws IOException {
+        System.out.println(mainController.getUserName());
+        System.out.println(mainController.getLoggedIn());
         changePane(centerPane, "/view/GameBoard.fxml");
         changePane(rightPane, "/view/PlayOnline.fxml");
     }
@@ -113,6 +123,30 @@ public class MainController implements Initializable {
         pane.getChildren().add(parent);
     }
 
+    /**
+     * method for connecting to the server.
+     *
+     * @author socho
+     */
+    public void connectToServer(String host, int port) throws IOException {
+        this.connection = new Client(host, port);
+        if (this.connection.isOk()) {
+            this.connection.start();
+        }
+    }
+
+    /**
+     * method for disconnecting.
+     *
+     * @author socho
+     */
+    public void disconnect() throws IOException {
+        if (this.connection != null) {
+            connection.disconnect();
+            connection = null;
+        }
+    }
+
     public StackPane getCenterPane() {
         return centerPane;
     }
@@ -121,5 +155,19 @@ public class MainController implements Initializable {
         return rightPane;
     }
 
+    public String getUserName() { return this.userName; }
 
+    public void setUserName (String user) { this.userName = user; }
+
+    public boolean getLoggedIn() { return this.loggedIn; }
+
+    public void setLoggedIn(boolean log) { this.loggedIn = log; }
+
+    public Client getConnection(){
+        return this.connection;
+    }
+
+    public Server getServer(){
+        return this.server;
+    }
 }

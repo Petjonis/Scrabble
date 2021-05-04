@@ -8,16 +8,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 
+import messages.ConnectMessage;
 import network.Client;
 import network.Server;
 import settings.ServerSettings;
 
 
 public class PlayOnlineController {
-
-  private Server server;
   private int port;
-  private Client connection;
+
 
   @FXML
   private TabPane playTabPane;
@@ -49,65 +48,44 @@ public class PlayOnlineController {
   }
 
   /**
-   * method for connecting to the server.
-   *
-   * @author socho
-   */
-  public void connectToServer(String host, int port) throws IOException {
-    this.connection = new Client(host, ServerSettings.port);
-    if (this.connection.isOk()) {
-      this.connection.start();
-    }
-  }
-
-  /**
-   * method for disconnecting.
-   *
-   * @author socho
-   */
-  public void disconnect() throws IOException {
-    if (this.connection != null) {
-      connection.disconnect();
-      connection = null;
-    }
-  }
-
-  /**
    * if "host" button is pressed, server runs and waits for clients to connect.
    *
    * @author socho
    */
   @FXML
   void host(ActionEvent event) throws IOException {
-    MainController.mainController
-        .changePane(MainController.mainController.getRightPane(), "/view/GameInfo.fxml");
+    if (MainController.mainController.getLoggedIn() == true) {
+      System.out.println(MainController.mainController.getUserName() + ", you are the Host.");
+      MainController.mainController
+          .changePane(MainController.mainController.getRightPane(), "/view/GameInfo.fxml");
 
-    server = new Server();
-    Runnable r = new Runnable() {
-      @Override
-      public void run() {
-        try {
-          server.listen();
-        } catch (IOException ioException) {
-          ioException.printStackTrace();
+      Runnable r = new Runnable() {
+        @Override
+        public void run() {
+          try {
+            MainController.mainController.getServer().listen();
+          } catch (IOException ioException) {
+            ioException.printStackTrace();
+          }
         }
-      }
-    };
-    new Thread(r).start();
+      };
+      new Thread(r).start();
+    }
   }
 
   /**
-   * if "join" button is pressed, client connects to the server and port which he entered before.
+   * if "join" button is pressed, client connects to the server and port which he entered before and sends a ConnectMessage to the server.
    *
    * @author socho
    */
   @FXML
   void join(ActionEvent event) throws IOException {
-    connectToServer(ipField.getText(), Integer.parseInt(portField.getText()));
-    if (connection.isOk()) {
-      System.out.println(connection.getUserName() + " is connected.");
+    MainController.mainController.connectToServer(ipField.getText(), Integer.parseInt(portField.getText()));
+    if (MainController.mainController.getConnection().isOk()) {
+      MainController.mainController.getConnection().sendToServer(new ConnectMessage(MainController.mainController.getUserName()));
+      System.out.println(MainController.mainController.getUserName() + " is connected.");
     } else {
-      System.out.println(connection.getUserName() + " cannot connect.");
+      System.out.println(MainController.mainController.getUserName() + " cannot connect.");
     }
   }
 
