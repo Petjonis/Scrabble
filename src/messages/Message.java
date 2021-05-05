@@ -16,7 +16,9 @@ public abstract class Message implements Serializable, Cloneable {
   private MessageType meType;
   private String from;
 
-  /** constructor for message.*/
+  /**
+   * constructor for message.
+   */
   public Message(MessageType type, String from) {
     this.meType = type;
     this.from = new String(from);
@@ -34,13 +36,14 @@ public abstract class Message implements Serializable, Cloneable {
     this.from = name;
   }
 
-  /** method to copy a message. */
+  /**
+   * method to copy a message.
+   */
   public Object clone() {
     Message clone = null;
     try {
       clone = (Message) super.clone();
     } catch (CloneNotSupportedException e) {
-      e.printStackTrace();
     }
     clone.meType = meType;
     clone.from = new String(from);
