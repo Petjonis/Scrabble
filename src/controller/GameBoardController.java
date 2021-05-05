@@ -1,6 +1,7 @@
 package controller;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXChipView;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -17,6 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 public class GameBoardController {
+    static GameBoardController gameBoardController;
     private static final Integer STARTTIME = 120;
     @FXML
     private VBox gameBoard;
@@ -193,5 +195,11 @@ public class GameBoardController {
         timeline = new Timeline();
         timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(STARTTIME + 1), new KeyValue(timeSeconds, 0)));
         timeline.playFromStart();
+    }
+
+
+    /** getter for private attributes*/
+    public JFXButton getPlayButton(){
+        return this.playButton;
     }
 }

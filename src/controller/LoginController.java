@@ -3,13 +3,19 @@ package controller;
 import com.jfoenix.controls.JFXButton;
 import com.sun.tools.javac.Main;
 import db.Database;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
-public class LoginController {
+public class LoginController implements Initializable {
 
   @FXML
   private JFXButton loginButton;
@@ -29,11 +35,16 @@ public class LoginController {
   @FXML
   private Hyperlink signupLink;
 
+  @Override
+  public void initialize(URL url, ResourceBundle resourceBundle) {
+   this.errorLabel.setVisible(false);
+  }
+
   /** when pressing "login" button, three different scenarios can occur. First, login is successful. Second, password is wrong. Third, user does not exist.
    * @author socho
    */
   @FXML
-  void login(ActionEvent event) {
+  void login(ActionEvent event) throws IOException {
     Database db = new Database ();
     db.connect();
 
@@ -47,10 +58,12 @@ public class LoginController {
 
         Stage stage = (Stage) loginButton.getScene().getWindow();
         stage.close();
+
       }else {
         /** user exists, but password is wrong.*/
         System.out.println("Login failed, reason: wrong password.");
         this.errorLabel.setText("Wrong Password! Try again, please.");
+        this.errorLabel.setVisible(true);
         this.passwordField.getSelection();
         MainController.mainController.setLoggedIn(false);
       }
@@ -58,6 +71,7 @@ public class LoginController {
       /** user does not exist and has to register first.*/
       System.out.println("Login failed, reason: username does not exist in the database.");
       this.errorLabel.setText( usernameField.getText() + "' does not exist in the database. Please register first.");
+      this.errorLabel.setVisible(true);
       this.usernameField.clear();
       this.passwordField.clear();
       MainController.mainController.setLoggedIn(false);
