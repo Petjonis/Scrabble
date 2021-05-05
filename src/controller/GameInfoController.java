@@ -45,7 +45,8 @@ public class GameInfoController implements Initializable {
     MainController.mainController.getConnection()
         .sendToServer(new SendChatMessage(MainController.mainController
             .getUserName(), sendText.getText())); */
-    chatList.getItems().add("Player1: Hey!");
+
+    chatList.getItems().add(MainController.mainController.getUserName()+ ": " + sendText.getText());
     sendText.clear();
   }
 
