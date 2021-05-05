@@ -9,5 +9,5 @@ package messages;
 
 public enum MessageType {
   CONNECT, DISCONNECT, CONNECTION_REFUSED, SERVERSHUTDOWN,
-  SEND_TILE;
+  SEND_INITIAL_DATA, SEND_TILE;
 }
