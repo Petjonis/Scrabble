@@ -7,6 +7,7 @@ package network;
  * @version 1.0
  */
 
+import controller.GameInfoController;
 import controller.LoginController;
 import controller.MainController;
 import java.io.IOException;
@@ -17,6 +18,9 @@ import javafx.fxml.Initializable;
 import messages.ConnectMessage;
 import messages.DisconnectMessage;
 import messages.Message;
+import messages.SendChatMessage;
+import messages.SendInitialDataMessage;
+import model.GameSession;
 
 public class Client extends Thread {
 
@@ -38,20 +42,11 @@ public class Client extends Thread {
       this.out = new ObjectOutputStream(clientSocket.getOutputStream());
       this.in = new ObjectInputStream(clientSocket.getInputStream());
 
-      /** delete comments-signs "//" when login works // when user has to log in to play.*/
-
-      //this.userName = MainController.class.mainController.getUserName();
-      //System.out.println(mainController.getUserName());
-      //this.loggedIn = this.mainController.getLoggedIn();
-      //this.out.writeObject(new ConnectMessage(this.userName));
-      out.flush();
-
     } catch (IOException e) {
       System.out.println(e.getMessage());
       System.out.println("Could not establish connection to " + ip + ":" + port);
     }
   }
-
 
 
   /**
@@ -65,13 +60,25 @@ public class Client extends Thread {
    * this method is crucial for getting the info for the client-side.
    */
   public void run() {
-    /**while(running){
-     try{
-     Message m = (Message) in.readObject();
-     }catch(ClassNotFoundException | IOException e){
-     break;
-     }
-     }*/
+    while (running) {
+      try {
+        Message m = (Message) in.readObject();
+        switch (m.getMessageType()) {
+          case SEND_INITIAL_DATA:
+            SendInitialDataMessage sendInitialDataMes = (SendInitialDataMessage) m;
+            break;
+          case SEND_MESSAGE:
+            SendChatMessage scMsg = (SendChatMessage) m;
+            String user = scMsg.getFrom();
+            String text = scMsg.getText();
+            GameInfoController gameInfoController = new GameInfoController();
+            gameInfoController.getChatList().getItems().add(user + ": " + text);
+            break;
+        }
+      } catch (ClassNotFoundException | IOException e) {
+        break;
+      }
+    }
   }
 
   /**
@@ -120,8 +127,12 @@ public class Client extends Thread {
     return this.host;
   }
 
-  public String getUserName(){
+  public String getUserName() {
     return this.userName;
+  }
+
+  public void setUserName(String name) {
+    this.userName = name;
   }
 
 }

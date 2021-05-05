@@ -7,13 +7,20 @@ package network;
  * @version 1.0
  */
 
+import com.sun.tools.javac.Main;
+import controller.MainController;
+import controller.PlayOnlineController;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import messages.Message;
 import messages.MessageType;
+import messages.SendChatMessage;
+import messages.SendInitialDataMessage;
 import messages.SendTileMessage;
+import model.GameSession;
 import model.Square;
 import model.Tile;
 
@@ -25,6 +32,7 @@ public class ServerProtocol extends Thread {
   private Server server;
   private String clientName;
   private boolean running = true;
+  private GameSession gameSession;
 
   ServerProtocol(Socket client, Server server) throws IOException {
     this.socket = client;
@@ -32,9 +40,16 @@ public class ServerProtocol extends Thread {
     try {
       out = new ObjectOutputStream(socket.getOutputStream());
       in = new ObjectInputStream(socket.getInputStream());
+      sendInitialData();
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+
+  public void sendInitialData() throws IOException {
+    SendInitialDataMessage sendingDataMessage = new SendInitialDataMessage("host",
+        new ArrayList<String>(), new ArrayList<String>());
+    sendToClient(sendingDataMessage);
   }
 
   /**
@@ -58,6 +73,12 @@ public class ServerProtocol extends Thread {
     }
   }
 
+  public void openGameSession() {
+    gameSession = new GameSession();
+    gameSession.setPort(server.getPort());
+
+  }
+
   /**
    * Clients will be connected to the server only when they send the Connect-Message.
    */
@@ -79,10 +100,15 @@ public class ServerProtocol extends Thread {
         switch (m.getMessageType()) {
           case SEND_TILE:
             SendTileMessage stMsg = (SendTileMessage) m;
-            Tile tile = ((SendTileMessage) m).getTile();
-            Square[][] position = ((SendTileMessage) m).getPosition();
+            Tile tile = stMsg.getTile();
+            Square[][] position = stMsg.getPosition();
             String from = stMsg.getFrom();
             server.sendToAll(stMsg);
+            break;
+          case SEND_MESSAGE:
+            SendChatMessage scMsg = (SendChatMessage) m;
+            String user = scMsg.getFrom();
+            server.sendToAllBut(user, scMsg);
             break;
           default:
             break;

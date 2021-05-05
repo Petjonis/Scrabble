@@ -7,6 +7,7 @@ package network;
  * @version 1.0
  */
 
+import controller.MainController;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -19,12 +20,15 @@ import java.util.List;
 import java.util.Set;
 
 import messages.Message;
+import model.GameSession;
 import settings.ServerSettings;
 
 public class Server {
 
   private ServerSocket hostSocket;
   private boolean running;
+  private int port;
+  private GameSession gameSession;
 
   /**
    * collects all connected clients in a HashMap.
@@ -125,5 +129,16 @@ public class Server {
     }
   }
 
+  public int getPort() {
+    return this.port;
+  }
+
+  public void setPort(int portNumber) {
+    this.port = portNumber;
+  }
+
+  public GameSession getGameSession() {
+    return this.gameSession;
+  }
 
 }
