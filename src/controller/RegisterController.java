@@ -1,21 +1,28 @@
 package controller;
 
 import com.jfoenix.controls.JFXButton;
+import java.net.URL;
 import java.util.Locale;
 import db.Database;
+import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 
-public class RegisterController {
-
+public class RegisterController implements Initializable {
+  @FXML
+  private Label userError;
+  @FXML
+  private Label passwordError;
   @FXML
   private JFXButton createButton;
 
@@ -48,9 +55,16 @@ public class RegisterController {
     stage.close();
   }
 
+  @Override
+  public void initialize(URL url, ResourceBundle resourceBundle) {
+    this.userError.setVisible(false);
+    this.passwordError.setVisible(false);
+  }
+
+
   /**
-   * after pressing the "create Account" button, user will be notified if registration was
-   * successful or not
+   * after pressing the "create Account" button, three scenarios can occur: first, registration is successful. second username already exists in the database. third, password does not match.
+   *
    *
    * @author socho
    */
@@ -61,31 +75,31 @@ public class RegisterController {
     Database db = new Database();
     db.connect();
     db.createUserTable();
+    this.userError.setVisible(false);
+    this.passwordError.setVisible(false);
 
-    /** when registration was successful, system shows login page and notifies user */
-    if (!db.userExists(usernameField.getText())) {
+    /** when registration was successful, system shows login page. */
+    if (!db.userExists(usernameField.getText()) && confirmField.getText().equals(passwordField.getText())) {
       db.addUser(usernameField.getText(), passwordField.getText());
 
-      MainController mc1 = new MainController();
-      mc1.openNewWindow("/view/Login.fxml", "Login");
+      MainController.mainController.openNewWindow("/view/Login.fxml", "Login");
       Stage stage = (Stage) createButton.getScene().getWindow();
       stage.close();
 
-      Alert alert1 = new Alert(AlertType.INFORMATION);
-      alert1.setContentText("User added to the database.");
-      alert1.show();
-
-      /** when registration failed / user already exists in the database, system will show the register page again and notifies the user.*/
-    } else {
-      MainController mc1 = new MainController();
-      mc1.openNewWindow("/view/Register.fxml", "Register");
-      Stage stage = (Stage) createButton.getScene().getWindow();
-      stage.close();
-
-      Alert alert2 = new Alert(AlertType.ERROR);
-      alert2.setContentText("User already exists");
-      alert2.show();
+      /** when registration failed / password does not match.*/
+    } else if (!db.userExists(usernameField.getText()) && !confirmField.getText().equals(passwordField.getText())) {
+      this.passwordError.setVisible(true);
+      this.confirmField.clear();
+      /** when registration failed / userName already exists in the database.*/
+    }else {
+      this.userError.setVisible(true);
+      this.usernameField.clear();
+      this.passwordField.clear();
+      this.confirmField.clear();
+      this.previewImage.setImage(null);
     }
     db.disconnect();
   }
+
+
 }
