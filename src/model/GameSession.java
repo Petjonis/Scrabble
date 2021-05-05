@@ -39,5 +39,6 @@ public class GameSession {
     return players;
   }
 
-
+  public void setPort(int portNumber){ this.port = portNumber; }
+  public int getPort() { return this.port; }
 }
