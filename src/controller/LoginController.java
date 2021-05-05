@@ -45,35 +45,21 @@ public class LoginController {
         MainController.mainController.setUserName(usernameField.getText());
         MainController.mainController.setLoggedIn(true);
 
-        System.out.println(MainController.mainController.getUserName());
-        System.out.println(MainController.mainController.getLoggedIn());
-
-        Alert confirmationAlert = new Alert(AlertType.INFORMATION);
-        confirmationAlert.setContentText("Welcome " + MainController.mainController.getUserName() + "! \n" + "You are logged in!");
-        confirmationAlert.show();
         Stage stage = (Stage) loginButton.getScene().getWindow();
         stage.close();
       }else {
         /** user exists, but password is wrong.*/
-        MainController.mainController.openNewWindow("/view/Login.fxml", "Login");
-        Stage stage = (Stage) loginButton.getScene().getWindow();
-        stage.close();
-
-        System.out.println("Login failed");
-        Alert errorAlert = new Alert(AlertType.ERROR);
-        errorAlert.setContentText("Sorry, but your password was wrong!" + "\n" + "Try again, please.");
-        errorAlert.show();
+        System.out.println("Login failed, reason: wrong password.");
+        this.errorLabel.setText("Wrong Password! Try again, please.");
+        this.passwordField.getSelection();
         MainController.mainController.setLoggedIn(false);
       }
     }else {
       /** user does not exist and has to register first.*/
-      MainController.mainController.openNewWindow("/view/Register.fxml", "Register");
-      Stage stage = (Stage) loginButton.getScene().getWindow();
-      stage.close();
-
-      Alert errorAlert = new Alert (AlertType.ERROR);
-      errorAlert.setContentText("Sorry, but '" + usernameField.getText() + "' does not exist in the database." + "\n" + "Please register first.");
-      errorAlert.show();
+      System.out.println("Login failed, reason: username does not exist in the database.");
+      this.errorLabel.setText( usernameField.getText() + "' does not exist in the database. Please register first.");
+      this.usernameField.clear();
+      this.passwordField.clear();
       MainController.mainController.setLoggedIn(false);
     }
   }
