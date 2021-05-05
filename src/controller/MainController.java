@@ -22,15 +22,17 @@ import java.util.ResourceBundle;
 import model.GameSession;
 import network.Client;
 import network.Server;
+import network.ServerProtocol;
 
 public class MainController implements Initializable {
 
   static MainController mainController;
   private String userName;
-  private boolean loggedIn;
+  private boolean loggedIn = false;
+  private boolean hosting = false ;
   private Server server = new Server();
   private Client connection;
-  private ArrayList<String> playerList;
+  ServerProtocol serverProtocol;
 
   @FXML
   private JFXButton playButton;
@@ -66,6 +68,19 @@ public class MainController implements Initializable {
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     mainController = this;
+
+    /** Player not logged in, so "Logout"-button will not be visible.*/
+    if(!mainController.getLoggedIn()) {
+      this.logoutButton.setVisible(false);
+      /** if player is logged in, he will not see the option to login or signup but to logout.
+       * @apiNote need buttons for changing username, password or avater and to make clear player is logged in, as "Welcome ____ !".
+       *
+       * */
+    }else{
+      this.logoutButton.setVisible(true);
+      this.loginButton.setVisible(false);
+      this.signupButton.setVisible(false);
+    }
   }
 
   @FXML
@@ -80,13 +95,9 @@ public class MainController implements Initializable {
 
   @FXML
   void openPlay(ActionEvent event) throws IOException {
-    System.out.println(mainController.getUserName());
-    System.out.println(mainController.getLoggedIn());
     changePane(centerPane, "/view/GameBoard.fxml");
     changePane(rightPane, "/view/PlayOnline.fxml");
 
-    GameSession gameSession = new GameSession();
-    this.playerList = gameSession.getPlayers();
   }
 
   @FXML
@@ -156,39 +167,26 @@ public class MainController implements Initializable {
   /**
    * getter and setter methods for all private attributes.
    */
-  public StackPane getCenterPane() {
-    return centerPane;
-  }
+  public StackPane getCenterPane() { return centerPane; }
 
-  public StackPane getRightPane() {
-    return rightPane;
-  }
+  public StackPane getRightPane() { return rightPane; }
 
-  public String getUserName() {
-    return this.userName;
-  }
+  public String getUserName() { return this.userName; }
 
-  public void setUserName(String user) {
-    this.userName = user;
-  }
+  public void setUserName(String user) { this.userName = user; }
 
-  public boolean getLoggedIn() {
-    return this.loggedIn;
-  }
+  public boolean getLoggedIn() { return this.loggedIn; }
 
-  public void setLoggedIn(boolean log) {
-    this.loggedIn = log;
-  }
+  public void setLoggedIn(boolean log) { this.loggedIn = log; }
 
-  public Client getConnection() {
-    return this.connection;
-  }
+  public boolean getHosting() { return this.hosting; }
 
-  public Server getServer() {
-    return this.server;
-  }
+  public void setHosting(boolean host) { this.hosting = host; }
 
-  public ArrayList<String> getPlayerList() {
-    return this.playerList;
-  }
+  public Client getConnection() { return this.connection; }
+
+  public Server getServer() { return this.server; }
+
+  public ArrayList<String> getPlayerList() { return new ArrayList<String>(server.getClientNames()); }
+
 }
