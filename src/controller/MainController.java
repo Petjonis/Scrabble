@@ -30,9 +30,9 @@ public class MainController implements Initializable {
   private String userName;
   private boolean loggedIn = false;
   private boolean hosting = false ;
-  private Server server = new Server();
+  private Server server;
   private Client connection;
-  ServerProtocol serverProtocol;
+  private GameSession gameSession;
 
   @FXML
   private JFXButton playButton;
@@ -187,6 +187,9 @@ public class MainController implements Initializable {
 
   public Server getServer() { return this.server; }
 
-  public ArrayList<String> getPlayerList() { return new ArrayList<String>(server.getClientNames()); }
+  public void setServer(Server serv){ this.server = serv; }
 
+  public void setGameSession(GameSession session){ this.gameSession = session; }
+
+  public GameSession getGameSession() { return this.gameSession; }
 }

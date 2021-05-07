@@ -15,6 +15,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import javafx.fxml.Initializable;
+import messages.ApproveConnectMessage;
 import messages.ConnectMessage;
 import messages.DisconnectMessage;
 import messages.Message;
@@ -31,6 +32,7 @@ public class Client extends Thread {
   private ObjectInputStream in;
   private boolean loggedIn = false;
   private boolean running = true;
+  private GameSession gameSession;
 
   /**
    * Constructor for the client.
@@ -64,6 +66,10 @@ public class Client extends Thread {
       try {
         Message m = (Message) in.readObject();
         switch (m.getMessageType()) {
+          case APPROVE_CONNECT:
+            ApproveConnectMessage acMsg = (ApproveConnectMessage) m ;
+            this.gameSession =  acMsg.getGameSession();
+            break;
           case SEND_INITIAL_DATA:
             SendInitialDataMessage sendInitialDataMes = (SendInitialDataMessage) m;
             break;
@@ -135,4 +141,7 @@ public class Client extends Thread {
     this.userName = name;
   }
 
+  public void setGameSession(GameSession session){ this.gameSession = session; }
+
+  public GameSession getGameSession() { return this.gameSession; }
 }

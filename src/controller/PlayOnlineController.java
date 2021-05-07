@@ -18,6 +18,7 @@ import model.GameSession;
 
 public class PlayOnlineController implements Initializable {
   private int port;
+  private GameSession gameSession ;
 
 
   @FXML
@@ -68,16 +69,17 @@ public class PlayOnlineController implements Initializable {
     if (MainController.mainController.getLoggedIn() == true) {
       System.out.println(MainController.mainController.getUserName() + ", you are the Host.");
       MainController.mainController.setHosting(true);
-      MainController.mainController.getServer().addClient(MainController.mainController
-          .getUserName(), MainController.mainController.serverProtocol);
-      MainController.mainController
-          .changePane(MainController.mainController.getRightPane(), "/view/GameInfo.fxml");
+      gameSession = new GameSession(8080);
+      gameSession.setHost(MainController.mainController.getUserName());
+      MainController.mainController.setGameSession(gameSession);
+      MainController.mainController.setServer(gameSession.getServer());
+
 
       Runnable r = new Runnable() {
         @Override
         public void run() {
           try {
-            MainController.mainController.getServer().listen();
+           MainController.mainController.getServer().listen();
           } catch (IOException ioException) {
             ioException.printStackTrace();
           }
@@ -85,6 +87,17 @@ public class PlayOnlineController implements Initializable {
       };
       new Thread(r).start();
 
+      MainController.mainController.connectToServer("localhost", 8080);
+      if (MainController.mainController.getConnection().isOk()) {
+        MainController.mainController.getConnection()
+            .sendToServer(new ConnectMessage(MainController.mainController
+                .getUserName()));
+        MainController.mainController.getConnection().setUserName(MainController.mainController
+            .getUserName());
+
+        MainController.mainController
+            .changePane(MainController.mainController.getRightPane(), "/view/GameInfo.fxml");
+      }
     }else {
       Alert errorAlert = new Alert(AlertType.ERROR);
       errorAlert.setContentText("You cannot host, because you are not logged in.");

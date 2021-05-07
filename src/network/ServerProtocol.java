@@ -15,6 +15,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import messages.ApproveConnectMessage;
 import messages.Message;
 import messages.MessageType;
 import messages.SendChatMessage;
@@ -32,11 +33,11 @@ public class ServerProtocol extends Thread {
   private Server server;
   private String clientName;
   private boolean running = true;
-  private GameSession gameSession;
 
   ServerProtocol(Socket client, Server server) throws IOException {
     this.socket = client;
     this.server = server;
+
     try {
       out = new ObjectOutputStream(socket.getOutputStream());
       in = new ObjectInputStream(socket.getInputStream());
@@ -73,14 +74,10 @@ public class ServerProtocol extends Thread {
     }
   }
 
-  public void openGameSession() {
-    gameSession = new GameSession();
-    gameSession.setPort(server.getPort());
-
-  }
 
   /**
    * Clients will be connected to the server only when they send the Connect-Message.
+   * and Clients will get a ApproveConnectMessage.
    */
   public void run() {
     Message m;
@@ -132,5 +129,4 @@ public class ServerProtocol extends Thread {
       e2.printStackTrace();
     }
   }
-
 }

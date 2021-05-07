@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextArea;
 import com.sun.tools.javac.Main;
 import java.io.IOException;
+import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -61,9 +62,13 @@ public class GameInfoController implements Initializable {
      PlayOnlineController.playOnlineController.getGameSession().setState(GameState.INGAME);
      }
      }*/
-
-    for (String player : MainController.mainController.getPlayerList()) {
-      playerList.getItems().add(player);
+    if (MainController.mainController.getHosting()) {
+      for (String player : new ArrayList<String>(
+          MainController.mainController.getGameSession().getServer().getClientNames())) {
+        playerList.getItems().add(player);
+      }
+    }else{
+      playerList.getItems().add(MainController.mainController.getUserName());
     }
     /**playerList.getItems().add("Player1");
      playerList.getItems().add("Player2");
