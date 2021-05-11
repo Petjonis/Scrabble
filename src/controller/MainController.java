@@ -196,7 +196,7 @@ public class MainController implements Initializable {
 
   public String getUserName() { return this.user.getUsername(); }
 
-  public void setUserName(String user) { this.user.setUsername(user);}
+  public void setUserName(String userName) { this.user.setUsername(userName);}
 
   public boolean getLoggedIn() { return this.loggedIn; }
 

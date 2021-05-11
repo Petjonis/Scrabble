@@ -14,6 +14,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import model.HumanPlayer;
 
 public class LoginController implements Initializable {
 
@@ -53,7 +54,8 @@ public class LoginController implements Initializable {
         /** login is successful.*/
         System.out.println("Login successful!");
 
-        MainController.mainController.setUserName(usernameField.getText());
+        MainController.mainController.setUser(new HumanPlayer());
+        MainController.mainController.getUser().setUsername(usernameField.getText());
         MainController.mainController.setLoggedIn(true);
 
         MainController.mainController.getLoginButton().setVisible(false);
