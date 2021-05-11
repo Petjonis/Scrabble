@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import model.GameSession;
+import model.HumanPlayer;
+import model.Player;
 import network.Client;
 import network.Server;
 import network.ServerProtocol;
@@ -27,7 +29,7 @@ import network.ServerProtocol;
 public class MainController implements Initializable {
 
   static MainController mainController;
-  private String userName;
+  private Player user;
   private boolean loggedIn = false;
   private boolean hosting = false ;
   private Server server;
@@ -69,6 +71,7 @@ public class MainController implements Initializable {
   public void initialize(URL url, ResourceBundle resourceBundle) {
     mainController = this;
 
+
     /** Player not logged in, so "Logout"-button will not be visible.*/
     if(!mainController.getLoggedIn()) {
       this.logoutButton.setVisible(false);
@@ -85,7 +88,13 @@ public class MainController implements Initializable {
 
   @FXML
   void logout(ActionEvent event) {
+    System.out.println(mainController.getUser().getUsername() + ", you are logged out.");
+    mainController.setLoggedIn(false);
+    mainController.setUser(null);
 
+    mainController.getLoginButton().setVisible(true);
+    mainController.getSignupButton().setVisible(true);
+    mainController.getLogoutButton().setVisible(false);
   }
 
   @FXML
@@ -167,13 +176,27 @@ public class MainController implements Initializable {
   /**
    * getter and setter methods for all private attributes.
    */
+  public MainController getInstance(){
+    return this.mainController;
+  }
+
   public StackPane getCenterPane() { return centerPane; }
 
   public StackPane getRightPane() { return rightPane; }
 
-  public String getUserName() { return this.userName; }
+  public JFXButton getLoginButton() { return loginButton; }
 
-  public void setUserName(String user) { this.userName = user; }
+  public JFXButton getSignupButton() { return signupButton; }
+
+  public JFXButton getLogoutButton() { return logoutButton; }
+
+  public void setUser(Player player) { this.user = player; }
+
+  public Player getUser() { return this.user; }
+
+  public String getUserName() { return this.user.getUsername(); }
+
+  public void setUserName(String user) { this.user.setUsername(user);}
 
   public boolean getLoggedIn() { return this.loggedIn; }
 

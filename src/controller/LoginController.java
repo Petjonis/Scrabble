@@ -56,6 +56,10 @@ public class LoginController implements Initializable {
         MainController.mainController.setUserName(usernameField.getText());
         MainController.mainController.setLoggedIn(true);
 
+        MainController.mainController.getLoginButton().setVisible(false);
+        MainController.mainController.getSignupButton().setVisible(false);
+        MainController.mainController.getLogoutButton().setVisible(true);
+
         Stage stage = (Stage) loginButton.getScene().getWindow();
         stage.close();
 
