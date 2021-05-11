@@ -55,7 +55,7 @@ public class LoginController implements Initializable {
         System.out.println("Login successful!");
 
         MainController.mainController.setUser(new HumanPlayer());
-        MainController.mainController.getUser().setUsername(usernameField.getText());
+        MainController.mainController.getUser().setUserName(usernameField.getText());
         MainController.mainController.setLoggedIn(true);
 
         MainController.mainController.getLoginButton().setVisible(false);

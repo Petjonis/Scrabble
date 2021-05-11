@@ -1,5 +1,6 @@
 package model;
 
+import controller.GameInfoController;
 import controller.MainController;
 import java.util.ArrayList;
 import java.util.Set;
@@ -11,16 +12,17 @@ public class GameSession {
   private String gameMode;
   private GameState state;
   private ArrayList<String> players;
-  private int port;
   private Server server;
-  private String host;
+  private Player host;
+  private static ArrayList<GameSession> sessions = new ArrayList<GameSession>();
+  private GameInfoController gameInfoController ;
 
-  public GameSession(int portNumber) {
-    this.server = new Server();
-    this.port = portNumber;
+  public GameSession(int portNumber, Player maker) {
+    this.server = new Server(portNumber, maker);
     gameLobbyId++;
-    this.players = getPlayers();
+    this.host = maker;
     this.state = GameState.WAITING_LOBBY;
+    this.sessions.add(this);
   }
 
   public void setState(GameState gs) {
@@ -43,16 +45,18 @@ public class GameSession {
 
   public void setPlayers(Set<String> list){ this.players = new ArrayList<String>(list);}
 
-  public ArrayList getPlayers() {
+  public ArrayList<String> getPlayers() {
     this.players = new ArrayList<String>(this.server.getClientNames());
     return players;
   }
 
-  public void setPort(int portNumber) { this.port = portNumber; }
-  public int getPort() { return this.port; }
-
-  public void setHost(String name) { this.host = name; }
-  public String getHost() { return this.host; }
+  public void setHost(Player hostName) { this.host = hostName; }
+  public Player getHost() { return this.host; }
 
   public Server getServer(){ return this.server; }
+
+  public ArrayList<GameSession> getSessions() { return this.sessions;}
+
+  public GameInfoController getGameInfoController() { return this.gameInfoController; }
+  public void setGameInfoController (GameInfoController giControl) { this.gameInfoController = giControl; }
 }

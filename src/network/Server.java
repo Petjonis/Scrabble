@@ -21,6 +21,7 @@ import java.util.Set;
 
 import messages.Message;
 import model.GameSession;
+import model.Player;
 import settings.ServerSettings;
 
 public class Server {
@@ -29,7 +30,12 @@ public class Server {
   private boolean running;
   private int port;
   private GameSession gameSession;
+  private Player serverHost;
 
+  public Server (int portNumber, Player me){
+    this.port =  portNumber;
+    this.serverHost = me;
+  }
   /**
    * collects all connected clients in a HashMap.
    */
@@ -64,7 +70,7 @@ public class Server {
       while (running) {
         Socket clientSocket = hostSocket.accept();
 
-        ServerProtocol clientConnectionThread = new ServerProtocol(clientSocket, this);
+        ServerProtocol clientConnectionThread = new ServerProtocol(clientSocket, this, this.gameSession);
         clientConnectionThread.start();
       }
     } catch (IOException e) {
@@ -141,4 +147,6 @@ public class Server {
     return this.gameSession;
   }
 
+  public void setServerHost(Player user) { this.serverHost = user; }
+  public Player getServerHost() { return this.serverHost; }
 }

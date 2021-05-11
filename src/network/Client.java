@@ -33,6 +33,7 @@ public class Client extends Thread {
   private boolean loggedIn = false;
   private boolean running = true;
   private GameSession gameSession;
+  private GameInfoController gameInfoControllerClient;
 
   /**
    * Constructor for the client.
@@ -69,6 +70,7 @@ public class Client extends Thread {
           case APPROVE_CONNECT:
             ApproveConnectMessage acMsg = (ApproveConnectMessage) m ;
             this.gameSession =  acMsg.getGameSession();
+            gameInfoControllerClient.getInstance().updatePlayerList(this.gameSession.getPlayers());
             break;
           case SEND_INITIAL_DATA:
             SendInitialDataMessage sendInitialDataMes = (SendInitialDataMessage) m;
@@ -77,8 +79,7 @@ public class Client extends Thread {
             SendChatMessage scMsg = (SendChatMessage) m;
             String user = scMsg.getFrom();
             String text = scMsg.getText();
-            GameInfoController gameInfoController = new GameInfoController();
-            gameInfoController.getChatList().getItems().add(user + ": " + text);
+            gameInfoControllerClient.getInstance().updateChat(user, text);
             break;
         }
       } catch (ClassNotFoundException | IOException e) {

@@ -42,13 +42,15 @@ public class GameInfoController implements Initializable {
     //demo
    /** problems with "sendTo" method in Network.ServerProtocol.
     * @author socho
-    * chatList.getItems().add(MainController.mainController.getUserName() + ": " + sendText.getText());
+    * */
+     chatList.getItems().add(MainController.mainController.getUser().getUserName() + ": " + sendText.getText());
     MainController.mainController.getConnection()
-        .sendToServer(new SendChatMessage(MainController.mainController
-            .getUserName(), sendText.getText())); */
-
-    chatList.getItems().add(MainController.mainController.getUserName()+ ": " + sendText.getText());
+        .sendToServer(new SendChatMessage(MainController.mainController.getUser().getUserName(), sendText.getText()));
     sendText.clear();
+
+    //chatList.getItems().add(MainController.mainController.getUser().getUserName()+ ": " + sendText.getText());
+    //sendText.clear();
+
   }
 
   //populate lists with demo strings
@@ -57,25 +59,15 @@ public class GameInfoController implements Initializable {
     /**
      * TableView initialize with all players, but not 100% functional, only host sees himself and player who joins see himself either.
      * @author socho
-     * while (PlayOnlineController.playOnlineController.getGameSession().getState() == GameState.WAITING_LOBBY) {
-     if (GameBoardController.gameBoardController.getPlayButton().isPressed()){
-     PlayOnlineController.playOnlineController.getGameSession().setState(GameState.INGAME);
-     }
-     }*/
+     */
     if (MainController.mainController.getHosting()) {
       for (String player : new ArrayList<String>(
-          MainController.mainController.getGameSession().getServer().getClientNames())) {
+          MainController.mainController.getUser().getActiveSession().getServer().getClientNames())) {
         playerList.getItems().add(player);
       }
-    }else{
-      playerList.getItems().add(MainController.mainController.getUserName());
     }
-    /**playerList.getItems().add("Player1");
-     playerList.getItems().add("Player2");
-     playerList.getItems().add("Player3");
-     playerList.getItems().add("Player4"); */
 
-    chatList.getItems().add("Player1: Hello");
+    chatList.getItems().add("[System]: Hello " + MainController.mainController.getUser().getUserName() + "!");
 
   }
 
@@ -84,4 +76,27 @@ public class GameInfoController implements Initializable {
     return this.chatList;
   }
 
+  public void setChatList(ArrayList<String> chatText){
+    for (String text : chatText) {
+      this.chatList.getItems().add(text);
+    }
+  }
+
+  public JFXListView<String> getPlayerList(){
+    return this.playerList;
+  }
+
+  public void updatePlayerList(ArrayList<String> players){
+    for (String player : players) {
+      this.playerList.getItems().add(player);
+    }
+  }
+
+  public void updateChat(String from, String text) {
+    this.chatList.getItems().add(from + ": " + text);
+  }
+
+  public GameInfoController getInstance(){
+    return this.gameInfoController;
+  }
 }

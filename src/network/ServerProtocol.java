@@ -31,13 +31,14 @@ public class ServerProtocol extends Thread {
   private ObjectInputStream in;
   private ObjectOutputStream out;
   private Server server;
+  private GameSession gameSession;
   private String clientName;
   private boolean running = true;
 
-  ServerProtocol(Socket client, Server server) throws IOException {
+  ServerProtocol(Socket client, Server server, GameSession session) throws IOException {
     this.socket = client;
     this.server = server;
-
+    this.gameSession = session;
     try {
       out = new ObjectOutputStream(socket.getOutputStream());
       in = new ObjectInputStream(socket.getInputStream());
@@ -86,8 +87,13 @@ public class ServerProtocol extends Thread {
       if (m.getMessageType() == MessageType.CONNECT) {
         String from = m.getFrom();
         this.clientName = from;
+        server.sendToAllBut(server.getServerHost().getUserName(), new ApproveConnectMessage("host", server.getServerHost().getActiveSession()));
         server.addClient(from, this);
+        server.getServerHost().getActiveSession().setPlayers(server.getClientNames());
         System.out.println(this.clientName + " was added to the Lobby.");
+
+        /** checking for who is in the same one lobby. */
+        System.out.println(server.getClientNames());
       } else {
         disconnect();
       }

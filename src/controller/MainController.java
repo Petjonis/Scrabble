@@ -24,7 +24,6 @@ import model.HumanPlayer;
 import model.Player;
 import network.Client;
 import network.Server;
-import network.ServerProtocol;
 
 public class MainController implements Initializable {
 
@@ -35,6 +34,7 @@ public class MainController implements Initializable {
   private Server server;
   private Client connection;
   private GameSession gameSession;
+  GameInfoController gameInfoControllerClient;
 
   @FXML
   private JFXButton playButton;
@@ -88,7 +88,7 @@ public class MainController implements Initializable {
 
   @FXML
   void logout(ActionEvent event) {
-    System.out.println(mainController.getUser().getUsername() + ", you are logged out.");
+    System.out.println(mainController.getUser().getUserName() + ", you are logged out.");
     mainController.setLoggedIn(false);
     mainController.setUser(null);
 
@@ -194,9 +194,9 @@ public class MainController implements Initializable {
 
   public Player getUser() { return this.user; }
 
-  public String getUserName() { return this.user.getUsername(); }
+  public String getUserName() { return this.user.getUserName(); }
 
-  public void setUserName(String userName) { this.user.setUsername(userName);}
+  public void setUserName(String userName) { this.user.setUserName(userName);}
 
   public boolean getLoggedIn() { return this.loggedIn; }
 
@@ -215,4 +215,7 @@ public class MainController implements Initializable {
   public void setGameSession(GameSession session){ this.gameSession = session; }
 
   public GameSession getGameSession() { return this.gameSession; }
+
+  public GameInfoController getGameInfoControllerClient() { return this.gameInfoControllerClient;}
+  public void setGameInfoControllerClient(GameInfoController giController) {this.gameInfoControllerClient = giController; }
 }

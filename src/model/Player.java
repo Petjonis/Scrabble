@@ -9,6 +9,7 @@ package model;
 
 public abstract class Player {
   private String username;
+  private GameSession activeSession;
   private TileBag bag;
   private int score;
   private int passCount;
@@ -53,13 +54,17 @@ public abstract class Player {
     this.bag = bag;
   }
 
-  public String getUsername() {
+  public String getUserName() {
     return username;
   }
 
-  public void setUsername(String username) {
+  public void setUserName(String username) {
     this.username = username;
   }
+
+  public void setActiveSession(GameSession game) { this.activeSession = game; }
+
+  public GameSession getActiveSession() { return this.activeSession; }
 
   /**
    * This method initializes the Tilebag attribute with a field of Tiles.

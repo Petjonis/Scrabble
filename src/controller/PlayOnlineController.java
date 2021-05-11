@@ -1,6 +1,7 @@
 package controller;
 
 import com.jfoenix.controls.JFXButton;
+import com.sun.tools.javac.Main;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -67,12 +68,8 @@ public class PlayOnlineController implements Initializable {
   @FXML
   void host(ActionEvent event) throws IOException {
     if (MainController.mainController.getLoggedIn() == true) {
-      System.out.println(MainController.mainController.getUserName() + ", you are the Host.");
-      MainController.mainController.setHosting(true);
-      gameSession = new GameSession(8080);
-      gameSession.setHost(MainController.mainController.getUserName());
-      MainController.mainController.setGameSession(gameSession);
-      MainController.mainController.setServer(gameSession.getServer());
+      System.out.println(MainController.mainController.getUser().getUserName() + ", you are the Host.");
+      hostGameSession();
 
 
       Runnable r = new Runnable() {
@@ -90,11 +87,7 @@ public class PlayOnlineController implements Initializable {
       MainController.mainController.connectToServer("localhost", 8080);
       if (MainController.mainController.getConnection().isOk()) {
         MainController.mainController.getConnection()
-            .sendToServer(new ConnectMessage(MainController.mainController
-                .getUserName()));
-        MainController.mainController.getConnection().setUserName(MainController.mainController
-            .getUserName());
-
+            .sendToServer(new ConnectMessage(MainController.mainController.getUser().getUserName()));
         MainController.mainController
             .changePane(MainController.mainController.getRightPane(), "/view/GameInfo.fxml");
       }
@@ -103,6 +96,14 @@ public class PlayOnlineController implements Initializable {
       errorAlert.setContentText("You cannot host, because you are not logged in.");
       errorAlert.show();
     }
+  }
+
+  private void hostGameSession(){
+    gameSession = new GameSession(8080, MainController.mainController.getUser());
+    MainController.mainController.setGameSession(gameSession);
+    MainController.mainController.setHosting(true);
+    MainController.mainController.setServer(gameSession.getServer());
+    MainController.mainController.getUser().setActiveSession(gameSession);
   }
 
   /**
@@ -116,23 +117,23 @@ public class PlayOnlineController implements Initializable {
    */
   @FXML
   void join(ActionEvent event) throws IOException {
+    joinGameSession();
     MainController.mainController
-        .connectToServer(ipField.getText(), Integer.parseInt(portField.getText()));
+        .changePane(MainController.mainController.getRightPane(), "/view/GameInfo.fxml");
+
+  }
+
+  private void joinGameSession() throws IOException {
+    port = Integer.parseInt(portField.getText());
+    MainController.mainController.connectToServer(ipField.getText(), port);
     if (MainController.mainController.getConnection().isOk()) {
       MainController.mainController.getConnection()
-          .sendToServer(new ConnectMessage(MainController.mainController.getUserName()));
-      MainController.mainController.getConnection().setUserName(MainController.mainController
-          .getUserName());
-      System.out.println(MainController.mainController.getUserName() + " is connected.");
-
-      MainController.mainController
-          .changePane(MainController.mainController.getRightPane(), "/view/GameInfo.fxml");
+          .sendToServer(new ConnectMessage(MainController.mainController.getUser().getUserName()));
+      System.out.println(MainController.mainController.getUser().getUserName() + " is connected.");
     } else {
-      System.out.println(MainController.mainController.getUserName() + " cannot connect.");
+      System.out.println(MainController.mainController.getUser().getUserName() + " cannot connect.");
       this.errorLabel.setText("Game session could not be found.");
       this.errorLabel.setVisible(true);
     }
   }
-
-
 }
