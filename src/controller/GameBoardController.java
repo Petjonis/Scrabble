@@ -1,7 +1,8 @@
 package controller;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXChipView;
+import de.jensd.fx.glyphs.materialicons.MaterialIcon;
+import de.jensd.fx.glyphs.materialicons.MaterialIconView;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -11,15 +12,22 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
+import model.*;
+import settings.GlobalSettings;
 
 public class GameBoardController {
-    static GameBoardController gameBoardController;
+    private Board board;
+    private TileBag tb;
+    private TileRack tr;
     private static final Integer STARTTIME = 120;
+    private final IntegerProperty timeSeconds = new SimpleIntegerProperty(STARTTIME * 100);
+
     @FXML
     private VBox gameBoard;
     @FXML
@@ -32,45 +40,35 @@ public class GameBoardController {
     private JFXButton passButton;
     @FXML
     private ProgressBar progressBar;
-    private final IntegerProperty timeSeconds = new SimpleIntegerProperty(STARTTIME * 100);
-
-    private Timeline timeline;
 
     @FXML
     void pass(ActionEvent event) {
-
+        /* TODO */
     }
 
     @FXML
     void play(ActionEvent event) {
-
+        /* TODO */
     }
 
     public void initialize() {
-        //Adding demo Tiles
-        for (int i = 0; i < 5; i++) {
-            TileController tc = new TileController();
-            setOnDragDetected(tc);
-            setOnDragDone(tc);
-            tileRack.add(tc, i, 0);
-        }
+        board = new Board();
+        //for test, should get tilebag from player
+        tb = new TileBag();
+        //for test, should get tilerack from player
+        tr = new TileRack(tb);
+        renderTileRack();
+        tr.registerChangeListener(c -> renderTileRack());
 
         //Adding StackPane to every Cell in the GridPane and Adding the Target Events to each StackPane.
-        for (int i = 0; i < 15; i++) {
-            for (int j = 0; j < 15; j++) {
-                StackPane stackPane = new StackPane();
-                stackPane.setStyle("-fx-background-color: yellow;");
-                setOnDragOver(stackPane);
-                setOnDragEntered(stackPane);
-                setOnDragExited(stackPane);
-                setOnDragDropped(stackPane);
-
-                boardGrid.add(stackPane, i, j);
+        for (int row = 0; row < GlobalSettings.ROWS; row++) {
+            for (int col = 0; col < GlobalSettings.COLUMNS; col++) {
+                addStackPaneToBoardGrid(row,col);
             }
         }
 
         //start demo progress bar
-        startProgressBar();
+        //startProgressBar();
 
     }
 
@@ -78,7 +76,7 @@ public class GameBoardController {
     public void setOnDragOver(StackPane target) {
         target.setOnDragOver((DragEvent event) -> {
             /* data is dragged over the target */
-            System.out.println("onDragOver");
+            //System.out.println("onDragOver");
 
             /* accept it only if it is  not dragged from the same node
              * and if it has a string data */
@@ -95,11 +93,11 @@ public class GameBoardController {
     public void setOnDragEntered(StackPane target) {
         target.setOnDragEntered((DragEvent event) -> {
             /* the drag-and-drop gesture entered the target */
-            System.out.println("onDragEntered");
+            //System.out.println("onDragEntered");
             /* show to the user that it is an actual gesture target */
             if (event.getGestureSource() != target
             ) {
-                target.setStyle("-fx-background-color: green;");
+                target.setStyle("-fx-background-color: green");
             }
 
             event.consume();
@@ -109,7 +107,9 @@ public class GameBoardController {
     public void setOnDragExited(StackPane target) {
         target.setOnDragExited((DragEvent event) -> {
             /* mouse moved away, remove the graphical cues */
-            target.setStyle("-fx-background-color: yellow;");
+            int row = GridPane.getRowIndex(target);
+            int col = GridPane.getColumnIndex(target);
+            target.setStyle("-fx-background-color: " + board.getSquares()[row][col].getColor() + ";");
 
             event.consume();
         });
@@ -118,7 +118,7 @@ public class GameBoardController {
     public void setOnDragDropped(StackPane target) {
         target.setOnDragDropped((DragEvent event) -> {
             /* data dropped */
-            System.out.println("onDragDropped");
+            //System.out.println("onDragDropped");
             /* if there is a string data on dragboard, read it and use it */
             Dragboard db = event.getDragboard();
             boolean success = false;
@@ -147,7 +147,7 @@ public class GameBoardController {
         tile.setOnDragDetected(
                 (MouseEvent event) -> {
                     /* drag was detected, start drag-and-drop gesture*/
-                    System.out.println("onDragDetected");
+                    //System.out.println("onDragDetected");
 
                     /* allow transfer mode move*/
                     Dragboard db = tile.startDragAndDrop(TransferMode.MOVE);
@@ -165,23 +165,19 @@ public class GameBoardController {
     public void setOnDragDone(TileController tile) {
         tile.setOnDragDone((DragEvent event) -> {
             /* the drag-and-drop gesture ended */
-            System.out.println("onDragDone");
+            //System.out.println("onDragDone");
             /* if the data was successfully moved, clear it */
             if (event.getTransferMode() == TransferMode.MOVE) {
                 if (tileRack.getChildren().contains(tile)) {
-                    tileRack.getChildren().remove(tile);
+                    int col = GridPane.getColumnIndex(tile);
+                    tr.remove(col);
+                    /*TEST
+                    tr.refillFromBag();*/
                 } else if (boardGrid.getChildren().contains(tile)) {
-
                     int row = GridPane.getRowIndex(tile);
                     int col = GridPane.getColumnIndex(tile);
                     boardGrid.getChildren().remove(tile);
-                    StackPane stackPane = new StackPane();
-                    stackPane.setStyle("-fx-background-color: yellow;");
-                    setOnDragOver(stackPane);
-                    setOnDragEntered(stackPane);
-                    setOnDragExited(stackPane);
-                    setOnDragDropped(stackPane);
-                    boardGrid.add(stackPane, col, row);
+                    addStackPaneToBoardGrid(row,col);
                 }
             }
 
@@ -192,14 +188,34 @@ public class GameBoardController {
     public void startProgressBar() {
         progressBar.progressProperty().bind(timeSeconds.divide(STARTTIME * 100.0).subtract(1).multiply(-1));
         timeSeconds.set((STARTTIME + 1) * 100);
-        timeline = new Timeline();
+        Timeline timeline = new Timeline();
         timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(STARTTIME + 1), new KeyValue(timeSeconds, 0)));
         timeline.playFromStart();
     }
 
+    private void addStackPaneToBoardGrid(int row,int col){
+        StackPane stackPane = new StackPane();
+        stackPane.setStyle("-fx-background-color: " + board.getSquares()[row][col].getColor() + ";");
+        if(board.getSquares()[row][col].getType() == SquareType.START){
+            MaterialIconView m = new MaterialIconView(MaterialIcon.STAR);
+            m.setSize("25");
+            stackPane.getChildren().add(m);
+        }
+        setOnDragOver(stackPane);
+        setOnDragEntered(stackPane);
+        setOnDragExited(stackPane);
+        setOnDragDropped(stackPane);
+        boardGrid.add(stackPane, col, row);
+    }
 
-    /** getter for private attributes*/
-    public JFXButton getPlayButton(){
-        return this.playButton;
+    private void renderTileRack(){
+        tileRack.getChildren().clear();
+        for(Tile t:tr.getTileRack()){
+            TileController tc = new TileController();
+            tc.setString(t.toString());
+            setOnDragDetected(tc);
+            setOnDragDone(tc);
+            tileRack.add(tc, tr.getTileRack().indexOf(t), 0);
+        }
     }
 }

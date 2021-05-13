@@ -11,6 +11,7 @@ public abstract class Player {
   private String username;
   private GameSession activeSession;
   private TileBag bag;
+  private TileRack rack;
   private int score;
   private int passCount;
 
@@ -66,12 +67,4 @@ public abstract class Player {
 
   public GameSession getActiveSession() { return this.activeSession; }
 
-  /**
-   * This method initializes the Tilebag attribute with a field of Tiles.
-   *
-   * @param tiles is a Tile-Array with maximum of 100 Tiles.
-   */
-  public void createTileBag(Tile[] tiles) {
-    this.bag.setTiles(tiles);
-  }
 }
