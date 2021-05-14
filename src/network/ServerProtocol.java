@@ -8,8 +8,6 @@ package network;
  */
 
 import com.sun.tools.javac.Main;
-import controller.MainController;
-import controller.PlayOnlineController;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -21,6 +19,7 @@ import messages.MessageType;
 import messages.SendChatMessage;
 import messages.SendInitialDataMessage;
 import messages.SendTileMessage;
+import messages.UpdatePlayerListMessage;
 import model.GameSession;
 import model.Square;
 import model.Tile;
@@ -50,7 +49,7 @@ public class ServerProtocol extends Thread {
 
   public void sendInitialData() throws IOException {
     SendInitialDataMessage sendingDataMessage = new SendInitialDataMessage("host",
-        new ArrayList<String>(), new ArrayList<String>());
+        server.getServerHost().getActiveSession().getPlayers(), new ArrayList<String>());
     sendToClient(sendingDataMessage);
   }
 
@@ -77,8 +76,9 @@ public class ServerProtocol extends Thread {
 
 
   /**
-   * Clients will be connected to the server only when they send the Connect-Message.
-   * and Clients will get a ApproveConnectMessage.
+   * Clients will be connected to the server only when they send the Connect-Message. and Clients
+   * will get a ApproveConnectMessage with the game session which the server host is part of.
+   * Server sends a "UpdatePlayerList" message to all clients to update the player list.
    */
   public void run() {
     Message m;
@@ -87,17 +87,20 @@ public class ServerProtocol extends Thread {
       if (m.getMessageType() == MessageType.CONNECT) {
         String from = m.getFrom();
         this.clientName = from;
-        server.sendToAllBut(server.getServerHost().getUserName(), new ApproveConnectMessage("host", server.getServerHost().getActiveSession()));
+        server.sendToAllBut(server.getServerHost().getUserName(),
+            new ApproveConnectMessage("host", server.getGameSession()));
         server.addClient(from, this);
-        server.getServerHost().getActiveSession().setPlayers(server.getClientNames());
+        this.gameSession.setPlayers(server.getClientNames());
+        server.sendToAll(
+            new UpdatePlayerListMessage("host", new ArrayList<String>(server.getClientNames())));
         System.out.println(this.clientName + " was added to the Lobby.");
-
         /** checking for who is in the same one lobby. */
-        System.out.println(server.getClientNames());
+        System.out.println(this.gameSession.getPlayers());
       } else {
         disconnect();
       }
 
+      /** while the server runs many different messages will reach the server.*/
       while (running) {
         m = (Message) in.readObject();
         switch (m.getMessageType()) {

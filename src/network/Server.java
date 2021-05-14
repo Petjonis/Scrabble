@@ -32,10 +32,11 @@ public class Server {
   private GameSession gameSession;
   private Player serverHost;
 
-  public Server (int portNumber, Player me){
-    this.port =  portNumber;
+  public Server(int portNumber, Player me) {
+    this.port = portNumber;
     this.serverHost = me;
   }
+
   /**
    * collects all connected clients in a HashMap.
    */
@@ -70,7 +71,8 @@ public class Server {
       while (running) {
         Socket clientSocket = hostSocket.accept();
 
-        ServerProtocol clientConnectionThread = new ServerProtocol(clientSocket, this, this.gameSession);
+        ServerProtocol clientConnectionThread = new ServerProtocol(clientSocket, this,
+            this.gameSession);
         clientConnectionThread.start();
       }
     } catch (IOException e) {
@@ -135,6 +137,9 @@ public class Server {
     }
   }
 
+  /**
+   * getter and setter methods for attributes.
+   */
   public int getPort() {
     return this.port;
   }
@@ -147,6 +152,15 @@ public class Server {
     return this.gameSession;
   }
 
-  public void setServerHost(Player user) { this.serverHost = user; }
-  public Player getServerHost() { return this.serverHost; }
+  public void setGameSession(GameSession session) {
+    this.gameSession = session;
+  }
+
+  public void setServerHost(Player user) {
+    this.serverHost = user;
+  }
+
+  public Player getServerHost() {
+    return this.serverHost;
+  }
 }

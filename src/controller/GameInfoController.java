@@ -14,10 +14,10 @@ import javafx.scene.layout.AnchorPane;
 import java.net.URL;
 import java.util.ResourceBundle;
 import messages.SendChatMessage;
-import model.GameState;
 
 public class GameInfoController implements Initializable {
-  static GameInfoController gameInfoController;
+
+  public static GameInfoController gameInfoController;
 
   @FXML
   private AnchorPane gameInfoPane;
@@ -37,66 +37,46 @@ public class GameInfoController implements Initializable {
   @FXML
   private JFXButton sendButton;
 
+  /**
+   * Listview "chatList" adds the text, which was written from the textfield "sendText" and the
+   * user, who wrote the text. A new SendChatMessage with the text and the user who wrote it, will
+   * be send to the server. Textfield will be cleared after this, so the user can write a new text.
+   *
+   * @author socho
+   */
   @FXML
   void send(ActionEvent event) throws IOException {
-    //demo
-   /** problems with "sendTo" method in Network.ServerProtocol.
-    * @author socho
-    * */
-     chatList.getItems().add(MainController.mainController.getUser().getUserName() + ": " + sendText.getText());
+    chatList.getItems()
+        .add(MainController.mainController.getUser().getUserName() + ": " + sendText.getText());
     MainController.mainController.getConnection()
-        .sendToServer(new SendChatMessage(MainController.mainController.getUser().getUserName(), sendText.getText()));
+        .sendToServer(new SendChatMessage(MainController.mainController.getUser().getUserName(),
+            sendText.getText()));
     sendText.clear();
 
-    //chatList.getItems().add(MainController.mainController.getUser().getUserName()+ ": " + sendText.getText());
-    //sendText.clear();
-
   }
 
-  //populate lists with demo strings
+  /** chatList adds a welcome message to the user who joined to the game session. */
   public void initialize(URL url, ResourceBundle resourceBundle) {
     gameInfoController = this;
-    /**
-     * TableView initialize with all players, but not 100% functional, only host sees himself and player who joins see himself either.
-     * @author socho
-     */
-    if (MainController.mainController.getHosting()) {
-      for (String player : new ArrayList<String>(
-          MainController.mainController.getUser().getActiveSession().getServer().getClientNames())) {
-        playerList.getItems().add(player);
-      }
-    }
 
-    chatList.getItems().add("[System]: Hello " + MainController.mainController.getUser().getUserName() + "!");
+    chatList.getItems()
+        .add("[System]: Hello " + MainController.mainController.getUser().getUserName() + "!");
 
   }
 
-  /** getter method. */
-  public JFXListView<String> getChatList(){
-    return this.chatList;
-  }
+  /**
+   * update methods for players list, last words list and chat.
+   */
 
-  public void setChatList(ArrayList<String> chatText){
-    for (String text : chatText) {
-      this.chatList.getItems().add(text);
-    }
-  }
-
-  public JFXListView<String> getPlayerList(){
-    return this.playerList;
-  }
-
-  public void updatePlayerList(ArrayList<String> players){
+  public void updatePlayerList(ArrayList<String> players) {
     for (String player : players) {
-      this.playerList.getItems().add(player);
+      playerList.getItems().add(player);
     }
   }
+
 
   public void updateChat(String from, String text) {
-    this.chatList.getItems().add(from + ": " + text);
+    chatList.getItems().add(from + ": " + text);
   }
 
-  public GameInfoController getInstance(){
-    return this.gameInfoController;
-  }
 }

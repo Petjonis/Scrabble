@@ -20,21 +20,19 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import model.GameSession;
-import model.HumanPlayer;
 import model.Player;
 import network.Client;
 import network.Server;
 
 public class MainController implements Initializable {
 
-  static MainController mainController;
+  public static MainController mainController;
   private Player user;
   private boolean loggedIn = false;
-  private boolean hosting = false ;
+  private boolean hosting = false;
   private Server server;
   private Client connection;
   private GameSession gameSession;
-  GameInfoController gameInfoControllerClient;
 
   @FXML
   private JFXButton playButton;
@@ -71,18 +69,13 @@ public class MainController implements Initializable {
   public void initialize(URL url, ResourceBundle resourceBundle) {
     mainController = this;
 
-
     /** Player not logged in, so "Logout"-button will not be visible.*/
-    if(!mainController.getLoggedIn()) {
+    if (!mainController.getLoggedIn()) {
       this.logoutButton.setVisible(false);
-      /** if player is logged in, he will not see the option to login or signup but to logout.
+      /**
        * @apiNote need buttons for changing username, password or avater and to make clear player is logged in, as "Welcome ____ !".
        *
        * */
-    }else{
-      this.logoutButton.setVisible(true);
-      this.loginButton.setVisible(false);
-      this.signupButton.setVisible(false);
     }
   }
 
@@ -176,46 +169,65 @@ public class MainController implements Initializable {
   /**
    * getter and setter methods for all private attributes.
    */
-  public MainController getInstance(){
-    return this.mainController;
+
+  public StackPane getCenterPane() {
+    return centerPane;
   }
 
-  public StackPane getCenterPane() { return centerPane; }
+  public StackPane getRightPane() {
+    return rightPane;
+  }
 
-  public StackPane getRightPane() { return rightPane; }
+  public JFXButton getLoginButton() {
+    return loginButton;
+  }
 
-  public JFXButton getLoginButton() { return loginButton; }
+  public JFXButton getSignupButton() {
+    return signupButton;
+  }
 
-  public JFXButton getSignupButton() { return signupButton; }
+  public JFXButton getLogoutButton() {
+    return logoutButton;
+  }
 
-  public JFXButton getLogoutButton() { return logoutButton; }
+  public void setUser(Player player) {
+    this.user = player;
+  }
 
-  public void setUser(Player player) { this.user = player; }
+  public Player getUser() {
+    return this.user;
+  }
 
-  public Player getUser() { return this.user; }
+  public boolean getLoggedIn() {
+    return this.loggedIn;
+  }
 
-  public String getUserName() { return this.user.getUserName(); }
+  public void setLoggedIn(boolean log) {
+    this.loggedIn = log;
+  }
 
-  public void setUserName(String userName) { this.user.setUserName(userName);}
+  public void setHosting(boolean host) {
+    this.hosting = host;
+  }
 
-  public boolean getLoggedIn() { return this.loggedIn; }
+  public Client getConnection() {
+    return this.connection;
+  }
 
-  public void setLoggedIn(boolean log) { this.loggedIn = log; }
+  public Server getServer() {
+    return this.server;
+  }
 
-  public boolean getHosting() { return this.hosting; }
+  public void setServer(Server serv) {
+    this.server = serv;
+  }
 
-  public void setHosting(boolean host) { this.hosting = host; }
+  public void setGameSession(GameSession session) {
+    this.gameSession = session;
+  }
 
-  public Client getConnection() { return this.connection; }
+  public GameSession getGameSession() {
+    return this.gameSession;
+  }
 
-  public Server getServer() { return this.server; }
-
-  public void setServer(Server serv){ this.server = serv; }
-
-  public void setGameSession(GameSession session){ this.gameSession = session; }
-
-  public GameSession getGameSession() { return this.gameSession; }
-
-  public GameInfoController getGameInfoControllerClient() { return this.gameInfoControllerClient;}
-  public void setGameInfoControllerClient(GameInfoController giController) {this.gameInfoControllerClient = giController; }
 }

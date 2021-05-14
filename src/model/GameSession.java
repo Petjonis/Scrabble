@@ -1,29 +1,30 @@
 package model;
 
-import controller.GameInfoController;
-import controller.MainController;
 import java.util.ArrayList;
 import java.util.Set;
 import network.Server;
 
+/** class represents the game session which is essential for the network game.  */
+
 public class GameSession {
 
   private static int gameLobbyId = 0;
-  private String gameMode;
   private GameState state;
   private ArrayList<String> players;
   private Server server;
   private Player host;
   private static ArrayList<GameSession> sessions = new ArrayList<GameSession>();
-  private GameInfoController gameInfoController ;
 
-  public GameSession(int portNumber, Player maker) {
-    this.server = new Server(portNumber, maker);
+  public GameSession(int portNumber, Player host) {
+    this.server = new Server(portNumber, host);
+    this.server.setGameSession(this);
     gameLobbyId++;
-    this.host = maker;
+    this.host = host;
     this.state = GameState.WAITING_LOBBY;
     this.sessions.add(this);
   }
+
+  /** getter and setter methods for all attributes. */
 
   public void setState(GameState gs) {
     this.state = gs;
@@ -33,30 +34,33 @@ public class GameSession {
     return this.state;
   }
 
-  public void setGameMode(String s) {
-    this.gameMode = s;
+  public int getGameLobbyId() {
+    return this.gameLobbyId;
   }
 
-  public String getGameMode() {
-    return this.gameMode;
+  public void setPlayers(Set<String> list) {
+    this.players = new ArrayList<String>(list);
   }
-
-  public int getGameLobbyId() { return this.gameLobbyId; }
-
-  public void setPlayers(Set<String> list){ this.players = new ArrayList<String>(list);}
 
   public ArrayList<String> getPlayers() {
     this.players = new ArrayList<String>(this.server.getClientNames());
     return players;
   }
 
-  public void setHost(Player hostName) { this.host = hostName; }
-  public Player getHost() { return this.host; }
+  public void setHost(Player hostName) {
+    this.host = hostName;
+  }
 
-  public Server getServer(){ return this.server; }
+  public Player getHost() {
+    return this.host;
+  }
 
-  public ArrayList<GameSession> getSessions() { return this.sessions;}
+  public Server getServer() {
+    return this.server;
+  }
 
-  public GameInfoController getGameInfoController() { return this.gameInfoController; }
-  public void setGameInfoController (GameInfoController giControl) { this.gameInfoController = giControl; }
+  public ArrayList<GameSession> getSessions() {
+    return this.sessions;
+  }
+
 }

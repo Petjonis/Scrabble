@@ -8,32 +8,26 @@ package network;
  */
 
 import controller.GameInfoController;
-import controller.LoginController;
 import controller.MainController;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import javafx.fxml.Initializable;
 import messages.ApproveConnectMessage;
-import messages.ConnectMessage;
 import messages.DisconnectMessage;
 import messages.Message;
 import messages.SendChatMessage;
 import messages.SendInitialDataMessage;
+import messages.UpdatePlayerListMessage;
 import model.GameSession;
 
 public class Client extends Thread {
 
-  private String userName;
-  private boolean host = false;
   private Socket clientSocket;
   private ObjectOutputStream out;
   private ObjectInputStream in;
-  private boolean loggedIn = false;
   private boolean running = true;
   private GameSession gameSession;
-  private GameInfoController gameInfoControllerClient;
 
   /**
    * Constructor for the client.
@@ -68,9 +62,12 @@ public class Client extends Thread {
         Message m = (Message) in.readObject();
         switch (m.getMessageType()) {
           case APPROVE_CONNECT:
-            ApproveConnectMessage acMsg = (ApproveConnectMessage) m ;
-            this.gameSession =  acMsg.getGameSession();
-            gameInfoControllerClient.getInstance().updatePlayerList(this.gameSession.getPlayers());
+            ApproveConnectMessage acMsg = (ApproveConnectMessage) m;
+            MainController.mainController.getUser().setActiveSession(acMsg.getGameSession());
+            break;
+          case UPDATE_PLAYLIST:
+            UpdatePlayerListMessage uplMsg = (UpdatePlayerListMessage) m;
+            GameInfoController.gameInfoController.updatePlayerList(uplMsg.getActivePlayers());
             break;
           case SEND_INITIAL_DATA:
             SendInitialDataMessage sendInitialDataMes = (SendInitialDataMessage) m;
@@ -79,7 +76,7 @@ public class Client extends Thread {
             SendChatMessage scMsg = (SendChatMessage) m;
             String user = scMsg.getFrom();
             String text = scMsg.getText();
-            gameInfoControllerClient.getInstance().updateChat(user, text);
+            GameInfoController.gameInfoController.updateChat(user, text);
             break;
         }
       } catch (ClassNotFoundException | IOException e) {
@@ -113,36 +110,14 @@ public class Client extends Thread {
   }
 
   /**
-   * getter and setter method for the boolean "loggedIn".
+   * getter and setter methods for attributes.
    */
-  public void setLoggedIn(boolean logged) {
-    this.loggedIn = logged;
+
+  public void setGameSession(GameSession session) {
+    this.gameSession = session;
   }
 
-  public boolean getLoggedIn() {
-    return this.loggedIn;
+  public GameSession getGameSession() {
+    return this.gameSession;
   }
-
-  /**
-   * getter and setter method for the boolean "host".
-   */
-  public void setHost(boolean hosting) {
-    this.host = hosting;
-  }
-
-  public boolean getHost() {
-    return this.host;
-  }
-
-  public String getUserName() {
-    return this.userName;
-  }
-
-  public void setUserName(String name) {
-    this.userName = name;
-  }
-
-  public void setGameSession(GameSession session){ this.gameSession = session; }
-
-  public GameSession getGameSession() { return this.gameSession; }
 }
