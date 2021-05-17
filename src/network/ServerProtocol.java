@@ -8,12 +8,12 @@ package network;
  */
 
 import com.sun.tools.javac.Main;
+import controller.MainController;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
-import messages.ApproveConnectMessage;
 import messages.Message;
 import messages.MessageType;
 import messages.SendChatMessage;
@@ -41,17 +41,11 @@ public class ServerProtocol extends Thread {
     try {
       out = new ObjectOutputStream(socket.getOutputStream());
       in = new ObjectInputStream(socket.getInputStream());
-      sendInitialData();
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
-  public void sendInitialData() throws IOException {
-    SendInitialDataMessage sendingDataMessage = new SendInitialDataMessage("host",
-        server.getServerHost().getActiveSession().getPlayers(), new ArrayList<String>());
-    sendToClient(sendingDataMessage);
-  }
 
   /**
    * sends to this client.
@@ -77,8 +71,8 @@ public class ServerProtocol extends Thread {
 
   /**
    * Clients will be connected to the server only when they send the Connect-Message. and Clients
-   * will get a ApproveConnectMessage with the game session which the server host is part of.
-   * Server sends a "UpdatePlayerList" message to all clients to update the player list.
+   * will get a ApproveConnectMessage with the game session which the server host is part of. Server
+   * sends a "UpdatePlayerList" message to all clients to update the player list.
    */
   public void run() {
     Message m;
@@ -87,8 +81,6 @@ public class ServerProtocol extends Thread {
       if (m.getMessageType() == MessageType.CONNECT) {
         String from = m.getFrom();
         this.clientName = from;
-        server.sendToAllBut(server.getServerHost().getUserName(),
-            new ApproveConnectMessage("host", server.getGameSession()));
         server.addClient(from, this);
         this.gameSession.setPlayers(server.getClientNames());
         server.sendToAll(
@@ -104,6 +96,10 @@ public class ServerProtocol extends Thread {
       while (running) {
         m = (Message) in.readObject();
         switch (m.getMessageType()) {
+          case REQUEST_PLAYERLIST:
+            server.sendToAll(new UpdatePlayerListMessage("host", server.getGameSession()
+                .getPlayers()));
+            break;
           case SEND_TILE:
             SendTileMessage stMsg = (SendTileMessage) m;
             Tile tile = stMsg.getTile();

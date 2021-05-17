@@ -13,7 +13,9 @@ import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import messages.RequestPlayerListMessage;
 import messages.SendChatMessage;
+import messages.UpdatePlayerListMessage;
 
 public class GameInfoController implements Initializable {
 
@@ -52,7 +54,6 @@ public class GameInfoController implements Initializable {
         .sendToServer(new SendChatMessage(MainController.mainController.getUser().getUserName(),
             sendText.getText()));
     sendText.clear();
-
   }
 
   /** chatList adds a welcome message to the user who joined to the game session. */
@@ -62,6 +63,16 @@ public class GameInfoController implements Initializable {
     chatList.getItems()
         .add("[System]: Hello " + MainController.mainController.getUser().getUserName() + "!");
 
+    try {
+      sendRequestMessage();
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void sendRequestMessage() throws IOException {
+    MainController.mainController.getConnection().sendToServer(new RequestPlayerListMessage(MainController.mainController.getUser().getUserName()));
   }
 
   /**
@@ -74,6 +85,9 @@ public class GameInfoController implements Initializable {
     }
   }
 
+  public void updatePlayers(String userName){
+    playerList.getItems().add(userName);
+  }
 
   public void updateChat(String from, String text) {
     chatList.getItems().add(from + ": " + text);

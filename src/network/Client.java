@@ -8,12 +8,10 @@ package network;
  */
 
 import controller.GameInfoController;
-import controller.MainController;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import messages.ApproveConnectMessage;
 import messages.DisconnectMessage;
 import messages.Message;
 import messages.SendChatMessage;
@@ -61,11 +59,7 @@ public class Client extends Thread {
       try {
         Message m = (Message) in.readObject();
         switch (m.getMessageType()) {
-          case APPROVE_CONNECT:
-            ApproveConnectMessage acMsg = (ApproveConnectMessage) m;
-            MainController.mainController.getUser().setActiveSession(acMsg.getGameSession());
-            break;
-          case UPDATE_PLAYLIST:
+          case UPDATE_PLAYERLIST:
             UpdatePlayerListMessage uplMsg = (UpdatePlayerListMessage) m;
             GameInfoController.gameInfoController.updatePlayerList(uplMsg.getActivePlayers());
             break;
