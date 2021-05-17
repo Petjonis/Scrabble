@@ -80,14 +80,22 @@ public class MainController implements Initializable {
   }
 
   @FXML
-  void logout(ActionEvent event) {
-    System.out.println(mainController.getUser().getUserName() + ", you are logged out.");
-    mainController.setLoggedIn(false);
-    mainController.setUser(null);
+  void logout(ActionEvent event) throws IOException {
+    if (hosting) {
+      getServer().stopServer();
+    }
 
-    mainController.getLoginButton().setVisible(true);
-    mainController.getSignupButton().setVisible(true);
-    mainController.getLogoutButton().setVisible(false);
+    System.out.println(getUser().getUserName() + ", you are logged out.");
+    getConnection().disconnect();
+    setLoggedIn(false);
+    setUser(null);
+
+    getLoginButton().setVisible(true);
+    getSignupButton().setVisible(true);
+    getLogoutButton().setVisible(false);
+
+    centerPane.getChildren().clear();
+    rightPane.getChildren().clear();
   }
 
   @FXML

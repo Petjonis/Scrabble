@@ -14,6 +14,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import messages.ConnectionRefusedMessage;
+import messages.DisconnectMessage;
 import messages.Message;
 import messages.MessageType;
 import messages.SendChatMessage;
@@ -76,12 +78,15 @@ public class ServerProtocol extends Thread {
    */
   public void run() {
     Message m;
+    Tile tile ;
+    Square [][] position;
+    String user;
     try {
       m = (Message) in.readObject();
       if (m.getMessageType() == MessageType.CONNECT) {
-        String from = m.getFrom();
-        this.clientName = from;
-        server.addClient(from, this);
+        user = m.getFrom();
+        this.clientName = user;
+        server.addClient(user, this);
         this.gameSession.setPlayers(server.getClientNames());
         server.sendToAll(
             new UpdatePlayerListMessage("host", new ArrayList<String>(server.getClientNames())));
@@ -95,6 +100,7 @@ public class ServerProtocol extends Thread {
       /** while the server runs many different messages will reach the server.*/
       while (running) {
         m = (Message) in.readObject();
+
         switch (m.getMessageType()) {
           case REQUEST_PLAYERLIST:
             server.sendToAll(new UpdatePlayerListMessage("host", server.getGameSession()
@@ -102,15 +108,23 @@ public class ServerProtocol extends Thread {
             break;
           case SEND_TILE:
             SendTileMessage stMsg = (SendTileMessage) m;
-            Tile tile = stMsg.getTile();
-            Square[][] position = stMsg.getPosition();
-            String from = stMsg.getFrom();
+            tile = stMsg.getTile();
+            position = stMsg.getPosition();
+            user = stMsg.getFrom();
             server.sendToAll(stMsg);
             break;
           case SEND_MESSAGE:
             SendChatMessage scMsg = (SendChatMessage) m;
-            String user = scMsg.getFrom();
+            user = scMsg.getFrom();
             server.sendToAllBut(user, scMsg);
+            break;
+          case DISCONNECT:
+            DisconnectMessage dcMsg = (DisconnectMessage) m;
+            user = dcMsg.getFrom();
+            server.removeClient(user);
+            System.out.println(user + " left the Lobby.");
+            /** for checking */
+            System.out.println(server.getClientNames());
             break;
           default:
             break;

@@ -112,6 +112,13 @@ public class Server {
   }
 
   /**
+   * sending to specific client/s.
+   */
+  public void sendToAll (ArrayList<String> list, Message m){
+    sendTo (list, (Message) (m.clone()));
+  }
+
+  /**
    * send to all clients except for one.
    */
   public void sendToAllBut(String name, Message m) {

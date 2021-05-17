@@ -8,6 +8,7 @@ package network;
  */
 
 import controller.GameInfoController;
+import controller.MainController;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -61,7 +62,7 @@ public class Client extends Thread {
         switch (m.getMessageType()) {
           case UPDATE_PLAYERLIST:
             UpdatePlayerListMessage uplMsg = (UpdatePlayerListMessage) m;
-            GameInfoController.gameInfoController.updatePlayerList(uplMsg.getActivePlayers());
+            //GameInfoController.gameInfoController.updatePlayerList(uplMsg.getActivePlayers());
             break;
           case SEND_INITIAL_DATA:
             SendInitialDataMessage sendInitialDataMes = (SendInitialDataMessage) m;
@@ -95,7 +96,7 @@ public class Client extends Thread {
     running = false;
     try {
       if (!clientSocket.isClosed()) {
-        this.out.writeObject(new DisconnectMessage(new String("user")));
+        this.out.writeObject(new DisconnectMessage(MainController.mainController.getUser().getUserName()));
         clientSocket.close();
       }
     } catch (IOException e) {

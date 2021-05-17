@@ -15,6 +15,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 
 import messages.ConnectMessage;
+import messages.ConnectionRefusedMessage;
 import model.GameSession;
 
 public class PlayOnlineController implements Initializable {
@@ -55,12 +56,14 @@ public class PlayOnlineController implements Initializable {
   public void initialize(URL url, ResourceBundle resourceBundle) {
     this.errorLabel.setVisible(false);
     this.ipField.setText("localhost");
+    this.portField.setText("8080");
   }
 
   /**
    * "Host"-button can only be pressed, when player is logged in. System recognizes host and sets
-   * "Host"-token to the user and calls the hostGameSession()-method. Host will also be on the list, which contains all players who are in
-   * the game session. System changes the view and server waits for other clients to join.
+   * "Host"-token to the user and calls the hostGameSession()-method. Host will also be on the list,
+   * which contains all players who are in the game session. System changes the view and server
+   * waits for other clients to join.
    *
    * @author socho
    */
@@ -119,34 +122,43 @@ public class PlayOnlineController implements Initializable {
    */
   @FXML
   void join(ActionEvent event) throws IOException {
-    joinGameSession();
-    MainController.mainController
-        .changePane(MainController.mainController.getRightPane(), "/view/GameInfo.fxml");
-
+    if (joinGameSession()) {
+      MainController.mainController
+          .changePane(MainController.mainController.getRightPane(), "/view/GameInfo.fxml");
+    }
   }
 
   /**
    * client connects to the server with the server ip and port which the user entered before. if
    * connection is alright (see isOk() method in "Client.java"), a new Connect-Message will be sent
-   * to the server.
+   * to the server. portfield will be checked if it is empty and matches to specific regex. if not,
+   * the right game info pane will not show up.
    *
    * @author socho
    */
 
-  private void joinGameSession() throws IOException {
-    port = Integer.parseInt(portField.getText());
-    MainController.mainController.connectToServer(ipField.getText(), port);
-    if (MainController.mainController.getConnection().isOk()) {
-      MainController.mainController.getConnection()
-          .sendToServer(
-              new ConnectMessage(MainController.mainController.getUser().getUserName()));
-      System.out
-          .println(MainController.mainController.getUser().getUserName() + " is connected.");
+  private boolean joinGameSession() throws IOException {
+    if (!portField.getText().isEmpty() && portField.getText().matches("[0-9]{1,4}")) {
+      port = Integer.parseInt(portField.getText());
+      MainController.mainController.connectToServer(ipField.getText(), port);
+      if (MainController.mainController.getConnection().isOk()) {
+        MainController.mainController.getConnection()
+            .sendToServer(
+                new ConnectMessage(MainController.mainController.getUser().getUserName()));
+        System.out
+            .println(MainController.mainController.getUser().getUserName() + " is connected.");
+        return true;
+      } else {
+        System.out
+            .println(MainController.mainController.getUser().getUserName() + " cannot connect.");
+        this.errorLabel.setText("Game session could not be found.");
+        this.errorLabel.setVisible(true);
+        return false;
+      }
     } else {
-      System.out
-          .println(MainController.mainController.getUser().getUserName() + " cannot connect.");
-      this.errorLabel.setText("Game session could not be found.");
+      this.errorLabel.setText("Port is not ideal.");
       this.errorLabel.setVisible(true);
+      return false;
     }
   }
 }
