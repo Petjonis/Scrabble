@@ -1,5 +1,6 @@
 package model;
 
+import controller.MainController;
 import java.util.ArrayList;
 import java.util.Set;
 import network.Server;
@@ -15,11 +16,11 @@ public class GameSession {
   private Player host;
   private TileBag tilebag;
 
-  public GameSession(int portNumber, Player host) {
-    this.server = new Server(portNumber, host);
+  public GameSession(int portNumber) {
+    this.server = new Server(portNumber);
     this.server.setGameSession(this);
+    this.server.setServerHost(this.host);
     gameLobbyId++;
-    this.host = host;
     this.state = GameState.WAITING_LOBBY;
     this.tilebag = new TileBag();
     this.sessions.add(this);
@@ -51,8 +52,8 @@ public class GameSession {
     return this.host;
   }
 
-  public void setHost(Player hostName) {
-    this.host = hostName;
+  public void setHost(Player hostPlayer) {
+    this.host = hostPlayer;
   }
 
   public Server getServer() {

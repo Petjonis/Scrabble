@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import messages.DisconnectMessage;
 import messages.Message;
 import messages.SendChatMessage;
@@ -62,7 +63,9 @@ public class Client extends Thread {
         switch (m.getMessageType()) {
           case UPDATE_PLAYERLIST:
             UpdatePlayerListMessage uplMsg = (UpdatePlayerListMessage) m;
-            //GameInfoController.gameInfoController.updatePlayerList(uplMsg.getActivePlayers());
+            System.out.println("Players on the list: " + uplMsg.getActivePlayers());
+            ArrayList<String> liste = uplMsg.getActivePlayers();
+            GameInfoController.gameInfoController.updatePlayerList(liste);
             break;
           case SEND_INITIAL_DATA:
             SendInitialDataMessage sendInitialDataMes = (SendInitialDataMessage) m;

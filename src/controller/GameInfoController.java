@@ -3,7 +3,6 @@ package controller;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextArea;
-import com.sun.tools.javac.Main;
 import java.io.IOException;
 import java.util.ArrayList;
 import javafx.event.ActionEvent;
@@ -15,7 +14,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import messages.RequestPlayerListMessage;
 import messages.SendChatMessage;
-import messages.UpdatePlayerListMessage;
 
 public class GameInfoController implements Initializable {
 
@@ -65,7 +63,6 @@ public class GameInfoController implements Initializable {
 
     try {
       sendRequestMessage();
-
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -81,12 +78,15 @@ public class GameInfoController implements Initializable {
 
   public void updatePlayerList(ArrayList<String> players) {
     for (String player : players) {
-      playerList.getItems().add(player);
+      if (playerList.getItems().isEmpty()) {
+        playerList.getItems().add(player);
+      }else if (!playerList.getItems().isEmpty() && playerList.getItems().equals(player)) {
+        playerList.getItems().remove(player);
+      }else if (!playerList.getItems().isEmpty() && !playerList.getItems().equals(player)) {
+        playerList.getItems().add(player);
+      }
     }
-  }
 
-  public void updatePlayers(String userName){
-    playerList.getItems().add(userName);
   }
 
   public void updateChat(String from, String text) {

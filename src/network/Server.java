@@ -32,9 +32,8 @@ public class Server {
   private GameSession gameSession;
   private Player serverHost;
 
-  public Server(int portNumber, Player me) {
+  public Server(int portNumber) {
     this.port = portNumber;
-    this.serverHost = me;
   }
 
   /**

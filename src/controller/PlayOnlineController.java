@@ -15,7 +15,6 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 
 import messages.ConnectMessage;
-import messages.ConnectionRefusedMessage;
 import model.GameSession;
 
 public class PlayOnlineController implements Initializable {
@@ -108,7 +107,8 @@ public class PlayOnlineController implements Initializable {
    * @author socho
    */
   private void hostGameSession() {
-    gameSession = new GameSession(8080, MainController.mainController.getUser());
+    gameSession = new GameSession(8080);
+    gameSession.setHost(MainController.mainController.getUser());
     MainController.mainController.setGameSession(gameSession);
     MainController.mainController.setHosting(true);
     MainController.mainController.setServer(gameSession.getServer());
@@ -142,6 +142,10 @@ public class PlayOnlineController implements Initializable {
       port = Integer.parseInt(portField.getText());
       MainController.mainController.connectToServer(ipField.getText(), port);
       if (MainController.mainController.getConnection().isOk()) {
+        MainController.mainController.getUser().setActiveSession(new GameSession(port));
+        MainController.mainController
+            .setGameSession(MainController.mainController.getUser().getActiveSession());
+        System.out.println(MainController.mainController.getGameSession().getGameLobbyId());
         MainController.mainController.getConnection()
             .sendToServer(
                 new ConnectMessage(MainController.mainController.getUser().getUserName()));
