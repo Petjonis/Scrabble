@@ -1,7 +1,9 @@
 package controller;
 
 import com.jfoenix.controls.JFXButton;
-import java.util.ArrayList;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,10 +17,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 import model.GameSession;
 import model.Player;
 import network.Client;
@@ -126,6 +124,7 @@ public class MainController implements Initializable {
     openNewWindow("/view/Login.fxml", "Login");
   }
 
+  /** method for opening a new window. */
   public void openNewWindow(String filename, String title) {
     try {
       FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(filename));
@@ -143,6 +142,7 @@ public class MainController implements Initializable {
     }
   }
 
+  /** method for changing the pane, especially for the center and right pane.*/
   public void changePane(StackPane pane, String fxmlPath) throws IOException {
     pane.getChildren().clear();
     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlPath));
@@ -213,6 +213,8 @@ public class MainController implements Initializable {
   public void setLoggedIn(boolean log) {
     this.loggedIn = log;
   }
+
+  public boolean getHosting(){ return this.hosting; }
 
   public void setHosting(boolean host) {
     this.hosting = host;

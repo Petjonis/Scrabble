@@ -8,11 +8,12 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.HumanPlayer;
 
@@ -38,19 +39,22 @@ public class LoginController implements Initializable {
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
-   this.errorLabel.setVisible(false);
+    this.errorLabel.setVisible(false);
   }
 
-  /** when pressing "login" button, three different scenarios can occur. First, login is successful. Second, password is wrong. Third, user does not exist.
+  /**
+   * when pressing "login" button, three different scenarios can occur. First, login is successful.
+   * Second, password is wrong. Third, user does not exist.
+   *
    * @author socho
    */
   @FXML
   void login(ActionEvent event) throws IOException {
-    Database db = new Database ();
+    Database db = new Database();
     db.connect();
 
-    if(db.userExists(usernameField.getText())){
-      if (db.checkPassword(usernameField.getText(), passwordField.getText())){
+    if (db.userExists(usernameField.getText())) {
+      if (db.checkPassword(usernameField.getText(), passwordField.getText())) {
         /** login is successful.*/
         System.out.println("Login successful!");
 
@@ -65,7 +69,7 @@ public class LoginController implements Initializable {
         Stage stage = (Stage) loginButton.getScene().getWindow();
         stage.close();
 
-      }else {
+      } else {
         /** user exists, but password is wrong.*/
         System.out.println("Login failed, reason: wrong password.");
         this.errorLabel.setText("Wrong Password! Try again, please.");
@@ -73,10 +77,11 @@ public class LoginController implements Initializable {
         this.passwordField.getSelection();
         MainController.mainController.setLoggedIn(false);
       }
-    }else {
+    } else {
       /** user does not exist and has to register first.*/
       System.out.println("Login failed, reason: username does not exist in the database.");
-      this.errorLabel.setText( usernameField.getText() + "' does not exist in the database. Please register first.");
+      this.errorLabel.setText(
+          usernameField.getText() + "' does not exist in the database. Please register first.");
       this.errorLabel.setVisible(true);
       this.usernameField.clear();
       this.passwordField.clear();
@@ -87,6 +92,7 @@ public class LoginController implements Initializable {
   /**
    * When pressing "signUp" Hyperlink, user will be redirected to the signup page. And login window
    * closes.
+   *
    * @author socho
    */
   @FXML
