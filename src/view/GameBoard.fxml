@@ -73,6 +73,11 @@
                   <Font name="System Bold" size="23.0" />
                </font>
             </JFXButton>
+            <JFXButton fx:id="passButton1" buttonType="RAISED" focusTraversable="false" layoutX="249.0" layoutY="15.0" onAction="#pass" prefHeight="66.0" prefWidth="130.0" style="-fx-background-radius: 10; -fx-background-color: #7FA650;" text="Swap" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="23.0" />
+               </font>
+            </JFXButton>
             <ProgressBar fx:id="progressBar" prefHeight="18.0" prefWidth="123.0" progress="0.0" style="-fx-accent: #7FA650;" />
          </children>
       </HBox>
