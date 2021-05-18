@@ -83,8 +83,6 @@ public class ServerProtocol extends Thread {
         this.clientName = user;
         server.addClient(user, this);
         this.gameSession.setPlayers(server.getClientNames());
-        server.sendToAll(
-            new UpdatePlayerListMessage("host", new ArrayList<String>(server.getClientNames())));
         System.out.println(this.clientName + " was added to the Lobby.");
         /** checking for who is in the same one lobby. */
         System.out.println(this.gameSession.getPlayers());
