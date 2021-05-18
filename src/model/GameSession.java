@@ -4,16 +4,16 @@ import java.util.ArrayList;
 import java.util.Set;
 import network.Server;
 
-/** class represents the game session which is essential for the network game.  */
-
+/** class represents the game session which is essential for the network game. */
 public class GameSession {
 
   private static int gameLobbyId = 0;
+  private static ArrayList<GameSession> sessions = new ArrayList<GameSession>();
   private GameState state;
   private ArrayList<String> players;
   private Server server;
   private Player host;
-  private static ArrayList<GameSession> sessions = new ArrayList<GameSession>();
+  private TileBag tilebag;
 
   public GameSession(int portNumber, Player host) {
     this.server = new Server(portNumber, host);
@@ -21,25 +21,21 @@ public class GameSession {
     gameLobbyId++;
     this.host = host;
     this.state = GameState.WAITING_LOBBY;
+    this.tilebag = new TileBag();
     this.sessions.add(this);
-  }
-
-  /** getter and setter methods for all attributes. */
-
-  public void setState(GameState gs) {
-    this.state = gs;
   }
 
   public GameState getState() {
     return this.state;
   }
 
-  public int getGameLobbyId() {
-    return this.gameLobbyId;
+  /** getter and setter methods for all attributes. */
+  public void setState(GameState gs) {
+    this.state = gs;
   }
 
-  public void setPlayers(Set<String> list) {
-    this.players = new ArrayList<String>(list);
+  public int getGameLobbyId() {
+    return this.gameLobbyId;
   }
 
   public ArrayList<String> getPlayers() {
@@ -47,12 +43,16 @@ public class GameSession {
     return players;
   }
 
-  public void setHost(Player hostName) {
-    this.host = hostName;
+  public void setPlayers(Set<String> list) {
+    this.players = new ArrayList<String>(list);
   }
 
   public Player getHost() {
     return this.host;
+  }
+
+  public void setHost(Player hostName) {
+    this.host = hostName;
   }
 
   public Server getServer() {
@@ -63,4 +63,7 @@ public class GameSession {
     return this.sessions;
   }
 
+  public TileBag getTilebag() {
+    return this.tilebag;
+  }
 }
