@@ -80,13 +80,14 @@ public class GameInfoController implements Initializable {
     for (String player : players) {
       if (playerList.getItems().isEmpty()) {
         playerList.getItems().add(player);
-      }else if (!playerList.getItems().isEmpty() && playerList.getItems().equals(player)) {
-        playerList.getItems().remove(player);
-      }else if (!playerList.getItems().isEmpty() && !playerList.getItems().equals(player)) {
+      }else if (!playerList.getItems().isEmpty() && !playerList.getItems().contains(player)) {
         playerList.getItems().add(player);
       }
     }
+  }
 
+  public void updateLastWordList (String word) {
+    lastWordList.getItems().add(word);
   }
 
   public void updateChat(String from, String text) {
