@@ -8,6 +8,7 @@ package network;
  */
 
 import com.sun.tools.javac.Main;
+import controller.GameInfoController;
 import controller.MainController;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -114,6 +115,7 @@ public class ServerProtocol extends Thread {
           case DISCONNECT:
             DisconnectMessage dcMsg = (DisconnectMessage) m;
             user = dcMsg.getFrom();
+            GameInfoController.gameInfoController.updateChat("[System]",user + " disconnected.", false);
             server.removeClient(user);
             System.out.println(user + " left the Lobby.");
             break;
