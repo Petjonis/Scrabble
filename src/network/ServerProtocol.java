@@ -14,14 +14,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
-import messages.ConnectionRefusedMessage;
-import messages.DisconnectMessage;
-import messages.Message;
-import messages.MessageType;
-import messages.SendChatMessage;
-import messages.SendInitialDataMessage;
-import messages.SendTileMessage;
-import messages.UpdatePlayerListMessage;
+
+import messages.*;
 import model.GameSession;
 import model.Square;
 import model.Tile;
@@ -78,7 +72,8 @@ public class ServerProtocol extends Thread {
    */
   public void run() {
     Message m;
-    Tile tile ;
+    Tile tile;
+    Tile[] tiles;
     Square [][] position;
     String user;
     try {
@@ -125,6 +120,18 @@ public class ServerProtocol extends Thread {
             System.out.println(user + " left the Lobby.");
             /** for checking */
             System.out.println(server.getClientNames());
+            break;
+          case SWAP_TILES:
+            SwapTilesMessage swtMsg = (SwapTilesMessage) m;
+            user = swtMsg.getFrom();
+            tiles = swtMsg.getTiles();
+            /** put them into bag and then draw? or draw and put back after?
+            drawable if rack already full? */
+            gameSession.getTilebag().addTiles(tiles);
+
+            break;
+          case PASS:
+            PassMessage pMsg = (PassMessage) m;
             break;
           default:
             break;
