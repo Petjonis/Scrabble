@@ -3,6 +3,7 @@ package controller;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextArea;
+import com.sun.tools.javac.Main;
 import java.io.IOException;
 import java.util.ArrayList;
 import javafx.event.ActionEvent;
@@ -46,22 +47,34 @@ public class GameInfoController implements Initializable {
    */
   @FXML
   void send(ActionEvent event) throws IOException {
-    chatList.getItems()
-        .add(MainController.mainController.getUser().getUserName() + ": " + sendText.getText());
-    MainController.mainController.getConnection()
-        .sendToServer(new SendChatMessage(MainController.mainController.getUser().getUserName(),
-            sendText.getText()));
+    if (MainController.mainController.getHosting()) {
+      chatList.getItems()
+          .add(MainController.mainController.getUser().getUserName() + " [Host]: " + sendText
+              .getText());
+      MainController.mainController.getConnection().sendToServer(
+          new SendChatMessage(MainController.mainController.getUser().getUserName(),
+              sendText.getText(), true));
+    } else {
+      chatList.getItems()
+          .add(MainController.mainController.getUser().getUserName() + ": " + sendText.getText());
+      MainController.mainController.getConnection()
+          .sendToServer(new SendChatMessage(MainController.mainController.getUser().getUserName(),
+              sendText.getText(), false));
+    }
     sendText.clear();
   }
 
-  /** chatList adds a welcome message to the user who joined to the game session. */
+  /**
+   * chatList adds a welcome message to the user who joined to the game session.
+   */
   public void initialize(URL url, ResourceBundle resourceBundle) {
     gameInfoController = this;
 
     if (MainController.mainController.getHosting()) {
       chatList.getItems()
-          .add("[System]: Hello " + MainController.mainController.getUser().getUserName() + " [Host] !");
-    }else {
+          .add("[System]: " + MainController.mainController.getUser().getUserName()
+              + ", You are the host !");
+    } else {
       chatList.getItems()
           .add("[System]: Hello " + MainController.mainController.getUser().getUserName() + "!");
     }
@@ -73,7 +86,8 @@ public class GameInfoController implements Initializable {
   }
 
   public void sendRequestMessage() throws IOException {
-    MainController.mainController.getConnection().sendToServer(new RequestPlayerListMessage(MainController.mainController.getUser().getUserName()));
+    MainController.mainController.getConnection().sendToServer(
+        new RequestPlayerListMessage(MainController.mainController.getUser().getUserName()));
   }
 
   /**
@@ -84,18 +98,24 @@ public class GameInfoController implements Initializable {
     for (String player : players) {
       if (playerList.getItems().isEmpty()) {
         playerList.getItems().add(player + " [Host]");
-      }else if (!playerList.getItems().isEmpty() && !playerList.getItems().contains(player + " [Host]")) {
+      } else if (!playerList.getItems().isEmpty() && !playerList.getItems()
+          .contains(player + " [Host]")) {
         playerList.getItems().add(player);
       }
     }
   }
 
-  public void updateLastWordList (String word) {
+  public void updateLastWordList(String word) {
     lastWordList.getItems().add(word);
   }
 
-  public void updateChat(String from, String text) {
-    chatList.getItems().add(from + ": " + text);
+  /** updates chat, distinguishes between host and clients. */
+  public void updateChat(String from, String text, boolean token) {
+    if (token) {
+      chatList.getItems().add(from + " [Host]: " + text);
+    } else {
+      chatList.getItems().add(from + ": " + text);
+    }
   }
 
 }

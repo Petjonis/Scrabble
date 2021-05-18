@@ -74,7 +74,8 @@ public class Client extends Thread {
             SendChatMessage scMsg = (SendChatMessage) m;
             String user = scMsg.getFrom();
             String text = scMsg.getText();
-            GameInfoController.gameInfoController.updateChat(user, text);
+            boolean token = scMsg.getHosting();
+            GameInfoController.gameInfoController.updateChat(user, text, token);
             break;
         }
       } catch (ClassNotFoundException | IOException e) {
