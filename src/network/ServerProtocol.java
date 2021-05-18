@@ -116,8 +116,6 @@ public class ServerProtocol extends Thread {
             user = dcMsg.getFrom();
             server.removeClient(user);
             System.out.println(user + " left the Lobby.");
-            /** for checking */
-            System.out.println(server.getClientNames());
             break;
           case SWAP_TILES:
             SwapTilesMessage swtMsg = (SwapTilesMessage) m;

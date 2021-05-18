@@ -58,9 +58,13 @@ public class GameInfoController implements Initializable {
   public void initialize(URL url, ResourceBundle resourceBundle) {
     gameInfoController = this;
 
-    chatList.getItems()
-        .add("[System]: Hello " + MainController.mainController.getUser().getUserName() + "!");
-
+    if (MainController.mainController.getHosting()) {
+      chatList.getItems()
+          .add("[System]: Hello " + MainController.mainController.getUser().getUserName() + " [Host] !");
+    }else {
+      chatList.getItems()
+          .add("[System]: Hello " + MainController.mainController.getUser().getUserName() + "!");
+    }
     try {
       sendRequestMessage();
     } catch (IOException e) {
@@ -79,8 +83,8 @@ public class GameInfoController implements Initializable {
   public void updatePlayerList(ArrayList<String> players) {
     for (String player : players) {
       if (playerList.getItems().isEmpty()) {
-        playerList.getItems().add(player);
-      }else if (!playerList.getItems().isEmpty() && !playerList.getItems().contains(player)) {
+        playerList.getItems().add(player + " [Host]");
+      }else if (!playerList.getItems().isEmpty() && !playerList.getItems().contains(player + " [Host]")) {
         playerList.getItems().add(player);
       }
     }

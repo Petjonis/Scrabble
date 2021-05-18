@@ -145,7 +145,6 @@ public class PlayOnlineController implements Initializable {
         MainController.mainController.getUser().setActiveSession(new GameSession(port));
         MainController.mainController
             .setGameSession(MainController.mainController.getUser().getActiveSession());
-        System.out.println(MainController.mainController.getGameSession().getGameLobbyId());
         MainController.mainController.getConnection()
             .sendToServer(
                 new ConnectMessage(MainController.mainController.getUser().getUserName()));
