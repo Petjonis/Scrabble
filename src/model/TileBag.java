@@ -48,6 +48,12 @@ public class TileBag {
     return tileBag.remove(randomIndex);
   }
 
+  public void addTiles(Tile[] tiles){
+    for(Tile t : tiles){
+      this.tileBag.add(t);
+    }
+  }
+
   public boolean isEmpty(){
     return tileBag.isEmpty();
   }
