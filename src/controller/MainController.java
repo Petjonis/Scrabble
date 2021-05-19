@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
@@ -42,6 +43,9 @@ public class MainController implements Initializable {
   private JFXButton rulebookButton;
 
   @FXML
+  private Label welcomeLabel;
+
+  @FXML
   private JFXButton loginButton;
 
   @FXML
@@ -70,6 +74,7 @@ public class MainController implements Initializable {
     /** Player not logged in, so "Logout"-button will not be visible.*/
     if (!mainController.getLoggedIn()) {
       this.logoutButton.setVisible(false);
+      this.welcomeLabel.setVisible(false);
       /**
        * @apiNote need buttons for changing username, password or avater and to make clear player is logged in, as "Welcome ____ !".
        *
@@ -84,13 +89,16 @@ public class MainController implements Initializable {
     }
 
     System.out.println(getUser().getUserName() + ", you are logged out.");
-    getConnection().disconnect();
+    if (getConnection() != null){
+      getConnection().disconnect();
+    }
     setLoggedIn(false);
     setUser(null);
 
     getLoginButton().setVisible(true);
     getSignupButton().setVisible(true);
     getLogoutButton().setVisible(false);
+    getWelcomeLabel().setVisible(false);
 
     centerPane.getChildren().clear();
     rightPane.getChildren().clear();
@@ -186,6 +194,10 @@ public class MainController implements Initializable {
     return rightPane;
   }
 
+  public JFXButton getPlayButton() { return playButton; }
+
+  public Label getWelcomeLabel() { return welcomeLabel; }
+
   public JFXButton getLoginButton() {
     return loginButton;
   }
@@ -197,6 +209,8 @@ public class MainController implements Initializable {
   public JFXButton getLogoutButton() {
     return logoutButton;
   }
+
+
 
   public void setUser(Player player) {
     this.user = player;
