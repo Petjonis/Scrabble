@@ -123,9 +123,15 @@ public class PlayOnlineController implements Initializable {
    */
   @FXML
   void join(ActionEvent event) throws IOException {
-    if (joinGameSession()) {
-      MainController.mainController
+    if (MainController.mainController.getLoggedIn() == true) {
+      if (joinGameSession()) {
+        MainController.mainController
           .changePane(MainController.mainController.getRightPane(), "/view/GameInfo.fxml");
+      }
+    } else {
+      Alert errorAlert = new Alert(AlertType.ERROR);
+      errorAlert.setContentText("You cannot join, because you are not logged in.");
+      errorAlert.show();
     }
   }
 

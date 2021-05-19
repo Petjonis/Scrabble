@@ -100,8 +100,10 @@ public class MainController implements Initializable {
     getLogoutButton().setVisible(false);
     getWelcomeLabel().setVisible(false);
 
-    centerPane.getChildren().clear();
+    changePane(centerPane, "/view/Start.fxml");
     rightPane.getChildren().clear();
+
+    playButton.setDisable(false);
   }
 
   @FXML
