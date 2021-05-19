@@ -82,7 +82,11 @@ public class ServerProtocol extends Thread {
       if (m.getMessageType() == MessageType.CONNECT) {
         user = m.getFrom();
         this.clientName = user;
-        server.addClient(user, this);
+        if(server.getClientNames().size() == 0) {
+          server.addClient(user + " [Host] ", this);
+        }else{
+          server.addClient(user, this);
+        }
         this.gameSession.setPlayers(server.getClientNames());
         System.out.println(this.clientName + " was added to the Lobby.");
         /** checking for who is in the same one lobby. */
@@ -110,7 +114,11 @@ public class ServerProtocol extends Thread {
           case SEND_MESSAGE:
             SendChatMessage scMsg = (SendChatMessage) m;
             user = scMsg.getFrom();
-            server.sendToAllBut(user, scMsg);
+            if (scMsg.getHosting()) {
+              server.sendToAllBut(user + " [Host] ", scMsg);
+            }else{
+              server.sendToAllBut(user, scMsg);
+            }
             break;
           case DISCONNECT:
             DisconnectMessage dcMsg = (DisconnectMessage) m;

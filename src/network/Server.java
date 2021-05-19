@@ -68,11 +68,13 @@ public class Server {
       System.out.println("Server runs");
 
       while (running) {
-        Socket clientSocket = hostSocket.accept();
+        if (clients.size() < 4) {
+          Socket clientSocket = hostSocket.accept();
 
-        ServerProtocol clientConnectionThread = new ServerProtocol(clientSocket, this,
-            this.gameSession);
-        clientConnectionThread.start();
+          ServerProtocol clientConnectionThread = new ServerProtocol(clientSocket, this,
+              this.gameSession);
+          clientConnectionThread.start();
+        }
       }
     } catch (IOException e) {
       if (hostSocket != null && hostSocket.isClosed()) {

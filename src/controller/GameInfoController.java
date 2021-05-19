@@ -97,9 +97,9 @@ public class GameInfoController implements Initializable {
   public void updatePlayerList(ArrayList<String> players) {
     for (String player : players) {
       if (playerList.getItems().isEmpty()) {
-        playerList.getItems().add(player + " [Host]");
+        playerList.getItems().add(player);
       } else if (!playerList.getItems().isEmpty() && !playerList.getItems()
-          .contains(player + " [Host]")) {
+          .contains(player)) {
         playerList.getItems().add(player);
       }
     }
