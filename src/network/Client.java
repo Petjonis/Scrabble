@@ -66,9 +66,6 @@ public class Client extends Thread {
             ArrayList<String> liste = uplMsg.getActivePlayers();
             GameInfoController.gameInfoController.updatePlayerList(liste);
             break;
-          case SEND_INITIAL_DATA:
-            SendInitialDataMessage sendInitialDataMes = (SendInitialDataMessage) m;
-            break;
           case SEND_MESSAGE:
             SendChatMessage scMsg = (SendChatMessage) m;
             String user = scMsg.getFrom();
