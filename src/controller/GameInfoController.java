@@ -3,7 +3,6 @@ package controller;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextArea;
-import com.sun.tools.javac.Main;
 import java.io.IOException;
 import java.util.ArrayList;
 import javafx.event.ActionEvent;
@@ -15,7 +14,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import messages.RequestPlayerListMessage;
 import messages.SendChatMessage;
-import messages.SendInitialDataMessage;
 
 public class GameInfoController implements Initializable {
 
@@ -74,7 +72,7 @@ public class GameInfoController implements Initializable {
     if (MainController.mainController.getHosting()) {
       chatList.getItems()
           .add("[System]: " + MainController.mainController.getUser().getUserName()
-              + ", You are the host !");
+              + ", you are the host!");
     } else {
       chatList.getItems()
           .add("[System]: Hello " + MainController.mainController.getUser().getUserName() + "!");

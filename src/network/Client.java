@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import messages.DisconnectMessage;
 import messages.Message;
 import messages.SendChatMessage;
-import messages.SendInitialDataMessage;
 import messages.UpdatePlayerListMessage;
 import model.GameSession;
 

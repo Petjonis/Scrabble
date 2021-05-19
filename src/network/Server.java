@@ -74,6 +74,8 @@ public class Server {
           ServerProtocol clientConnectionThread = new ServerProtocol(clientSocket, this,
               this.gameSession);
           clientConnectionThread.start();
+        }else {
+          System.out.println("This game session is full.");
         }
       }
     } catch (IOException e) {
