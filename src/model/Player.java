@@ -47,13 +47,9 @@ public abstract class Player {
     this.passCount = 0;
   }
 
-  public TileBag getBag() {
-    return bag;
-  }
+  public TileBag getBag() { return bag; }
 
-  public void setBag(TileBag bag) {
-    this.bag = bag;
-  }
+  public void setBag(TileBag bag) { this.bag = bag; }
 
   public String getUserName() {
     return username;

@@ -3,7 +3,7 @@ package messages;
 /**
  * This class contains all messagetypes between server and client as enums.
  *
- * @author socho
+ * @author socho, fpetek
  * @version 1.0
  */
 

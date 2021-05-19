@@ -39,6 +39,8 @@ public class GameBoardController {
     @FXML
     private JFXButton passButton;
     @FXML
+    private JFXButton swapButton;
+    @FXML
     private ProgressBar progressBar;
 
     @FXML
@@ -48,6 +50,10 @@ public class GameBoardController {
 
     @FXML
     void play(ActionEvent event) {
+        /* TODO */
+    }
+    @FXML
+    void swap(ActionEvent event){
         /* TODO */
     }
 

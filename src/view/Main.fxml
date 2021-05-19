@@ -36,7 +36,7 @@
                         <MaterialIconView fill="#ababab" glyphName="PLAY_CIRCLE_OUTLINE" size="25" />
                      </graphic>
                   </JFXButton>
-                  <JFXButton fx:id="learnButton" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="10.0" layoutX="10.0" layoutY="10.0" onAction="#openLearn" prefHeight="50.0" prefWidth="165.0" text="Learn" textFill="#ababab">
+                  <JFXButton fx:id="learnButton" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="9.0" layoutX="10.0" layoutY="10.0" onAction="#openLearn" prefHeight="50.0" prefWidth="165.0" text="Learn" textFill="#ababab">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
@@ -50,6 +50,14 @@
                      </font>
                      <graphic>
                         <FontAwesomeIconView fill="#ababab" glyphName="BOOK" size="25" />
+                     </graphic>
+                  </JFXButton>
+                  <JFXButton fx:id="profileButton" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="15.0" layoutX="10.0" layoutY="110.0" onAction="#openProfile" prefHeight="50.0" prefWidth="165.0" text="Profile" textFill="#ababab">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIconView fill="#ababab" glyphName="USER" size="25" />
                      </graphic>
                   </JFXButton>
                </children>

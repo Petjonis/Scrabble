@@ -70,6 +70,7 @@ public class LoginController implements Initializable {
         MainController.mainController.getLoginButton().setVisible(false);
         MainController.mainController.getSignupButton().setVisible(false);
         MainController.mainController.getLogoutButton().setVisible(true);
+        MainController.mainController.getProfileButton().setDisable(false);
 
         Stage stage = (Stage) loginButton.getScene().getWindow();
         stage.close();

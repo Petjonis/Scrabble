@@ -1,8 +1,8 @@
 /**
  * Class represents a bag of tiles which has a maximum of 100 pieces.
  *
- * @author fpetek
- * @version 1.0
+ * @author fpetek, fjaehrli
+ * @version 2.0
  */
 
 package model;

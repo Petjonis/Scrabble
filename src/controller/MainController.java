@@ -43,6 +43,9 @@ public class MainController implements Initializable {
   private JFXButton rulebookButton;
 
   @FXML
+  private JFXButton profileButton;
+
+  @FXML
   private Label welcomeLabel;
 
   @FXML
@@ -75,8 +78,9 @@ public class MainController implements Initializable {
     if (!mainController.getLoggedIn()) {
       this.logoutButton.setVisible(false);
       this.welcomeLabel.setVisible(false);
+      this.profileButton.setDisable(true);
       /**
-       * @apiNote need buttons for changing username, password or avater and to make clear player is logged in, as "Welcome ____ !".
+       * @apiNote need buttons for changing username, password or avatar and to make clear player is logged in, as "Welcome ____ !".
        *
        * */
     }
@@ -102,8 +106,8 @@ public class MainController implements Initializable {
 
     changePane(centerPane, "/view/Start.fxml");
     rightPane.getChildren().clear();
-
-    playButton.setDisable(false);
+    playButton.setDisable(true);
+    profileButton.setDisable(true);
   }
 
   @FXML
@@ -120,6 +124,11 @@ public class MainController implements Initializable {
 
   @FXML
   void openRulebook(ActionEvent event) {
+
+  }
+
+  @FXML
+  void openProfile(ActionEvent event){
 
   }
 
@@ -210,6 +219,10 @@ public class MainController implements Initializable {
 
   public JFXButton getLogoutButton() {
     return logoutButton;
+  }
+
+  public JFXButton getProfileButton(){
+    return profileButton;
   }
 
 
