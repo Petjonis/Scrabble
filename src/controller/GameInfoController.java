@@ -15,6 +15,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import messages.RequestPlayerListMessage;
 import messages.SendChatMessage;
+import messages.SendInitialDataMessage;
 
 public class GameInfoController implements Initializable {
 
@@ -117,5 +118,6 @@ public class GameInfoController implements Initializable {
       chatList.getItems().add(from + ": " + text);
     }
   }
+
 
 }

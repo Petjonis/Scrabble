@@ -14,6 +14,8 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import model.HumanPlayer;
 
@@ -40,6 +42,7 @@ public class LoginController implements Initializable {
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     this.errorLabel.setVisible(false);
+    this.usernameField.requestFocus();
   }
 
   /**
@@ -110,4 +113,24 @@ public class LoginController implements Initializable {
     stage.close();
   }
 
+  public void userNameKeyPressed(KeyEvent keyEvent) {
+    if (keyEvent.getCode() == KeyCode.TAB){
+      passwordField.requestFocus();
+    }else if (keyEvent.getCode() == KeyCode.ENTER){
+      passwordField.requestFocus();
+    }
+  }
+
+  public void loginKeyPressed(KeyEvent keyEvent) throws IOException {
+    if (keyEvent.getCode() == KeyCode.ENTER)
+      login(new ActionEvent());
+  }
+
+  public void passwordKeyPressed(KeyEvent keyEvent) {
+    if (keyEvent.getCode() == KeyCode.TAB){
+      loginButton.requestFocus();
+    } else if (keyEvent.getCode() == KeyCode.ENTER){
+      loginButton.requestFocus();
+    }
+  }
 }

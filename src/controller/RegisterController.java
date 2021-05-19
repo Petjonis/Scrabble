@@ -13,6 +13,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 
@@ -103,4 +105,41 @@ public class RegisterController implements Initializable {
   }
 
 
+  public void signUpKeyPressed(KeyEvent keyEvent) {
+    if(keyEvent.getCode() == KeyCode.ENTER) {
+      createAccount(new ActionEvent());
+    }
+  }
+
+  public void userNameKeyPressed(KeyEvent keyEvent) {
+    if (keyEvent.getCode() == KeyCode.TAB) {
+      passwordField.requestFocus();
+    } else if (keyEvent.getCode() == KeyCode.ENTER) {
+      passwordField.requestFocus();
+    }
+  }
+
+  public void passwordKeyPressed(KeyEvent keyEvent) {
+    if (keyEvent.getCode() == KeyCode.TAB) {
+      confirmField.requestFocus();
+    } else if (keyEvent.getCode() == KeyCode.ENTER) {
+      confirmField.requestFocus();
+    }
+  }
+
+  public void confirmKeyPassword(KeyEvent keyEvent) {
+    if (keyEvent.getCode() == KeyCode.TAB) {
+      previewImage.requestFocus();
+    } else if (keyEvent.getCode() == KeyCode.ENTER) {
+      previewImage.requestFocus();
+    }
+  }
+
+  public void avatarKeyPressed(KeyEvent keyEvent) {
+    if (keyEvent.getCode() == KeyCode.ENTER) {
+      chooseFile(new ActionEvent());
+    } else if (keyEvent.getCode() == KeyCode.TAB) {
+     createButton.requestFocus();
+    }
+  }
 }

@@ -1,34 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
-<?import de.jensd.fx.glyphs.materialicons.MaterialIconView?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Hyperlink?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.text.Font?>
+<?import com.jfoenix.controls.*?>
+<?import de.jensd.fx.glyphs.materialicons.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<StackPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="418.0" prefWidth="320.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
+<StackPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="418.0" prefWidth="320.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
     <children>
         <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="410.0" prefWidth="320.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 5;">
             <children>
-                <JFXButton fx:id="loginButton" buttonType="RAISED" focusTraversable="false" layoutX="26.0" layoutY="235.0" onAction="#login" prefHeight="66.0" prefWidth="265.0" style="-fx-background-radius: 10; -fx-background-color: #7FA650;" text="Log In" textFill="WHITE">
+                <JFXButton fx:id="loginButton" buttonType="RAISED" focusTraversable="false" layoutX="26.0" layoutY="235.0" onAction="#login" onKeyPressed="#loginKeyPressed" prefHeight="66.0" prefWidth="265.0" style="-fx-background-radius: 10; -fx-background-color: #7FA650;" text="Log In" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="23.0" />
                     </font>
                 </JFXButton>
-                <TextField fx:id="usernameField" focusTraversable="false" layoutX="26.0" layoutY="100.0" prefHeight="40.0" prefWidth="265.0" promptText="Username">
+                <TextField fx:id="usernameField" focusTraversable="false" layoutX="26.0" layoutY="100.0" onKeyPressed="#userNameKeyPressed" prefHeight="40.0" prefWidth="265.0" promptText="Username">
                     <font>
                         <Font size="18.0" />
                     </font>
                 </TextField>
-                <PasswordField fx:id="passwordField" focusTraversable="false" layoutX="26.0" layoutY="160.0" prefHeight="40.0" prefWidth="265.0" promptText="Password">
+                <PasswordField fx:id="passwordField" focusTraversable="false" layoutX="26.0" layoutY="160.0" onKeyPressed="#passwordKeyPressed" prefHeight="40.0" prefWidth="265.0" promptText="Password">
                     <font>
                         <Font size="18.0" />
                     </font>
