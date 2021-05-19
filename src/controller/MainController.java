@@ -1,6 +1,7 @@
 package controller;
 
 import com.jfoenix.controls.JFXButton;
+import db.Database;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -32,6 +33,7 @@ public class MainController implements Initializable {
   private Server server;
   private Client connection;
   private GameSession gameSession;
+  public Database db;
 
   @FXML
   private JFXButton playButton;

@@ -53,11 +53,11 @@ public class LoginController implements Initializable {
    */
   @FXML
   void login(ActionEvent event) throws IOException {
-    Database db = new Database();
-    db.connect();
+    MainController.mainController.db = new Database();
+    MainController.mainController.db.connect();
 
-    if (db.userExists(usernameField.getText())) {
-      if (db.checkPassword(usernameField.getText(), passwordField.getText())) {
+    if (MainController.mainController.db.userExists(usernameField.getText())) {
+      if (MainController.mainController.db.checkPassword(usernameField.getText(), passwordField.getText())) {
         /** login is successful.*/
         System.out.println("Login successful!");
 
@@ -93,6 +93,7 @@ public class LoginController implements Initializable {
       this.passwordField.clear();
       MainController.mainController.setLoggedIn(false);
     }
+    MainController.mainController.db.disconnect();
   }
 
   /**
