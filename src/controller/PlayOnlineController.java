@@ -65,7 +65,6 @@ public class PlayOnlineController implements Initializable {
     this.errorLabel.setVisible(false);
     this.portErrorLabel.setVisible(false);
     this.ipField.setText("localhost");
-    this.portField.setText("8080");
   }
 
   /**
@@ -120,7 +119,7 @@ public class PlayOnlineController implements Initializable {
    */
   private boolean hostGameSession() {
       port = Integer.parseInt(portNumberTextField.getText());
-      if (port > 36865 && port < 37475 ){
+      if (port > 49151 && port < 50001 ){
       gameSession = new GameSession(port);
       gameSession.setHost(MainController.mainController.getUser());
       MainController.mainController.setGameSession(gameSession);
@@ -166,7 +165,7 @@ public class PlayOnlineController implements Initializable {
 
   private boolean joinGameSession() throws IOException {
       port = Integer.parseInt(portField.getText());
-      if (port > 36865 && port < 37475) {
+      if (port > 49151 && port < 50001) {
         MainController.mainController.connectToServer(ipField.getText(), port);
         if (MainController.mainController.getConnection().isOk()) {
           MainController.mainController.getUser().setActiveSession(new GameSession(port));

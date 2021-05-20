@@ -5,9 +5,15 @@ import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextArea;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
@@ -37,10 +43,13 @@ public class GameInfoController implements Initializable {
   @FXML
   private JFXButton sendButton;
 
+  @FXML
+  private JFXButton leaveGameButton;
+
   /**
    * Listview "chatList" adds the text, which was written from the textfield "sendText" and the
    * user, who wrote the text. A new SendChatMessage with the text and the user who wrote it, will
-   * be send to the server. Textfield will be cleared after this, so the user can write a new text.
+   * be send to the server. Text area will be cleared after this, so the user can write a new text.
    *
    * @author socho
    */
@@ -61,6 +70,7 @@ public class GameInfoController implements Initializable {
               sendText.getText(), false));
     }
     sendText.clear();
+
   }
 
   /**
@@ -108,7 +118,11 @@ public class GameInfoController implements Initializable {
     lastWordList.getItems().add(word);
   }
 
-  /** updates chat, distinguishes between host and clients. */
+  /**
+   * updates chat, distinguishes between host and clients.
+   *
+   * @author socho
+   */
   public void updateChat(String from, String text, boolean token) {
     if (token) {
       chatList.getItems().add(from + " [Host]: " + text);
@@ -117,5 +131,41 @@ public class GameInfoController implements Initializable {
     }
   }
 
+  /**
+   * chat can create a new line with "TAB"-key and "ENTER"-key sends the text.
+   *
+   * @author socho
+   */
+  public void chatKeyPressed(KeyEvent keyEvent) throws IOException {
+    if (keyEvent.getCode() == KeyCode.TAB) {
+      sendText.appendText("\n");
+    } else if (keyEvent.getCode() == KeyCode.ENTER) {
+      send(new ActionEvent());
+    }
+  }
 
+  /**
+   * Use Case 3.4 leaving game. you have to confirm to leave. if host leaves, server stops. if
+   * clients leave, they will disconnect.
+   *
+   * @author socho
+   */
+  public void leave(ActionEvent actionEvent) throws IOException {
+    Alert warningAlert = new Alert(AlertType.CONFIRMATION);
+    warningAlert.setTitle("Leaving game confirmation");
+    warningAlert.setHeaderText("Do you want to leave this game session?");
+
+    Optional<ButtonType> result = warningAlert.showAndWait();
+    if (result.get() == ButtonType.OK) {
+      if (MainController.mainController.getHosting()) {
+        MainController.mainController.getUser().getActiveSession().getServer().stopServer();
+      }
+      MainController.mainController.disconnect();
+      MainController.mainController
+          .changePane(MainController.mainController.getCenterPane(), "/view/Start.fxml");
+      MainController.mainController.getRightPane().getChildren().clear();
+
+      MainController.mainController.getPlayButton().setDisable(false);
+    }
+  }
 }
