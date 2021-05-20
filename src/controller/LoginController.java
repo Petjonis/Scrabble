@@ -81,7 +81,7 @@ public class LoginController implements Initializable {
         System.out.println("Login failed, reason: wrong password.");
         this.errorLabel.setText("Wrong Password! Try again, please.");
         this.errorLabel.setVisible(true);
-        this.passwordField.getSelection();
+        this.passwordField.requestFocus();
         MainController.mainController.setLoggedIn(false);
       }
     } else {

@@ -32,6 +32,15 @@ public class PlayOnlineController implements Initializable {
   private Label filePathLabel;
 
   @FXML
+  private Label descriptionLabel;
+
+  @FXML
+  private TextField portNumberTextField;
+
+  @FXML
+  private Label portErrorLabel;
+
+  @FXML
   private JFXButton hostButton;
 
   @FXML
@@ -54,6 +63,7 @@ public class PlayOnlineController implements Initializable {
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     this.errorLabel.setVisible(false);
+    this.portErrorLabel.setVisible(false);
     this.ipField.setText("localhost");
     this.portField.setText("8080");
   }
@@ -69,30 +79,31 @@ public class PlayOnlineController implements Initializable {
   @FXML
   void host(ActionEvent event) throws IOException {
     if (MainController.mainController.getLoggedIn() == true) {
-      System.out
-          .println(MainController.mainController.getUser().getUserName() + ", you are the Host.");
-      hostGameSession();
+      if (hostGameSession()) {
+        System.out
+            .println(MainController.mainController.getUser().getUserName() + ", you are the Host.");
 
-      Runnable r = new Runnable() {
-        @Override
-        public void run() {
-          try {
-            MainController.mainController.getServer().listen();
-          } catch (IOException ioException) {
-            ioException.printStackTrace();
+        Runnable r = new Runnable() {
+          @Override
+          public void run() {
+            try {
+              MainController.mainController.getServer().listen();
+            } catch (IOException ioException) {
+              ioException.printStackTrace();
+            }
           }
-        }
-      };
-      new Thread(r).start();
+        };
+        new Thread(r).start();
 
-      MainController.mainController.connectToServer("localhost", 8080);
-      if (MainController.mainController.getConnection().isOk()) {
-        MainController.mainController.getConnection()
-            .sendToServer(
-                new ConnectMessage(MainController.mainController.getUser().getUserName()));
-        MainController.mainController.getPlayButton().setDisable(true);
-        MainController.mainController
-            .changePane(MainController.mainController.getRightPane(), "/view/GameInfo.fxml");
+        MainController.mainController.connectToServer("localhost", 8080);
+        if (MainController.mainController.getConnection().isOk()) {
+          MainController.mainController.getConnection()
+              .sendToServer(
+                  new ConnectMessage(MainController.mainController.getUser().getUserName()));
+          MainController.mainController.getPlayButton().setDisable(true);
+          MainController.mainController
+              .changePane(MainController.mainController.getRightPane(), "/view/GameInfo.fxml");
+        }
       }
     } else {
       Alert errorAlert = new Alert(AlertType.ERROR);
@@ -107,13 +118,22 @@ public class PlayOnlineController implements Initializable {
    *
    * @author socho
    */
-  private void hostGameSession() {
-    gameSession = new GameSession(8080);
-    gameSession.setHost(MainController.mainController.getUser());
-    MainController.mainController.setGameSession(gameSession);
-    MainController.mainController.setHosting(true);
-    MainController.mainController.setServer(gameSession.getServer());
-    MainController.mainController.getUser().setActiveSession(gameSession);
+  private boolean hostGameSession() {
+      port = Integer.parseInt(portNumberTextField.getText());
+      if (port > 36865 && port < 37475 ){
+      gameSession = new GameSession(port);
+      gameSession.setHost(MainController.mainController.getUser());
+      MainController.mainController.setGameSession(gameSession);
+      MainController.mainController.setHosting(true);
+      MainController.mainController.setServer(gameSession.getServer());
+      MainController.mainController.getUser().setActiveSession(gameSession);
+      return true;
+    }else {
+      portErrorLabel.setText("port number is not available.");
+      portErrorLabel.setVisible(true);
+      portNumberTextField.requestFocus();
+      return false ;
+    }
   }
 
   /**
@@ -145,31 +165,31 @@ public class PlayOnlineController implements Initializable {
    */
 
   private boolean joinGameSession() throws IOException {
-    if (!portField.getText().isEmpty() && portField.getText().matches("[0-9]{1,4}")) {
       port = Integer.parseInt(portField.getText());
-      MainController.mainController.connectToServer(ipField.getText(), port);
-      if (MainController.mainController.getConnection().isOk()) {
-        MainController.mainController.getUser().setActiveSession(new GameSession(port));
-        MainController.mainController
+      if (port > 36865 && port < 37475) {
+        MainController.mainController.connectToServer(ipField.getText(), port);
+        if (MainController.mainController.getConnection().isOk()) {
+          MainController.mainController.getUser().setActiveSession(new GameSession(port));
+          MainController.mainController
             .setGameSession(MainController.mainController.getUser().getActiveSession());
-        MainController.mainController.getConnection()
+          MainController.mainController.getConnection()
             .sendToServer(
                 new ConnectMessage(MainController.mainController.getUser().getUserName()));
-        System.out
+          System.out
             .println(MainController.mainController.getUser().getUserName() + " is connected.");
-        MainController.mainController.getPlayButton().setDisable(true);
-        return true;
-      } else {
-        System.out
+          MainController.mainController.getPlayButton().setDisable(true);
+          return true;
+        } else {
+          System.out
             .println(MainController.mainController.getUser().getUserName() + " cannot connect.");
-        this.errorLabel.setText("Game session could not be found.");
+          this.errorLabel.setText("Game session could not be found.");
+          this.errorLabel.setVisible(true);
+          return false;
+        }
+      } else {
+        this.errorLabel.setText("Port is not ideal.");
         this.errorLabel.setVisible(true);
         return false;
       }
-    } else {
-      this.errorLabel.setText("Port is not ideal.");
-      this.errorLabel.setVisible(true);
-      return false;
-    }
   }
 }

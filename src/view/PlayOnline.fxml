@@ -10,75 +10,56 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<TabPane fx:id="playTabPane" prefHeight="768.0" prefWidth="308.0" style="-fx-background-color: #272522;"
-         stylesheets="@Style.css" tabClosingPolicy="UNAVAILABLE" tabMinHeight="45.0" xmlns="http://javafx.com/javafx/11.0.2"
-         xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PlayOnlineController">
+<TabPane fx:id="playTabPane" prefHeight="768.0" prefWidth="308.0" style="-fx-background-color: #272522;" stylesheets="@Style.css" tabClosingPolicy="UNAVAILABLE" tabMinHeight="45.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PlayOnlineController">
    <Tab text="Host Game">
       <graphic>
-         <MaterialIconView fill="#ababab" glyphName="ADD_BOX" size="20"/>
+         <MaterialIconView fill="#ababab" glyphName="ADD_BOX" size="20" />
       </graphic>
       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-         <Label alignment="CENTER" layoutX="44.0" layoutY="14.0" prefHeight="46.0" prefWidth="221.0"
-                text="Host a Game Session" textFill="#ababab">
+         <Label alignment="CENTER" layoutX="44.0" layoutY="14.0" prefHeight="46.0" prefWidth="221.0" text="Host a Game Session" textFill="#ababab">
             <font>
-               <Font name="System Bold" size="22.0"/>
+               <Font name="System Bold" size="22.0" />
             </font>
          </Label>
-         <JFXButton fx:id="fileChooserButton" buttonType="RAISED" focusTraversable="false" layoutX="45.0"
-                    layoutY="146.0" onAction="#chooseFile" prefHeight="45.0" prefWidth="220.0"
-                    style="-fx-background-radius: 10; -fx-background-color: #413E3C;" text="Dictionary"
-                    textFill="#ababab">
+         <TextField fx:id="portNumberTextField" alignment="CENTER" layoutX="88.0" layoutY="115.0" prefHeight="36.0" prefWidth="132.0" promptText="portnumber" />
+         <Label fx:id="descriptionLabel" alignment="CENTER" layoutX="-7.0" layoutY="80.0" prefHeight="35.0" prefWidth="322.0" text="Enter a portnumber between 36866 - 37474" textFill="#dbd9d7">
             <font>
-               <Font name="System Bold" size="23.0"/>
-            </font>
-            <graphic>
-               <MaterialIconView fill="#ababab" glyphName="LIBRARY_BOOKS"/>
-            </graphic>
-         </JFXButton>
-         <Label fx:id="filePathLabel" alignment="CENTER" layoutX="47.0" layoutY="106.0" prefHeight="28.0"
-                prefWidth="216.0" text="C:/path/to/selected/word.file" textFill="#dbd9d7"/>
-         <JFXButton fx:id="hostButton" buttonType="RAISED" focusTraversable="false" layoutX="44.0" layoutY="259.0"
-                    onAction="#host" prefHeight="45.0" prefWidth="220.0"
-                    style="-fx-background-radius: 10; -fx-background-color: #7FA650;" text="Host"
-                    textFill="WHITE">
+               <Font name="System Bold Italic" size="13.0" />
+            </font></Label>
+         <JFXButton fx:id="hostButton" buttonType="RAISED" focusTraversable="false" layoutX="44.0" layoutY="200.0" onAction="#host" prefHeight="45.0" prefWidth="220.0" style="-fx-background-radius: 10; -fx-background-color: #7FA650;" text="Host" textFill="WHITE">
             <font>
-               <Font name="System Bold" size="23.0"/>
+               <Font name="System Bold" size="23.0" />
             </font>
          </JFXButton>
-         <Separator layoutX="54.0" layoutY="59.0" prefWidth="200.0" style="-fx-background-color: #312E2B;"/>
+         <Separator layoutX="54.0" layoutY="53.0" prefWidth="200.0" style="-fx-background-color: #312E2B;" />
+         <Label fx:id="portErrorLabel" alignment="CENTER" layoutX="20.0" layoutY="159.0" prefHeight="27.0" prefWidth="268.0" text="Error!" textFill="#bf1313" />
       </AnchorPane>
    </Tab>
    <Tab text="Join Game">
       <graphic>
-         <MaterialIconView fill="#ababab" glyphName="PLAY_CIRCLE_OUTLINE" size="20"/>
+         <MaterialIconView fill="#ababab" glyphName="PLAY_CIRCLE_OUTLINE" size="20" />
       </graphic>
       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-         <TextField fx:id="ipField" layoutX="44.0" layoutY="93.0" prefHeight="30.0" prefWidth="220.0"
-                    promptText="Enter Host IP"/>
-         <TextField fx:id="portField" layoutX="44.0" layoutY="144.0" prefHeight="30.0" prefWidth="220.0"
-                    promptText="Enter Host Port"/>
-         <Label alignment="CENTER" layoutX="44.0" layoutY="14.0" prefHeight="46.0" prefWidth="221.0"
-                text="Join a Game Session" textFill="#ababab">
+         <TextField fx:id="ipField" layoutX="44.0" layoutY="93.0" prefHeight="30.0" prefWidth="220.0" promptText="Enter Host IP" />
+         <TextField fx:id="portField" layoutX="44.0" layoutY="144.0" prefHeight="30.0" prefWidth="220.0" promptText="Enter Host Port" />
+         <Label alignment="CENTER" layoutX="44.0" layoutY="14.0" prefHeight="46.0" prefWidth="221.0" text="Join a Game Session" textFill="#ababab">
             <font>
-               <Font name="System Bold" size="22.0"/>
+               <Font name="System Bold" size="22.0" />
             </font>
          </Label>
-         <JFXButton fx:id="joinButton" buttonType="RAISED" focusTraversable="false" layoutX="44.0" layoutY="217.0"
-                    onAction="#join" prefHeight="45.0" prefWidth="220.0"
-                    style="-fx-background-radius: 10; -fx-background-color: #7FA650;" text="Join"
-                    textFill="WHITE">
+         <JFXButton fx:id="joinButton" buttonType="RAISED" focusTraversable="false" layoutX="44.0" layoutY="217.0" onAction="#join" prefHeight="45.0" prefWidth="220.0" style="-fx-background-radius: 10; -fx-background-color: #7FA650;" text="Join" textFill="WHITE">
             <font>
-               <Font name="System Bold" size="23.0"/>
+               <Font name="System Bold" size="23.0" />
             </font>
          </JFXButton>
-         <Separator layoutX="54.0" layoutY="59.0" prefWidth="200.0" style="-fx-background-color: #312E2B;"/>
-         <Label fx:id="errorLabel" layoutX="44.0" layoutY="186.0" text="Error!" textFill="#bf1313"/>
+         <Separator layoutX="54.0" layoutY="59.0" prefWidth="200.0" style="-fx-background-color: #312E2B;" />
+         <Label fx:id="errorLabel" layoutX="44.0" layoutY="186.0" text="Error!" textFill="#bf1313" />
       </AnchorPane>
    </Tab>
    <Tab text="Open Lobbies?">
       <graphic>
-         <MaterialIconView fill="#ababab" glyphName="SEARCH" size="20"/>
+         <MaterialIconView fill="#ababab" glyphName="SEARCH" size="20" />
       </graphic>
-      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"/>
+      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
    </Tab>
 </TabPane>
