@@ -130,8 +130,8 @@ public class MainController implements Initializable {
   }
 
   @FXML
-  void openProfile(ActionEvent event){
-
+  void openProfile(ActionEvent event) throws IOException {
+    changePane(centerPane,"/view/Profile.fxml");
   }
 
   @FXML
