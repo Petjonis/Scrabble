@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.text.Font?>
+
+<FlowPane alignment="CENTER" prefHeight="768.0" prefWidth="551.0" prefWrapLength="100.0" rowValignment="TOP" style="-fx-background-color: #312E2B;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ProfileController">
+   <children>
+      <AnchorPane prefHeight="768.0" prefWidth="551.0">
+         <children>
+            <JFXButton fx:id="deleteProfileButton" buttonType="RAISED" layoutX="166.0" layoutY="654.0" onAction="#deleteAccount" prefHeight="54.0" prefWidth="219.0" style="-fx-background-color: #FF0000;" text="Delete Profile" textFill="WHITE" underline="true" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="changeUsernameButton" alignment="CENTER" buttonType="RAISED" layoutX="71.0" layoutY="594.0" onAction="#changeUsername" prefHeight="39.0" prefWidth="191.0" style="-fx-background-color: #7FA650;" text="Change Username" textFill="WHITE" underline="true">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="changePasswordButton" alignment="CENTER" buttonType="RAISED" layoutX="290.0" layoutY="594.0" onAction="#changePassword" prefHeight="39.0" prefWidth="191.0" style="-fx-background-color: #7FA650;" text="Change Password" textFill="WHITE" underline="true">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </JFXButton>
+            <Label fx:id="username" alignment="CENTER" contentDisplay="CENTER" layoutX="160.0" layoutY="22.0" prefHeight="96.0" prefWidth="232.0" text="Username" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="35.0" />
+               </font>
+            </Label>
+            <Label layoutX="26.0" layoutY="118.0" prefHeight="39.0" prefWidth="140.0" text="Games Played:" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="19.0" />
+               </font>
+            </Label>
+            <Label layoutX="26.0" layoutY="157.0" prefHeight="39.0" prefWidth="60.0" text="Wins:" textFill="#10ee00">
+               <font>
+                  <Font name="System Bold" size="19.0" />
+               </font>
+            </Label>
+            <Label layoutX="26.0" layoutY="196.0" prefHeight="39.0" prefWidth="60.0" text="Loses:" textFill="#e43838">
+               <font>
+                  <Font name="System Bold" size="19.0" />
+               </font>
+            </Label>
+            <Label layoutX="26.0" layoutY="235.0" prefHeight="39.0" prefWidth="80.0" text="Winrate:" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="19.0" />
+               </font>
+            </Label>
+            <Label layoutX="26.0" layoutY="274.0" prefHeight="39.0" prefWidth="140.0" text="Avg. Points:" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="19.0" />
+               </font>
+            </Label>
+            <Label fx:id="gameCountLabel" alignment="CENTER" layoutX="232.0" layoutY="118.0" prefHeight="39.0" prefWidth="100.0" text="0" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="19.0" />
+               </font>
+            </Label>
+            <Label fx:id="winCountLabel" alignment="CENTER" layoutX="232.0" layoutY="157.0" prefHeight="39.0" prefWidth="100.0" text="0" textFill="#10ee00">
+               <font>
+                  <Font name="System Bold" size="19.0" />
+               </font>
+            </Label>
+            <Label fx:id="loseCountLabel" alignment="CENTER" layoutX="232.0" layoutY="196.0" prefHeight="39.0" prefWidth="100.0" text="0" textFill="#e43838">
+               <font>
+                  <Font name="System Bold" size="19.0" />
+               </font>
+            </Label>
+            <Label fx:id="winRateLabel" alignment="CENTER" layoutX="232.0" layoutY="235.0" prefHeight="39.0" prefWidth="100.0" text="0" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="19.0" />
+               </font>
+            </Label>
+            <Label fx:id="avgPointsLabel" alignment="CENTER" layoutX="232.0" layoutY="274.0" prefHeight="39.0" prefWidth="100.0" text="0" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="19.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </children>
+</FlowPane>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.materialicons.MaterialIconView?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="338.0" prefWidth="326.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DeleteAccountController">
+   <children>
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="342.0" prefWidth="320.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 5;">
+         <children>
+            <JFXButton fx:id="deleteButton" buttonType="RAISED" focusTraversable="false" layoutX="26.0" layoutY="235.0" onAction="#delete" onKeyPressed="#deleteKeyPressed" prefHeight="66.0" prefWidth="265.0" style="-fx-background-radius: 10; -fx-background-color: #FF0000;" text="Delete" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="23.0" />
+               </font>
+            </JFXButton>
+            <TextField fx:id="usernameField" alignment="CENTER" focusTraversable="false" layoutX="26.0" layoutY="100.0" onKeyPressed="#userNameKeyPressed" prefHeight="40.0" prefWidth="265.0" promptText="Username">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </TextField>
+            <PasswordField fx:id="passwordField" alignment="CENTER" focusTraversable="false" layoutX="26.0" layoutY="160.0" onKeyPressed="#passwordKeyPressed" prefHeight="40.0" prefWidth="265.0" promptText="Password">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </PasswordField>
+            <Label fx:id="errorLabel" layoutX="26.0" layoutY="209.0" text="Error!" textFill="#c3272b" />
+            <Button fx:id="closeButton" cancelButton="true" focusTraversable="false" layoutX="280.0" layoutY="3.0" mnemonicParsing="false" onAction="#close" style="-fx-background-color: transparent;">
+               <graphic>
+                  <MaterialIconView fill="#7fa650" glyphName="CLOSE" size="22" />
+               </graphic>
+            </Button>
+         </children>
+      </AnchorPane>
+   </children>
+</StackPane>
