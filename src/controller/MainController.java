@@ -125,8 +125,8 @@ public class MainController implements Initializable {
   }
 
   @FXML
-  void openRulebook(ActionEvent event) {
-
+  void openRulebook(ActionEvent event) throws IOException {
+    changePane(centerPane, "/view/RuleBook.fxml");
   }
 
   @FXML
