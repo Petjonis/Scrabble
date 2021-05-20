@@ -104,6 +104,14 @@ public class ServerProtocol extends Thread {
             server.sendToAll(new UpdatePlayerListMessage("host", server.getGameSession()
                 .getPlayers()));
             break;
+          case LEAVE_GAME:
+            LeaveGameMessage lgMsg = (LeaveGameMessage) m ;
+            if (server.userExistsP(lgMsg.getFrom())) {
+              server.removeClient(lgMsg.getFrom());
+              server.getGameSession().setPlayers(server.getClientNames());
+              server.sendToAll(new RemovingPlayerListMessage(lgMsg.getFrom()));
+            }
+            break;
           case SEND_TILE:
             SendTileMessage stMsg = (SendTileMessage) m;
             tile = stMsg.getTile();
@@ -123,7 +131,7 @@ public class ServerProtocol extends Thread {
           case DISCONNECT:
             DisconnectMessage dcMsg = (DisconnectMessage) m;
             user = dcMsg.getFrom();
-            GameInfoController.gameInfoController.updateChat("[System]",user + " disconnected.", false);
+            GameInfoController.gameInfoController.updateChat("[System]",user + " left the game.", false);
             server.removeClient(user);
             System.out.println(user + " left the Lobby.");
             break;

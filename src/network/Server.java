@@ -7,10 +7,7 @@ package network;
  * @version 1.0
  */
 
-import controller.MainController;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -22,7 +19,6 @@ import java.util.Set;
 import messages.Message;
 import model.GameSession;
 import model.Player;
-import settings.ServerSettings;
 
 public class Server {
 
@@ -64,7 +60,7 @@ public class Server {
   public void listen() throws IOException {
     running = true;
     try {
-      hostSocket = new ServerSocket(ServerSettings.port);
+      hostSocket = new ServerSocket(this.port);
       System.out.println("Server runs");
 
       while (running) {

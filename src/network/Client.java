@@ -16,6 +16,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import messages.DisconnectMessage;
 import messages.Message;
+import messages.RemovingPlayerListMessage;
 import messages.SendChatMessage;
 import messages.UpdatePlayerListMessage;
 import model.GameSession;
@@ -65,6 +66,10 @@ public class Client extends Thread {
             System.out.println("Players on the list: " + uplMsg.getActivePlayers());
             ArrayList<String> liste = uplMsg.getActivePlayers();
             GameInfoController.gameInfoController.updatePlayerList(liste);
+            break;
+          case REMOVE_PLAYERLIST:
+            RemovingPlayerListMessage rplMsg = (RemovingPlayerListMessage) m;
+            GameInfoController.gameInfoController.removePlayerFromPlayerList(rplMsg.getFrom());
             break;
           case SEND_MESSAGE:
             SendChatMessage scMsg = (SendChatMessage) m;

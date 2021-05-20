@@ -94,7 +94,7 @@ public class PlayOnlineController implements Initializable {
         };
         new Thread(r).start();
 
-        MainController.mainController.connectToServer("localhost", 8080);
+        MainController.mainController.connectToServer("localhost", this.port);
         if (MainController.mainController.getConnection().isOk()) {
           MainController.mainController.getConnection()
               .sendToServer(
@@ -118,9 +118,9 @@ public class PlayOnlineController implements Initializable {
    * @author socho
    */
   private boolean hostGameSession() {
-      port = Integer.parseInt(portNumberTextField.getText());
-      if (port > 49151 && port < 50001 ){
-      gameSession = new GameSession(port);
+      this.port = Integer.parseInt(portNumberTextField.getText());
+      if (this.port > 49151 && this.port < 50001 ){
+      gameSession = new GameSession(this.port);
       gameSession.setHost(MainController.mainController.getUser());
       MainController.mainController.setGameSession(gameSession);
       MainController.mainController.setHosting(true);
@@ -157,18 +157,18 @@ public class PlayOnlineController implements Initializable {
   /**
    * client connects to the server with the server ip and port which the user entered before. if
    * connection is alright (see isOk() method in "Client.java"), a new Connect-Message will be sent
-   * to the server. portfield will be checked if it is empty and matches to specific regex. if not,
+   * to the server. port field will be checked if it is empty and matches to specific regex. if not,
    * the right game info pane will not show up.
    *
    * @author socho
    */
 
   private boolean joinGameSession() throws IOException {
-      port = Integer.parseInt(portField.getText());
-      if (port > 49151 && port < 50001) {
-        MainController.mainController.connectToServer(ipField.getText(), port);
+      this.port = Integer.parseInt(portField.getText());
+      if (this.port > 49151 && this.port < 50001) {
+        MainController.mainController.connectToServer(ipField.getText(), this.port);
         if (MainController.mainController.getConnection().isOk()) {
-          MainController.mainController.getUser().setActiveSession(new GameSession(port));
+          MainController.mainController.getUser().setActiveSession(new GameSession(this.port));
           MainController.mainController
             .setGameSession(MainController.mainController.getUser().getActiveSession());
           MainController.mainController.getConnection()

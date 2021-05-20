@@ -18,6 +18,7 @@ import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import messages.LeaveGameMessage;
 import messages.RequestPlayerListMessage;
 import messages.SendChatMessage;
 
@@ -114,6 +115,14 @@ public class GameInfoController implements Initializable {
     }
   }
 
+  public void removePlayerFromPlayerList(String from){
+    if (playerList.getItems().contains(from)){
+      System.out.println("YES! REMOVING...");
+      playerList.getItems().remove(from);
+    }
+    System.out.println("REMOVING DONE!");
+  }
+
   public void updateLastWordList(String word) {
     lastWordList.getItems().add(word);
   }
@@ -154,9 +163,9 @@ public class GameInfoController implements Initializable {
     Alert warningAlert = new Alert(AlertType.CONFIRMATION);
     warningAlert.setTitle("Leaving game confirmation");
     warningAlert.setHeaderText("Do you want to leave this game session?");
-
     Optional<ButtonType> result = warningAlert.showAndWait();
     if (result.get() == ButtonType.OK) {
+      MainController.mainController.getConnection().sendToServer(new LeaveGameMessage(MainController.mainController.getUser().getUserName()));
       if (MainController.mainController.getHosting()) {
         MainController.mainController.getUser().getActiveSession().getServer().stopServer();
       }
