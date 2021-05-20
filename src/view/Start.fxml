@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 <FlowPane xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" hgap="40.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="455.0"
           prefWidth="508.0" prefWrapLength="100.0" rowValignment="TOP" style="-fx-background-color: #312E2B;"
-          vgap="40.0" xmlns="http://javafx.com/javafx/16"
+          vgap="40.0" xmlns="http://javafx.com/javafx/11.0.2"
           fx:controller="controller.StartController">
     <children>
         <AnchorPane>

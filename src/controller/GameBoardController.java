@@ -10,24 +10,28 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
+import javafx.util.Pair;
 import model.*;
 import settings.GlobalSettings;
 
+import java.util.ArrayList;
+import java.util.Stack;
+
 public class GameBoardController {
-    private Board board;
-    private TileBag tb;
-    private TileRack tr;
     private static final Integer STARTTIME = 120;
     private final IntegerProperty timeSeconds = new SimpleIntegerProperty(STARTTIME * 100);
 
+    private Board board;
+    private TileBag tb;
+    private TileRack tr;
     @FXML
     private VBox gameBoard;
     @FXML
@@ -50,16 +54,29 @@ public class GameBoardController {
 
     @FXML
     void play(ActionEvent event) {
-        /* TODO */
+        ArrayList<Pair<String,Integer>> playedWords = board.playedWords();
+        if(playedWords != null){
+            addFinalTilesToBoardGrid(board.getTilesPendingConfirmation());
+            board.clearTilesPending();
+            /* TODO: Send playedWords to Server */
+
+            tr.refillFromBag();
+            System.out.println(board.getTilesPendingConfirmation());
+            for(Pair<String,Integer> p : playedWords){
+                System.out.println("Word: "+p.getKey()+", Score: "+p.getValue());
+            }
+            System.out.println();
+        }
     }
+
     @FXML
-    void swap(ActionEvent event){
+    void swap(ActionEvent event) {
         /* TODO */
     }
 
     public void initialize() {
         board = new Board();
-        //for test, should get tilebag from player
+        //for test, should get tilebag from GameSession
         tb = new TileBag();
         //for test, should get tilerack from player
         tr = new TileRack(tb);
@@ -69,7 +86,7 @@ public class GameBoardController {
         //Adding StackPane to every Cell in the GridPane and Adding the Target Events to each StackPane.
         for (int row = 0; row < GlobalSettings.ROWS; row++) {
             for (int col = 0; col < GlobalSettings.COLUMNS; col++) {
-                addStackPaneToBoardGrid(row,col);
+                addStackPaneToBoardGrid(row, col);
             }
         }
 
@@ -115,7 +132,7 @@ public class GameBoardController {
             /* mouse moved away, remove the graphical cues */
             int row = GridPane.getRowIndex(target);
             int col = GridPane.getColumnIndex(target);
-            target.setStyle("-fx-background-color: " + board.getSquares()[row][col].getColor() + ";");
+            target.setStyle(getStyle(row,col));
 
             event.consume();
         });
@@ -138,6 +155,7 @@ public class GameBoardController {
                 int col = GridPane.getColumnIndex(target);
                 boardGrid.getChildren().remove(target);
                 boardGrid.add(tmp, col, row);
+                board.addTilePending(tmp.getLetter().charAt(0),Integer.parseInt(tmp.getValue()),row,col);
                 success = true;
             }
             /* let the source know whether the string was successfully
@@ -177,16 +195,14 @@ public class GameBoardController {
                 if (tileRack.getChildren().contains(tile)) {
                     int col = GridPane.getColumnIndex(tile);
                     tr.remove(col);
-                    /*TEST
-                    tr.refillFromBag();*/
                 } else if (boardGrid.getChildren().contains(tile)) {
                     int row = GridPane.getRowIndex(tile);
                     int col = GridPane.getColumnIndex(tile);
+                    board.removeTilePending(row,col);
                     boardGrid.getChildren().remove(tile);
-                    addStackPaneToBoardGrid(row,col);
+                    addStackPaneToBoardGrid(row, col);
                 }
             }
-
             event.consume();
         });
     }
@@ -199,10 +215,10 @@ public class GameBoardController {
         timeline.playFromStart();
     }
 
-    private void addStackPaneToBoardGrid(int row,int col){
+    private void addStackPaneToBoardGrid(int row, int col) {
         StackPane stackPane = new StackPane();
-        stackPane.setStyle("-fx-background-color: " + board.getSquares()[row][col].getColor() + ";");
-        if(board.getSquares()[row][col].getType() == SquareType.START){
+        stackPane.setStyle(getStyle(row,col));
+        if(board.getSquares()[row][col].getType() == SquareType.START) {
             MaterialIconView m = new MaterialIconView(MaterialIcon.STAR);
             m.setSize("25");
             stackPane.getChildren().add(m);
@@ -214,9 +230,53 @@ public class GameBoardController {
         boardGrid.add(stackPane, col, row);
     }
 
-    private void renderTileRack(){
+    private void addFinalTilesToBoardGrid(ArrayList<Tile> tiles){
+        for(Tile t: tiles){
+            removeStackPaneFromBoardGrid(t.getRow(),t.getCol());
+            TileController tmp = new TileController();
+            tmp.setString(t.toString());
+            tmp.setStyle("-fx-background-color:#b48484");
+            boardGrid.add(tmp, t.getCol(), t.getRow());
+            board.placeTile(t.getLetter(),t.getValue(),t.getRow(),t.getCol());
+        }
+    }
+
+    private void removeStackPaneFromBoardGrid(int row, int col){
+        for(Node node : boardGrid.getChildren()) {
+            if(node instanceof StackPane && boardGrid.getRowIndex(node) == row && boardGrid.getColumnIndex(node) == col) {
+                StackPane s= new StackPane(node);
+                boardGrid.getChildren().remove(s);
+                break;
+            }
+        }
+    }
+
+    private String getStyle(int row, int col){
+        String style = "";
+        switch (board.getSquares()[row][col].getType()) {
+            case DOUBLE_LETTER:
+                style = "-fx-background-color:#aedcec";
+                break;
+            case DOUBLE_WORD:
+            case START:
+                style = "-fx-background-color:#f4ceca";
+                break;
+            case TRIPLE_LETTER:
+                style = "-fx-background-color:#035ee3";
+                break;
+            case TRIPLE_WORD:
+                style = "-fx-background-color:#ee3940";
+                break;
+            case NO_BONUS:
+                style = "-fx-background-color:#eeeed2";
+                break;
+        }
+        return style;
+    }
+
+    private void renderTileRack() {
         tileRack.getChildren().clear();
-        for(Tile t:tr.getTileRack()){
+        for (Tile t : tr.getTileRack()) {
             TileController tc = new TileController();
             tc.setString(t.toString());
             setOnDragDetected(tc);

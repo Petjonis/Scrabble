@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="gameInfoPane" prefHeight="768.0" prefWidth="308.0" style="-fx-background-color: #272522;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GameInfoController">
+<AnchorPane fx:id="gameInfoPane" prefHeight="768.0" prefWidth="308.0" style="-fx-background-color: #272522;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GameInfoController">
    <children>
       <JFXListView fx:id="playerList" layoutX="12.0" layoutY="45.0" prefHeight="134.0" prefWidth="284.0" style="-fx-background-color: #312E2B;" stylesheets="@Style.css" />
       <JFXListView fx:id="lastWordList" layoutX="12.0" layoutY="215.0" prefHeight="111.0" prefWidth="284.0" style="-fx-background-color: #312E2B;" stylesheets="@Style.css" />

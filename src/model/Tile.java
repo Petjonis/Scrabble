@@ -7,9 +7,12 @@
 
 package model;
 
+import java.util.Objects;
+
 public class Tile {
   private char letter;
   private int value;
+  private Position pos;
 
   /**
    * Constructor for a tile piece.
@@ -17,10 +20,13 @@ public class Tile {
    * @param letter Is the letter
    * @param value Is value of tile
    */
-  public Tile(char letter, int value) {
+
+  public Tile(char letter, int value, Position position) {
     this.letter = letter;
     this.value = value;
+    this.pos = position;
   }
+
 
   public String toString(){
     return letter+","+value;
@@ -42,7 +48,11 @@ public class Tile {
     this.value = value;
   }
 
+  public int getRow(){
+    return pos.getRow();
+  }
 
-
-
+  public int getCol(){
+    return pos.getCol();
+  }
 }

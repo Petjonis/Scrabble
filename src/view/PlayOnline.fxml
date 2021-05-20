@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 
 <TabPane fx:id="playTabPane" prefHeight="768.0" prefWidth="308.0" style="-fx-background-color: #272522;"
-         stylesheets="@Style.css" tabClosingPolicy="UNAVAILABLE" tabMinHeight="45.0" xmlns="http://javafx.com/javafx/16"
+         stylesheets="@Style.css" tabClosingPolicy="UNAVAILABLE" tabMinHeight="45.0" xmlns="http://javafx.com/javafx/11.0.2"
          xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PlayOnlineController">
    <Tab text="Host Game">
       <graphic>

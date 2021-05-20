@@ -5,25 +5,18 @@ public class Position {
 	private int xCoordinate;
 	private int yCoordinate;
 
-	public Position(int x, int y) {
-		this.setxCoordinate(x);
-		this.setyCoordinate(y);
+	public Position(int row, int col) {
+		this.xCoordinate = row;
+		this.yCoordinate = col;
 	}
 
-  public int getyCoordinate() {
+  public int getCol() {
     return yCoordinate;
   }
 
-  public void setyCoordinate(int yCoordinate) {
-    this.yCoordinate = yCoordinate;
-  }
-
-  public int getxCoordinate() {
+  public int getRow() {
     return xCoordinate;
   }
 
-  public void setxCoordinate(int xCoordinate) {
-    this.xCoordinate = xCoordinate;
-  }
 
 }

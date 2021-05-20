@@ -31,7 +31,7 @@ public class TileBag {
         for (int i = 0; i < count; i++) {
           char letter = csvLine[0].equalsIgnoreCase("blank") ? ' ' : csvLine[0].charAt(0);
           int value = Integer.parseInt(csvLine[2]);
-          tileBag.add(new Tile(letter, value));
+          tileBag.add(new Tile(letter, value, null));
         }
       }
     } catch (IOException e) {

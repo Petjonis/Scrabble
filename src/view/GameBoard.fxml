@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="gameBoard" fillWidth="false" spacing="10.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GameBoardController">
+<VBox fx:id="gameBoard" fillWidth="false" spacing="10.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GameBoardController">
     <children>
         <GridPane fx:id="boardGrid" gridLinesVisible="true" hgap="1.0" prefHeight="600.0" prefWidth="600.0" style="-fx-background-color: transparent;" vgap="1.0">
             <columnConstraints>
