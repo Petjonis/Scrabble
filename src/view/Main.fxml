@@ -82,7 +82,7 @@
                   <MaterialIconView fill="#ababab" glyphName="LOCK_OPEN" size="20" />
                </graphic>
             </JFXButton>
-            <FontAwesomeIconView fx:id="editProfileIcon" fill="#6b6767" glyphName="COG" layoutX="72.0" layoutY="297.0" size="25" wrappingWidth="11.0" />
+            <FontAwesomeIconView fx:id="editProfileIcon" fill="#6b6767" glyphName="COG" layoutX="72.0" layoutY="297.0" onMouseClicked="#editProfileClicked" size="25" wrappingWidth="11.0" />
             <JFXButton fx:id="deleteProfileButton" buttonType="RAISED" layoutX="14.0" layoutY="681.0" onAction="#deleteAccount" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: #FF0000;" text="Delete Profile" textFill="WHITE" underline="true" wrapText="true">
                <font>
                   <Font name="System Bold" size="12.0" />
