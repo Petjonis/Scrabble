@@ -18,20 +18,27 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import model.HumanPlayer;
+import settings.IdGenerator;
 
 public class LoginController implements Initializable {
 
-  @FXML private JFXButton loginButton;
+  @FXML
+  private JFXButton loginButton;
 
-  @FXML private Button closeButton;
+  @FXML
+  private Button closeButton;
 
-  @FXML private TextField usernameField;
+  @FXML
+  private TextField usernameField;
 
-  @FXML private PasswordField passwordField;
+  @FXML
+  private PasswordField passwordField;
 
-  @FXML private Label errorLabel;
+  @FXML
+  private Label errorLabel;
 
-  @FXML private Hyperlink signupLink;
+  @FXML
+  private Hyperlink signupLink;
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -59,6 +66,7 @@ public class LoginController implements Initializable {
 
         MainController.mainController.setUser(new HumanPlayer());
         MainController.mainController.getUser().setUserName(usernameField.getText());
+        MainController.mainController.getUser().setPlayerID(IdGenerator.createID());
         MainController.mainController.setLoggedIn(true);
 
         MainController.mainController.getWelcomeLabel().setText(usernameField.getText());
@@ -102,16 +110,16 @@ public class LoginController implements Initializable {
                     MainController.mainController.getUser().getUserName())));
         /** checks if wins are divided by 0. */
         if (MainController.mainController.db.getGames(
-                MainController.mainController.getUser().getUserName())
+            MainController.mainController.getUser().getUserName())
             != 0) {
           MainController.mainController.setWinRate(
               Double.toString(
-                      (((double)
-                              (MainController.mainController.db.getWins(
-                                  MainController.mainController.getUser().getUserName())))
-                          / ((double)
-                              (MainController.mainController.db.getGames(
-                                  MainController.mainController.getUser().getUserName()))))*100)
+                  (((double)
+                      (MainController.mainController.db.getWins(
+                          MainController.mainController.getUser().getUserName())))
+                      / ((double)
+                      (MainController.mainController.db.getGames(
+                          MainController.mainController.getUser().getUserName())))) * 100)
                   + " %");
         } else {
           MainController.mainController.setWinRate("0 %");
@@ -166,7 +174,6 @@ public class LoginController implements Initializable {
 
   /**
    * Methods that user can use tab or enter to navigate through textfields.
-   *
    */
 
   public void userNameKeyPressed(KeyEvent keyEvent) {
@@ -178,7 +185,9 @@ public class LoginController implements Initializable {
   }
 
   public void loginKeyPressed(KeyEvent keyEvent) throws IOException {
-    if (keyEvent.getCode() == KeyCode.ENTER) login(new ActionEvent());
+    if (keyEvent.getCode() == KeyCode.ENTER) {
+      login(new ActionEvent());
+    }
   }
 
   public void passwordKeyPressed(KeyEvent keyEvent) {

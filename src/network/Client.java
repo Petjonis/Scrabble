@@ -14,6 +14,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import javafx.event.ActionEvent;
 import messages.DisconnectMessage;
 import messages.Message;
 import messages.RemovingPlayerListMessage;
@@ -57,6 +58,7 @@ public class Client extends Thread {
    * this method is crucial for getting the info for the client-side.
    */
   public void run() {
+    String user, text;
     while (running) {
       try {
         Message m = (Message) in.readObject();
@@ -73,10 +75,22 @@ public class Client extends Thread {
             break;
           case SEND_MESSAGE:
             SendChatMessage scMsg = (SendChatMessage) m;
-            String user = scMsg.getFrom();
-            String text = scMsg.getText();
+            user = scMsg.getFrom();
+            text = scMsg.getText();
             boolean token = scMsg.getHosting();
             GameInfoController.gameInfoController.updateChat(user, text, token);
+            break;
+          case DISCONNECT:
+            DisconnectMessage dcMsg = (DisconnectMessage) m;
+            user = dcMsg.getFrom();
+            GameInfoController.gameInfoController.updateChat("[System]",user + " left the game.", false);
+            break;
+          case HOST_DISCONNECT:
+            HostDisconnectMessage hdcMsg = (HostDisconnectMessage) m;
+            user = hdcMsg.getFrom();
+            GameInfoController.gameInfoController.leave(new ActionEvent());
+            break;
+          default:
             break;
         }
       } catch (ClassNotFoundException | IOException e) {
@@ -107,17 +121,5 @@ public class Client extends Thread {
     } catch (IOException e) {
       e.printStackTrace();
     }
-  }
-
-  /**
-   * getter and setter methods for attributes.
-   */
-
-  public void setGameSession(GameSession session) {
-    this.gameSession = session;
-  }
-
-  public GameSession getGameSession() {
-    return this.gameSession;
   }
 }

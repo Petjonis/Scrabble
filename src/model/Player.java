@@ -8,7 +8,9 @@
 package model;
 
 public abstract class Player {
+
   private String username;
+  private int playerID;
   private GameSession activeSession;
   private TileBag bag;
   private TileRack rack;
@@ -47,9 +49,13 @@ public abstract class Player {
     this.passCount = 0;
   }
 
-  public TileBag getBag() { return bag; }
+  public TileBag getBag() {
+    return bag;
+  }
 
-  public void setBag(TileBag bag) { this.bag = bag; }
+  public void setBag(TileBag bag) {
+    this.bag = bag;
+  }
 
   public String getUserName() {
     return username;
@@ -59,8 +65,20 @@ public abstract class Player {
     this.username = username;
   }
 
-  public void setActiveSession(GameSession game) { this.activeSession = game; }
+  public int getPlayerID() {
+    return this.playerID;
+  }
 
-  public GameSession getActiveSession() { return this.activeSession; }
+  public void setPlayerID(int idNumber) {
+    this.playerID = idNumber;
+  }
+
+  public void setActiveSession(GameSession game) {
+    this.activeSession = game;
+  }
+
+  public GameSession getActiveSession() {
+    return this.activeSession;
+  }
 
 }

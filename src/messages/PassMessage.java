@@ -1,13 +1,23 @@
 package messages;
 
-public class PassMessage extends Message{
+import model.Player;
 
-	/**
-	 * constructor for "pass turn" message.
-	 *
-	 * @param from is user.
-	 */
-	public PassMessage(String from) {
-		super(MessageType.PASS, from);
-	}
+public class PassMessage extends Message {
+
+  private static final long serialVersionUID = 1L;
+  private int id;
+
+  /**
+   * constructor for "pass turn" message.
+   *
+   * @param from is user.
+   */
+  public PassMessage(String from, int idNumber) {
+    super(MessageType.PASS_MESSAGE, from);
+    this.id = idNumber;
+  }
+
+  public int getId() {
+    return this.id;
+  }
 }

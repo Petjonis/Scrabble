@@ -15,9 +15,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
-
 import messages.*;
 import model.GameSession;
+import model.Player;
 import model.Square;
 import model.Tile;
 
@@ -30,6 +30,7 @@ public class ServerProtocol extends Thread {
   private GameSession gameSession;
   private String clientName;
   private boolean running = true;
+  public static int id = 0;
 
   ServerProtocol(Socket client, Server server, GameSession session) throws IOException {
     this.socket = client;
@@ -77,20 +78,31 @@ public class ServerProtocol extends Thread {
     Tile[] tiles;
     Square [][] position;
     String user;
+    Player player;
+    int index;
+    ArrayList<String> list;
+
+
     try {
       m = (Message) in.readObject();
       if (m.getMessageType() == MessageType.CONNECT) {
-        user = m.getFrom();
+        ConnectMessage cMsg = (ConnectMessage) m;
+        user = cMsg.getFrom();
+        index = cMsg.getId();
         this.clientName = user;
         if(server.getClientNames().size() == 0) {
           server.addClient(user + " [Host] ", this);
+          server.addIdToClient(index, user);
         }else{
           server.addClient(user, this);
+          server.addIdToClient(index, user);
         }
-        this.gameSession.setPlayers(server.getClientNames());
+        this.gameSession.setPlayerNames(server.getClientNames());
         System.out.println(this.clientName + " was added to the Lobby.");
         /** checking for who is in the same one lobby. */
-        System.out.println(this.gameSession.getPlayers());
+        System.out.println(this.gameSession.getPlayerNames());
+        System.out.println(server.getIds());
+        //sendToClient();
       } else {
         disconnect();
       }
@@ -102,15 +114,26 @@ public class ServerProtocol extends Thread {
         switch (m.getMessageType()) {
           case REQUEST_PLAYERLIST:
             server.sendToAll(new UpdatePlayerListMessage("host", server.getGameSession()
-                .getPlayers()));
+                .getPlayerNames()));
             break;
           case LEAVE_GAME:
             LeaveGameMessage lgMsg = (LeaveGameMessage) m ;
             if (server.userExistsP(lgMsg.getFrom())) {
               server.removeClient(lgMsg.getFrom());
-              server.getGameSession().setPlayers(server.getClientNames());
+              server.getGameSession().setPlayerNames(server.getClientNames());
               server.sendToAll(new RemovingPlayerListMessage(lgMsg.getFrom()));
             }
+            break;
+          case DISCONNECT:
+            DisconnectMessage dcMsg = (DisconnectMessage) m;
+            user = dcMsg.getFrom();
+            server.sendToAllBut(user, new DisconnectMessage(user));
+            server.removeClient(user);
+            System.out.println(user + " left the Lobby.");
+            break;
+          case PASS_MESSAGE:
+            PassMessage pMsg = (PassMessage) m;
+            user = pMsg.getFrom();
             break;
           case SEND_TILE:
             SendTileMessage stMsg = (SendTileMessage) m;
@@ -128,13 +151,6 @@ public class ServerProtocol extends Thread {
               server.sendToAllBut(user, scMsg);
             }
             break;
-          case DISCONNECT:
-            DisconnectMessage dcMsg = (DisconnectMessage) m;
-            user = dcMsg.getFrom();
-            GameInfoController.gameInfoController.updateChat("[System]",user + " left the game.", false);
-            server.removeClient(user);
-            System.out.println(user + " left the Lobby.");
-            break;
           case SWAP_TILES:
             SwapTilesMessage swtMsg = (SwapTilesMessage) m;
             user = swtMsg.getFrom();
@@ -142,10 +158,6 @@ public class ServerProtocol extends Thread {
             /** put them into bag and then draw? or draw and put back after?
             drawable if rack already full? */
             gameSession.getTilebag().addTiles(tiles);
-
-            break;
-          case PASS:
-            PassMessage pMsg = (PassMessage) m;
             break;
           default:
             break;

@@ -115,12 +115,10 @@ public class GameInfoController implements Initializable {
     }
   }
 
-  public void removePlayerFromPlayerList(String from){
-    if (playerList.getItems().contains(from)){
-      System.out.println("YES! REMOVING...");
+  public void removePlayerFromPlayerList(String from) {
+    if (playerList.getItems().contains(from)) {
       playerList.getItems().remove(from);
     }
-    System.out.println("REMOVING DONE!");
   }
 
   public void updateLastWordList(String word) {
@@ -160,14 +158,15 @@ public class GameInfoController implements Initializable {
    * @author socho
    */
   public void leave(ActionEvent actionEvent) throws IOException {
-    Alert warningAlert = new Alert(AlertType.CONFIRMATION);
-    warningAlert.setTitle("Leaving game confirmation");
-    warningAlert.setHeaderText("Do you want to leave this game session?");
-    Optional<ButtonType> result = warningAlert.showAndWait();
+    Alert confirmationAlert = new Alert(AlertType.CONFIRMATION);
+    confirmationAlert.setTitle("Leaving game confirmation");
+    confirmationAlert.setHeaderText("Do you want to leave this game session?");
+    Optional<ButtonType> result = confirmationAlert.showAndWait();
     if (result.get() == ButtonType.OK) {
-      MainController.mainController.getConnection().sendToServer(new LeaveGameMessage(MainController.mainController.getUser().getUserName()));
+      MainController.mainController.getConnection().sendToServer(
+          new LeaveGameMessage(MainController.mainController.getUser().getUserName()));
       if (MainController.mainController.getHosting()) {
-        MainController.mainController.getUser().getActiveSession().getServer().stopServer();
+        MainController.mainController.getServer().stopServer();
       }
       MainController.mainController.disconnect();
       MainController.mainController

@@ -5,13 +5,15 @@ import java.util.ArrayList;
 import java.util.Set;
 import network.Server;
 
-/** class represents the game session which is essential for the network game. */
+/**
+ * class represents the game session which is essential for the network game.
+ */
 public class GameSession {
 
   private static int gameLobbyId = 0;
   private static ArrayList<GameSession> sessions = new ArrayList<GameSession>();
   private GameState state;
-  private ArrayList<String> players;
+  private ArrayList<String> playerNames;
   private Server server;
   private Player host;
   private TileBag tilebag;
@@ -30,7 +32,9 @@ public class GameSession {
     return this.state;
   }
 
-  /** getter and setter methods for all attributes. */
+  /**
+   * getter and setter methods for all attributes.
+   */
   public void setState(GameState gs) {
     this.state = gs;
   }
@@ -39,13 +43,13 @@ public class GameSession {
     return this.gameLobbyId;
   }
 
-  public ArrayList<String> getPlayers() {
-    this.players = new ArrayList<String>(this.server.getClientNames());
-    return players;
+  public ArrayList<String> getPlayerNames() {
+    this.playerNames = new ArrayList<String>(this.server.getClientNames());
+    return playerNames;
   }
 
-  public void setPlayers(Set<String> list) {
-    this.players = new ArrayList<String>(list);
+  public void setPlayerNames(Set<String> list) {
+    this.playerNames = new ArrayList<String>(list);
   }
 
   public Player getHost() {

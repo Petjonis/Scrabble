@@ -33,9 +33,9 @@ public class Server {
   }
 
   /**
-   * collects all connected clients in a HashMap.
+   * collects all connected clients' user names in a HashMap.
    */
-  private final HashMap<String, ServerProtocol> clients = new HashMap<>();
+  private HashMap<String, ServerProtocol> clients = new HashMap<>();
 
   public synchronized void removeClient(String clientName) {
     this.clients.remove(clientName);
@@ -52,6 +52,27 @@ public class Server {
   public synchronized Set<String> getClientNames() {
     Set<String> clientNames = this.clients.keySet();
     return new HashSet<String>(clientNames);
+  }
+
+  /** every client user has a unique id which is also held in a HashMap.*/
+
+  private HashMap<Integer, String> clientsIDMap = new HashMap<>();
+
+  public synchronized void addIdToClient(Integer id, String clientName){
+    clientsIDMap.put(id, clientName);
+  }
+
+  public synchronized String getUserFromId(Integer id){
+    return clientsIDMap.get(id);
+  }
+
+  public synchronized void removeIdToClient(Integer id, String clientName){
+    clientsIDMap.remove(id, clientName);
+  }
+
+  public synchronized Set<Integer> getIds() {
+    Set<Integer> idNumbers = this.clientsIDMap.keySet();
+    return new HashSet<Integer>(idNumbers);
   }
 
   /**
