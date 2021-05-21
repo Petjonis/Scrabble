@@ -16,14 +16,12 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import javafx.util.Pair;
 import model.*;
 import settings.GlobalSettings;
 
 import java.util.ArrayList;
-import java.util.Stack;
 
 public class GameBoardController {
     private static final Integer STARTTIME = 120;
@@ -32,8 +30,6 @@ public class GameBoardController {
     private Board board;
     private TileBag tb;
     private TileRack tr;
-    @FXML
-    private VBox gameBoard;
     @FXML
     private GridPane boardGrid;
     @FXML
@@ -45,6 +41,8 @@ public class GameBoardController {
     @FXML
     private JFXButton swapButton;
     @FXML
+    private JFXButton undoButton;
+    @FXML
     private ProgressBar progressBar;
 
     @FXML
@@ -53,17 +51,27 @@ public class GameBoardController {
     }
 
     @FXML
+    void undo(ActionEvent event){
+        for(Tile t : board.getTilesPendingConfirmation()){
+            removeStackPaneFromBoardGrid(t.getRow(),t.getCol());
+            addStackPaneToBoardGrid(t.getRow(),t.getCol());
+            tr.add(new Tile(t.getLetter(),t.getValue(),null));
+        }
+        board.clearTilesPending();
+        System.out.println(board.getTilesPendingConfirmation());
+    }
+
+    @FXML
     void play(ActionEvent event) {
-        ArrayList<Pair<String,Integer>> playedWords = board.playedWords();
-        if(playedWords != null){
+        ArrayList<Pair<String, Integer>> playedWords = board.playedWords();
+        if (playedWords != null) {
             addFinalTilesToBoardGrid(board.getTilesPendingConfirmation());
             board.clearTilesPending();
             /* TODO: Send playedWords to Server */
 
             tr.refillFromBag();
-            System.out.println(board.getTilesPendingConfirmation());
-            for(Pair<String,Integer> p : playedWords){
-                System.out.println("Word: "+p.getKey()+", Score: "+p.getValue());
+            for (Pair<String, Integer> p : playedWords) {
+                System.out.println("Word: " + p.getKey() + ", Score: " + p.getValue());
             }
             System.out.println();
         }
@@ -103,8 +111,7 @@ public class GameBoardController {
 
             /* accept it only if it is  not dragged from the same node
              * and if it has a string data */
-            if (event.getGestureSource() != target
-            ) {
+            if (event.getGestureSource() != target) {
                 /* allow for both copying and moving, whatever user chooses */
                 event.acceptTransferModes(TransferMode.MOVE);
             }
@@ -118,8 +125,7 @@ public class GameBoardController {
             /* the drag-and-drop gesture entered the target */
             //System.out.println("onDragEntered");
             /* show to the user that it is an actual gesture target */
-            if (event.getGestureSource() != target
-            ) {
+            if (event.getGestureSource() != target) {
                 target.setStyle("-fx-background-color: green");
             }
 
@@ -132,8 +138,7 @@ public class GameBoardController {
             /* mouse moved away, remove the graphical cues */
             int row = GridPane.getRowIndex(target);
             int col = GridPane.getColumnIndex(target);
-            target.setStyle(getStyle(row,col));
-
+            target.setStyle(getStyle(row, col));
             event.consume();
         });
     }
@@ -149,13 +154,13 @@ public class GameBoardController {
                 //target.setText(db.getString());
                 TileController tmp = new TileController();
                 tmp.setString(db.getString());
-                setOnDragDetected(tmp);
-                setOnDragDone(tmp);
                 int row = GridPane.getRowIndex(target);
                 int col = GridPane.getColumnIndex(target);
+                setOnDragDetected(tmp);
+                setOnDragDone(tmp);
                 boardGrid.getChildren().remove(target);
                 boardGrid.add(tmp, col, row);
-                board.addTilePending(tmp.getLetter().charAt(0),Integer.parseInt(tmp.getValue()),row,col);
+                board.addTilePending(tmp.getLetter().charAt(0), Integer.parseInt(tmp.getValue()), row, col);
                 success = true;
             }
             /* let the source know whether the string was successfully
@@ -198,11 +203,12 @@ public class GameBoardController {
                 } else if (boardGrid.getChildren().contains(tile)) {
                     int row = GridPane.getRowIndex(tile);
                     int col = GridPane.getColumnIndex(tile);
-                    board.removeTilePending(row,col);
+                    board.removeTilePending(row, col);
                     boardGrid.getChildren().remove(tile);
                     addStackPaneToBoardGrid(row, col);
                 }
             }
+
             event.consume();
         });
     }
@@ -217,8 +223,8 @@ public class GameBoardController {
 
     private void addStackPaneToBoardGrid(int row, int col) {
         StackPane stackPane = new StackPane();
-        stackPane.setStyle(getStyle(row,col));
-        if(board.getSquares()[row][col].getType() == SquareType.START) {
+        stackPane.setStyle(getStyle(row, col));
+        if (board.getSquares()[row][col].getType() == SquareType.START) {
             MaterialIconView m = new MaterialIconView(MaterialIcon.STAR);
             m.setSize("25");
             stackPane.getChildren().add(m);
@@ -230,28 +236,29 @@ public class GameBoardController {
         boardGrid.add(stackPane, col, row);
     }
 
-    private void addFinalTilesToBoardGrid(ArrayList<Tile> tiles){
-        for(Tile t: tiles){
-            removeStackPaneFromBoardGrid(t.getRow(),t.getCol());
+
+    private void addFinalTilesToBoardGrid(ArrayList<Tile> tiles) {
+        for (Tile t : tiles) {
+            removeStackPaneFromBoardGrid(t.getRow(), t.getCol());
             TileController tmp = new TileController();
             tmp.setString(t.toString());
-            tmp.setStyle("-fx-background-color:#b48484");
+            tmp.setStyle("-fx-background-color:#efcdaa");
             boardGrid.add(tmp, t.getCol(), t.getRow());
-            board.placeTile(t.getLetter(),t.getValue(),t.getRow(),t.getCol());
+            board.placeTile(t.getLetter(), t.getValue(), t.getRow(), t.getCol());
         }
     }
 
-    private void removeStackPaneFromBoardGrid(int row, int col){
-        for(Node node : boardGrid.getChildren()) {
-            if(node instanceof StackPane && boardGrid.getRowIndex(node) == row && boardGrid.getColumnIndex(node) == col) {
-                StackPane s= new StackPane(node);
+    private void removeStackPaneFromBoardGrid(int row, int col) {
+        for (Node node : boardGrid.getChildren()) {
+            if (node instanceof StackPane && GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == col) {
+                StackPane s = new StackPane(node);
                 boardGrid.getChildren().remove(s);
                 break;
             }
         }
     }
 
-    private String getStyle(int row, int col){
+    private String getStyle(int row, int col) {
         String style = "";
         switch (board.getSquares()[row][col].getType()) {
             case DOUBLE_LETTER:
@@ -282,6 +289,11 @@ public class GameBoardController {
             setOnDragDetected(tc);
             setOnDragDone(tc);
             tileRack.add(tc, tr.getTileRack().indexOf(t), 0);
+        }
+        for (int i = tr.getTileRack().size(); i < 7; i++) {
+            StackPane stackPane = new StackPane();
+            stackPane.setStyle("-fx-background-color:#878787; -fx-border-color: #000000");
+            tileRack.add(stackPane, i, 0);
         }
     }
 }
