@@ -41,7 +41,7 @@ public class ChangeUsernameController implements Initializable {
           MainController.mainController.getUser().getUserName(), this.newUsernameField.getText());
 
       MainController.mainController.getUser().setUserName(this.newUsernameField.getText());
-      ProfileController.profileController.setUsername(this.newUsernameField.getText());
+      MainController.mainController.setWelcomeLabel(this.newUsernameField.getText());
 
       Stage stage = (Stage) changeButton.getScene().getWindow();
       stage.close();

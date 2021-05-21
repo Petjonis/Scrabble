@@ -5,6 +5,8 @@ import db.Database;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -45,10 +47,13 @@ public class MainController implements Initializable {
   private JFXButton rulebookButton;
 
   @FXML
-  private JFXButton profileButton;
+  private JFXButton deleteProfileButton;
 
   @FXML
-  private Label welcomeLabel;
+  private JFXButton changeUsernameButton;
+
+  @FXML
+  private JFXButton changePasswordButton;
 
   @FXML
   private JFXButton loginButton;
@@ -60,17 +65,54 @@ public class MainController implements Initializable {
   private JFXButton logoutButton;
 
   @FXML
+  private Label welcomeLabel;
+
+  @FXML
+  private Label gameCountLabel;
+
+  @FXML
+  private Label winCountLabel;
+
+  @FXML
+  private Label loseCountLabel;
+
+  @FXML
+  private Label winRateLabel;
+
+  @FXML
+  private Label avgPointsLabel;
+
+  @FXML
+  private Label gameCount;
+
+  @FXML
+  private Label winCount;
+
+  @FXML
+  private Label loseCount;
+
+  @FXML
+  private Label winRate;
+
+  @FXML
+  private Label avgPoints;
+
+  @FXML
+  private FontAwesomeIconView editProfileIcon;
+
+  @FXML
   private BorderPane borderPane;
 
   @FXML
   private FlowPane startPane;
-
 
   @FXML
   private StackPane centerPane;
 
   @FXML
   private StackPane rightPane;
+
+
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -80,11 +122,20 @@ public class MainController implements Initializable {
     if (!mainController.getLoggedIn()) {
       this.logoutButton.setVisible(false);
       this.welcomeLabel.setVisible(false);
-      this.profileButton.setDisable(true);
-      /**
-       * @apiNote need buttons for changing username, password or avatar and to make clear player is logged in, as "Welcome ____ !".
-       *
-       * */
+      this.changeUsernameButton.setVisible(false);
+      this.changePasswordButton.setVisible(false);
+      this.deleteProfileButton.setVisible(false);
+      this.editProfileIcon.setVisible(false);
+      this.gameCountLabel.setVisible(false);
+      this.winCountLabel.setVisible(false);
+      this.loseCountLabel.setVisible(false);
+      this.winRateLabel.setVisible(false);
+      this.avgPointsLabel.setVisible(false);
+      this.gameCount.setVisible(false);
+      this.winCount.setVisible(false);
+      this.loseCount.setVisible(false);
+      this.winRate.setVisible(false);
+      this.avgPoints.setVisible(false);
     }
   }
 
@@ -105,11 +156,21 @@ public class MainController implements Initializable {
     getSignupButton().setVisible(true);
     getLogoutButton().setVisible(false);
     getWelcomeLabel().setVisible(false);
+    this.editProfileIcon.setVisible(false);
+    this.gameCountLabel.setVisible(false);
+    this.winCountLabel.setVisible(false);
+    this.loseCountLabel.setVisible(false);
+    this.winRateLabel.setVisible(false);
+    this.avgPointsLabel.setVisible(false);
+    this.gameCount.setVisible(false);
+    this.winCount.setVisible(false);
+    this.loseCount.setVisible(false);
+    this.winRate.setVisible(false);
+    this.avgPoints.setVisible(false);
 
     changePane(centerPane, "/view/Start.fxml");
     rightPane.getChildren().clear();
     playButton.setDisable(true);
-    profileButton.setDisable(true);
   }
 
   @FXML
@@ -131,7 +192,6 @@ public class MainController implements Initializable {
 
   @FXML
   void openProfile(ActionEvent event) throws IOException {
-    changePane(centerPane,"/view/Profile.fxml");
   }
 
   @FXML
@@ -144,6 +204,21 @@ public class MainController implements Initializable {
   void login(ActionEvent event) {
     openNewWindow("/view/Login.fxml", "Login");
   }
+
+  @FXML
+  void changeUsername(ActionEvent event) {
+    openNewWindow("/view/ChangeUsername.fxml", "ChangeUsername");
+  }
+
+  @FXML
+  void changePassword(ActionEvent event) {
+    openNewWindow("/view/ChangePassword.fxml", "ChangePassword");
+  }
+
+  @FXML
+  void deleteAccount(ActionEvent event) {
+    openNewWindow("/view/DeleteAccount.fxml", "ChangeAccount");
+    }
 
   /** method for opening a new window. */
   public void openNewWindow(String filename, String title) {
@@ -211,6 +286,8 @@ public class MainController implements Initializable {
 
   public Label getWelcomeLabel() { return welcomeLabel; }
 
+  public void setWelcomeLabel (String username) { welcomeLabel.setText(username);}
+
   public JFXButton getLoginButton() {
     return loginButton;
   }
@@ -222,12 +299,6 @@ public class MainController implements Initializable {
   public JFXButton getLogoutButton() {
     return logoutButton;
   }
-
-  public JFXButton getProfileButton(){
-    return profileButton;
-  }
-
-
 
   public void setUser(Player player) {
     this.user = player;
@@ -269,6 +340,81 @@ public class MainController implements Initializable {
 
   public GameSession getGameSession() {
     return this.gameSession;
+  }
+
+  public JFXButton getDeleteProfileButton() {
+    return deleteProfileButton;
+  }
+
+  public JFXButton getChangeUsernameButton() {
+    return changeUsernameButton;
+  }
+
+  public JFXButton getChangePasswordButton() {
+    return changePasswordButton;
+  }
+
+  public FontAwesomeIconView getEditProfileIcon() {
+    return editProfileIcon;
+  }
+
+  public Label getGameCountLabel() {
+    return gameCountLabel;
+  }
+
+  public Label getWinCountLabel() {
+    return winCountLabel;
+  }
+
+  public Label getAvgPointsLabel() {
+    return avgPointsLabel;
+  }
+
+  public Label getLoseCountLabel() {
+    return loseCountLabel;
+  }
+
+  public Label getWinRateLabel() {
+    return winRateLabel;
+  }
+
+  public void setGameCount(String gameCount) {
+    this.gameCount.setText(gameCount);
+  }
+
+  public void setWinCount(String winCount) {
+    this.winCount.setText(winCount);
+  }
+
+  public void setLoseCount(String loseCount) {
+    this.loseCount.setText(loseCount);
+  }
+
+  public void setWinRate(String winRate) {
+    this.winRate.setText(winRate);
+  }
+
+  public void setAvgPoints(String avgScore) {
+    this.avgPoints.setText(avgScore);
+  }
+  public Label getGameCount() {
+    return gameCount;
+  }
+
+  public Label getWinCount() {
+    return winCount;
+  }
+
+  public Label getLoseCount() {
+    return loseCount;
+  }
+
+  public Label getWinRate() {
+    return winRate;
+  }
+
+  public Label getAvgPoints() {
+    return avgPoints;
   }
 
 }

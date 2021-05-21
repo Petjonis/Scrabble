@@ -21,23 +21,17 @@ import model.HumanPlayer;
 
 public class LoginController implements Initializable {
 
-  @FXML
-  private JFXButton loginButton;
+  @FXML private JFXButton loginButton;
 
-  @FXML
-  private Button closeButton;
+  @FXML private Button closeButton;
 
-  @FXML
-  private TextField usernameField;
+  @FXML private TextField usernameField;
 
-  @FXML
-  private PasswordField passwordField;
+  @FXML private PasswordField passwordField;
 
-  @FXML
-  private Label errorLabel;
+  @FXML private Label errorLabel;
 
-  @FXML
-  private Hyperlink signupLink;
+  @FXML private Hyperlink signupLink;
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -57,27 +51,80 @@ public class LoginController implements Initializable {
     MainController.mainController.db.connect();
 
     if (MainController.mainController.db.userExists(usernameField.getText())) {
-      if (MainController.mainController.db.checkPassword(usernameField.getText(), passwordField.getText())) {
-        /** login is successful.*/
+      if (MainController.mainController.db.checkPassword(
+          usernameField.getText(), passwordField.getText())) {
+        /** login is successful. */
         System.out.println("Login successful!");
 
         MainController.mainController.setUser(new HumanPlayer());
         MainController.mainController.getUser().setUserName(usernameField.getText());
         MainController.mainController.setLoggedIn(true);
 
-        MainController.mainController.getWelcomeLabel().setText("Hello " + usernameField.getText());
+        MainController.mainController.getWelcomeLabel().setText(usernameField.getText());
         MainController.mainController.getWelcomeLabel().setVisible(true);
+        MainController.mainController.getEditProfileIcon().setVisible(true);
+
         MainController.mainController.getLoginButton().setVisible(false);
         MainController.mainController.getSignupButton().setVisible(false);
         MainController.mainController.getLogoutButton().setVisible(true);
-        MainController.mainController.getProfileButton().setDisable(false);
         MainController.mainController.getPlayButton().setDisable(false);
+        MainController.mainController.getChangeUsernameButton().setVisible(false);
+        MainController.mainController.getChangePasswordButton().setVisible(false);
+        MainController.mainController.getDeleteProfileButton().setVisible(false);
 
+        MainController.mainController.getGameCountLabel().setVisible(true);
+        MainController.mainController.getWinCountLabel().setVisible(true);
+        MainController.mainController.getLoseCountLabel().setVisible(true);
+        MainController.mainController.getWinRateLabel().setVisible(true);
+        MainController.mainController.getAvgPointsLabel().setVisible(true);
+
+        MainController.mainController.getGameCount().setVisible(true);
+        MainController.mainController.getWinCount().setVisible(true);
+        MainController.mainController.getLoseCount().setVisible(true);
+        MainController.mainController.getWinRate().setVisible(true);
+        MainController.mainController.getAvgPoints().setVisible(true);
+
+        /** Initializing account statistic values from database. */
+        MainController.mainController.setGameCount(
+            Integer.toString(
+                MainController.mainController.db.getGames(
+                    MainController.mainController.getUser().getUserName())));
+
+        MainController.mainController.setWinCount(
+            Integer.toString(
+                MainController.mainController.db.getWins(
+                    MainController.mainController.getUser().getUserName())));
+
+        MainController.mainController.setLoseCount(
+            Integer.toString(
+                MainController.mainController.db.getLoses(
+                    MainController.mainController.getUser().getUserName())));
+        /** checks if wins are divided by 0. */
+        if (MainController.mainController.db.getGames(
+                MainController.mainController.getUser().getUserName())
+            != 0) {
+          MainController.mainController.setWinRate(
+              Double.toString(
+                      (double)
+                              (MainController.mainController.db.getWins(
+                                  MainController.mainController.getUser().getUserName()))
+                          / (double)
+                              (MainController.mainController.db.getGames(
+                                  MainController.mainController.getUser().getUserName())))
+                  + " %");
+        } else {
+          MainController.mainController.setWinRate("0 %");
+        }
+
+        MainController.mainController.setAvgPoints(
+            Integer.toString(
+                MainController.mainController.db.getScore(
+                    MainController.mainController.getUser().getUserName())));
         Stage stage = (Stage) loginButton.getScene().getWindow();
         stage.close();
 
       } else {
-        /** user exists, but password is wrong.*/
+        /** user exists, but password is wrong. */
         System.out.println("Login failed, reason: wrong password.");
         this.errorLabel.setText("Wrong Password! Try again, please.");
         this.errorLabel.setVisible(true);
@@ -85,7 +132,7 @@ public class LoginController implements Initializable {
         MainController.mainController.setLoggedIn(false);
       }
     } else {
-      /** user does not exist and has to register first.*/
+      /** user does not exist and has to register first. */
       System.out.println("Login failed, reason: username does not exist in the database.");
       this.errorLabel.setText(
           usernameField.getText() + "' does not exist in the database. Please register first.");
@@ -117,22 +164,21 @@ public class LoginController implements Initializable {
   }
 
   public void userNameKeyPressed(KeyEvent keyEvent) {
-    if (keyEvent.getCode() == KeyCode.TAB){
+    if (keyEvent.getCode() == KeyCode.TAB) {
       passwordField.requestFocus();
-    }else if (keyEvent.getCode() == KeyCode.ENTER){
+    } else if (keyEvent.getCode() == KeyCode.ENTER) {
       passwordField.requestFocus();
     }
   }
 
   public void loginKeyPressed(KeyEvent keyEvent) throws IOException {
-    if (keyEvent.getCode() == KeyCode.ENTER)
-      login(new ActionEvent());
+    if (keyEvent.getCode() == KeyCode.ENTER) login(new ActionEvent());
   }
 
   public void passwordKeyPressed(KeyEvent keyEvent) {
-    if (keyEvent.getCode() == KeyCode.TAB){
+    if (keyEvent.getCode() == KeyCode.TAB) {
       loginButton.requestFocus();
-    } else if (keyEvent.getCode() == KeyCode.ENTER){
+    } else if (keyEvent.getCode() == KeyCode.ENTER) {
       loginButton.requestFocus();
     }
   }
