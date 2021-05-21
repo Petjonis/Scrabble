@@ -2,6 +2,9 @@ package controller;
 
 import com.jfoenix.controls.JFXButton;
 import db.Database;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -10,21 +13,23 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 public class DeleteAccountController implements Initializable {
 
-  @FXML private JFXButton deleteButton;
+  @FXML
+  private JFXButton deleteButton;
 
-  @FXML private TextField usernameField;
+  @FXML
+  private TextField usernameField;
 
-  @FXML private PasswordField passwordField;
+  @FXML
+  private PasswordField passwordField;
 
-  @FXML private Label errorLabel;
+  @FXML
+  private Label errorLabel;
 
-  @FXML private Button closeButton;
+  @FXML
+  private Button closeButton;
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -54,12 +59,12 @@ public class DeleteAccountController implements Initializable {
         this.errorLabel.setText("Wrong Password! Try again, please.");
         this.errorLabel.setVisible(true);
         this.usernameField.requestFocus();
-        }
-    }else {
+      }
+    } else {
       /** user does not exist and has to register first.*/
       System.out.println("Deletion failed, reason: username does not exist in the database.");
       this.errorLabel.setText(
-              usernameField.getText() + "' does not exist in the database. Please try again!.");
+          usernameField.getText() + "' does not exist in the database. Please try again!.");
       this.errorLabel.setVisible(true);
       this.usernameField.clear();
       this.passwordField.clear();
@@ -76,24 +81,25 @@ public class DeleteAccountController implements Initializable {
   }
 
   public void userNameKeyPressed(KeyEvent keyEvent) {
-    if (keyEvent.getCode() == KeyCode.TAB){
+    if (keyEvent.getCode() == KeyCode.TAB) {
       passwordField.requestFocus();
-    }else if (keyEvent.getCode() == KeyCode.ENTER){
+    } else if (keyEvent.getCode() == KeyCode.ENTER) {
       passwordField.requestFocus();
     }
   }
 
   public void passwordKeyPressed(KeyEvent keyEvent) {
-    if (keyEvent.getCode() == KeyCode.TAB){
+    if (keyEvent.getCode() == KeyCode.TAB) {
       deleteButton.requestFocus();
-    } else if (keyEvent.getCode() == KeyCode.ENTER){
+    } else if (keyEvent.getCode() == KeyCode.ENTER) {
       deleteButton.requestFocus();
     }
   }
 
   public void deleteKeyPressed(KeyEvent keyEvent) throws IOException {
-    if (keyEvent.getCode() == KeyCode.ENTER)
+    if (keyEvent.getCode() == KeyCode.ENTER) {
       delete(new ActionEvent());
+    }
   }
 
 

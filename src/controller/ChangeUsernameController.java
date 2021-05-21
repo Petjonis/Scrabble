@@ -2,10 +2,12 @@ package controller;
 
 import com.jfoenix.controls.JFXButton;
 import db.Database;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -13,18 +15,21 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
+
 
 public class ChangeUsernameController implements Initializable {
-  @FXML private JFXButton changeButton;
 
-  @FXML private TextField newUsernameField;
+  @FXML
+  private JFXButton changeButton;
 
-  @FXML private Label errorLabel;
+  @FXML
+  private TextField newUsernameField;
 
-  @FXML private Button closeButton;
+  @FXML
+  private Label errorLabel;
+
+  @FXML
+  private Button closeButton;
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -71,6 +76,8 @@ public class ChangeUsernameController implements Initializable {
   }
 
   public void changeKeyPressed(KeyEvent keyEvent) throws IOException {
-    if (keyEvent.getCode() == KeyCode.ENTER) change(new ActionEvent());
+    if (keyEvent.getCode() == KeyCode.ENTER) {
+      change(new ActionEvent());
+    }
   }
 }

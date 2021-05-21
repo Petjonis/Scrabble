@@ -2,6 +2,9 @@ package controller;
 
 import com.jfoenix.controls.JFXButton;
 import db.Database;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,23 +16,25 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
-
 public class ChangePasswordController implements Initializable {
 
-  @FXML private JFXButton changeButton;
+  @FXML
+  private JFXButton changeButton;
 
-  @FXML private PasswordField currentPasswordField;
+  @FXML
+  private PasswordField currentPasswordField;
 
-  @FXML private PasswordField newPasswordField;
+  @FXML
+  private PasswordField newPasswordField;
 
-  @FXML private PasswordField confirmPasswordField;
+  @FXML
+  private PasswordField confirmPasswordField;
 
-  @FXML private Label errorLabel;
+  @FXML
+  private Label errorLabel;
 
-  @FXML private Button closeButton;
+  @FXML
+  private Button closeButton;
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -55,7 +60,7 @@ public class ChangePasswordController implements Initializable {
         informationAlert.setContentText("Changed Password successfully!");
         informationAlert.show();
 
-      } else{
+      } else {
         /** New password and Confirm password doesn't match*/
         this.errorLabel.setText("New Password and Confirm new password doesn't match!");
         this.errorLabel.setVisible(true);
@@ -64,7 +69,7 @@ public class ChangePasswordController implements Initializable {
         this.confirmPasswordField.clear();
         this.currentPasswordField.requestFocus();
       }
-    }else{
+    } else {
       /** Current password wrong*/
       this.errorLabel.setText("Current password wrong!");
       this.errorLabel.setVisible(true);
@@ -84,30 +89,32 @@ public class ChangePasswordController implements Initializable {
   }
 
   public void currentPasswordKeyPressed(KeyEvent keyEvent) {
-    if (keyEvent.getCode() == KeyCode.TAB){
+    if (keyEvent.getCode() == KeyCode.TAB) {
       newPasswordField.requestFocus();
-    }else if (keyEvent.getCode() == KeyCode.ENTER){
+    } else if (keyEvent.getCode() == KeyCode.ENTER) {
       newPasswordField.requestFocus();
     }
   }
 
   public void newPasswordKeyPressed(KeyEvent keyEvent) {
-    if (keyEvent.getCode() == KeyCode.TAB){
+    if (keyEvent.getCode() == KeyCode.TAB) {
       confirmPasswordField.requestFocus();
-    }else if (keyEvent.getCode() == KeyCode.ENTER){
+    } else if (keyEvent.getCode() == KeyCode.ENTER) {
       confirmPasswordField.requestFocus();
     }
   }
+
   public void confirmPasswordKeyPressed(KeyEvent keyEvent) {
-    if (keyEvent.getCode() == KeyCode.TAB){
+    if (keyEvent.getCode() == KeyCode.TAB) {
       changeButton.requestFocus();
-    } else if (keyEvent.getCode() == KeyCode.ENTER){
+    } else if (keyEvent.getCode() == KeyCode.ENTER) {
       changeButton.requestFocus();
     }
   }
 
   public void changeKeyPressed(KeyEvent keyEvent) throws IOException {
-    if (keyEvent.getCode() == KeyCode.ENTER)
+    if (keyEvent.getCode() == KeyCode.ENTER) {
       change(new ActionEvent());
+    }
   }
 }
