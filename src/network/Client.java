@@ -85,11 +85,6 @@ public class Client extends Thread {
             user = dcMsg.getFrom();
             GameInfoController.gameInfoController.updateChat("[System]",user + " left the game.", false);
             break;
-          case HOST_DISCONNECT:
-            HostDisconnectMessage hdcMsg = (HostDisconnectMessage) m;
-            user = hdcMsg.getFrom();
-            GameInfoController.gameInfoController.leave(new ActionEvent());
-            break;
           default:
             break;
         }
