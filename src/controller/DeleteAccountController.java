@@ -1,3 +1,10 @@
+/**
+ * This controller class initializes a new window to delete an account from database with all needed
+ * listeners and methods.
+ *
+ * @author fpetek
+ * @version 1.0
+ */
 package controller;
 
 import com.jfoenix.controls.JFXButton;
@@ -13,23 +20,17 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
-
 public class DeleteAccountController implements Initializable {
 
-  @FXML
-  private JFXButton deleteButton;
+  @FXML private JFXButton deleteButton;
 
-  @FXML
-  private TextField usernameField;
+  @FXML private TextField usernameField;
 
-  @FXML
-  private PasswordField passwordField;
+  @FXML private PasswordField passwordField;
 
-  @FXML
-  private Label errorLabel;
+  @FXML private Label errorLabel;
 
-  @FXML
-  private Button closeButton;
+  @FXML private Button closeButton;
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -61,7 +62,7 @@ public class DeleteAccountController implements Initializable {
         this.usernameField.requestFocus();
       }
     } else {
-      /** user does not exist and has to register first.*/
+      /** user does not exist and has to register first. */
       System.out.println("Deletion failed, reason: username does not exist in the database.");
       this.errorLabel.setText(
           usernameField.getText() + "' does not exist in the database. Please try again!.");
@@ -80,6 +81,7 @@ public class DeleteAccountController implements Initializable {
     stage.close();
   }
 
+  /** Methods that user can use tab or enter to navigate through textfields. */
   public void userNameKeyPressed(KeyEvent keyEvent) {
     if (keyEvent.getCode() == KeyCode.TAB) {
       passwordField.requestFocus();
@@ -101,6 +103,4 @@ public class DeleteAccountController implements Initializable {
       delete(new ActionEvent());
     }
   }
-
-
 }

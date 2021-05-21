@@ -43,8 +43,9 @@ public class LoginController implements Initializable {
    * when pressing "login" button, three different scenarios can occur. First, login is successful.
    * Second, password is wrong. Third, user does not exist.
    *
-   * @author socho
+   * @author socho, fpetek
    */
+
   @FXML
   void login(ActionEvent event) throws IOException {
     MainController.mainController.db = new Database();
@@ -105,12 +106,12 @@ public class LoginController implements Initializable {
             != 0) {
           MainController.mainController.setWinRate(
               Double.toString(
-                      (double)
+                      (((double)
                               (MainController.mainController.db.getWins(
-                                  MainController.mainController.getUser().getUserName()))
-                          / (double)
-                              (MainController.mainController.db.getGames(
                                   MainController.mainController.getUser().getUserName())))
+                          / ((double)
+                              (MainController.mainController.db.getGames(
+                                  MainController.mainController.getUser().getUserName()))))*100)
                   + " %");
         } else {
           MainController.mainController.setWinRate("0 %");
@@ -162,6 +163,11 @@ public class LoginController implements Initializable {
     Stage stage = (Stage) closeButton.getScene().getWindow();
     stage.close();
   }
+
+  /**
+   * Methods that user can use tab or enter to navigate through textfields.
+   *
+   */
 
   public void userNameKeyPressed(KeyEvent keyEvent) {
     if (keyEvent.getCode() == KeyCode.TAB) {

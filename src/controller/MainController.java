@@ -14,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
@@ -29,96 +30,70 @@ import network.Server;
 public class MainController implements Initializable {
 
   public static MainController mainController;
+  public Database db;
   private Player user;
   private boolean loggedIn = false;
   private boolean hosting = false;
+  private boolean editSettings = false;
   private Server server;
   private Client connection;
   private GameSession gameSession;
-  public Database db;
 
-  @FXML
-  private JFXButton playButton;
+  @FXML private JFXButton playButton;
 
-  @FXML
-  private JFXButton learnButton;
+  @FXML private JFXButton learnButton;
 
-  @FXML
-  private JFXButton rulebookButton;
+  @FXML private JFXButton rulebookButton;
 
-  @FXML
-  private JFXButton deleteProfileButton;
+  @FXML private JFXButton deleteProfileButton;
 
-  @FXML
-  private JFXButton changeUsernameButton;
+  @FXML private JFXButton changeUsernameButton;
 
-  @FXML
-  private JFXButton changePasswordButton;
+  @FXML private JFXButton changePasswordButton;
 
-  @FXML
-  private JFXButton loginButton;
+  @FXML private JFXButton loginButton;
 
-  @FXML
-  private JFXButton signupButton;
+  @FXML private JFXButton signupButton;
 
-  @FXML
-  private JFXButton logoutButton;
+  @FXML private JFXButton logoutButton;
 
-  @FXML
-  private Label welcomeLabel;
+  @FXML private Label welcomeLabel;
 
-  @FXML
-  private Label gameCountLabel;
+  @FXML private Label gameCountLabel;
 
-  @FXML
-  private Label winCountLabel;
+  @FXML private Label winCountLabel;
 
-  @FXML
-  private Label loseCountLabel;
+  @FXML private Label loseCountLabel;
 
-  @FXML
-  private Label winRateLabel;
+  @FXML private Label winRateLabel;
 
-  @FXML
-  private Label avgPointsLabel;
+  @FXML private Label avgPointsLabel;
 
-  @FXML
-  private Label gameCount;
+  @FXML private Label gameCount;
 
-  @FXML
-  private Label winCount;
+  @FXML private Label winCount;
 
-  @FXML
-  private Label loseCount;
+  @FXML private Label loseCount;
 
-  @FXML
-  private Label winRate;
+  @FXML private Label winRate;
 
-  @FXML
-  private Label avgPoints;
+  @FXML private Label avgPoints;
 
-  @FXML
-  private FontAwesomeIconView editProfileIcon;
+  @FXML private FontAwesomeIconView editProfileIcon;
 
-  @FXML
-  private BorderPane borderPane;
+  @FXML private BorderPane borderPane;
 
-  @FXML
-  private FlowPane startPane;
+  @FXML private FlowPane startPane;
 
-  @FXML
-  private StackPane centerPane;
+  @FXML private StackPane centerPane;
 
-  @FXML
-  private StackPane rightPane;
-
-
+  @FXML private StackPane rightPane;
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     mainController = this;
 
-    /** Player not logged in, so "Logout"-button will not be visible.*/
+    /** Player not logged in, so "Logout"-button will not be visible. */
     if (!mainController.getLoggedIn()) {
       this.logoutButton.setVisible(false);
       this.welcomeLabel.setVisible(false);
@@ -146,7 +121,7 @@ public class MainController implements Initializable {
     }
 
     System.out.println(getUser().getUserName() + ", you are logged out.");
-    if (getConnection() != null){
+    if (getConnection() != null) {
       getConnection().disconnect();
     }
     setLoggedIn(false);
@@ -174,15 +149,12 @@ public class MainController implements Initializable {
   }
 
   @FXML
-  void openLearn(ActionEvent event) {
-
-  }
+  void openLearn(ActionEvent event) {}
 
   @FXML
   void openPlay(ActionEvent event) throws IOException {
     changePane(centerPane, "/view/GameBoard.fxml");
     changePane(rightPane, "/view/PlayOnline.fxml");
-
   }
 
   @FXML
@@ -191,14 +163,9 @@ public class MainController implements Initializable {
   }
 
   @FXML
-  void openProfile(ActionEvent event) throws IOException {
-  }
-
-  @FXML
   void signup(ActionEvent event) {
     openNewWindow("/view/Register.fxml", "Register");
   }
-
 
   @FXML
   void login(ActionEvent event) {
@@ -218,7 +185,7 @@ public class MainController implements Initializable {
   @FXML
   void deleteAccount(ActionEvent event) {
     openNewWindow("/view/DeleteAccount.fxml", "ChangeAccount");
-    }
+  }
 
   /** method for opening a new window. */
   public void openNewWindow(String filename, String title) {
@@ -238,7 +205,7 @@ public class MainController implements Initializable {
     }
   }
 
-  /** method for changing the pane, especially for the center and right pane.*/
+  /** method for changing the pane, especially for the center and right pane. */
   public void changePane(StackPane pane, String fxmlPath) throws IOException {
     pane.getChildren().clear();
     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlPath));
@@ -271,9 +238,26 @@ public class MainController implements Initializable {
   }
 
   /**
-   * getter and setter methods for all private attributes.
+   * Method to open/close edit account settings.
+   *
+   * @param event when user clicks on settings icon
+   * @author fpetek
    */
+  public void editProfileClicked(MouseEvent event) {
+    if (editSettings) {
+      this.editSettings = false;
+      this.changeUsernameButton.setVisible(false);
+      this.changePasswordButton.setVisible(false);
+      this.deleteProfileButton.setVisible(false);
+    } else {
+      this.editSettings = true;
+      this.changeUsernameButton.setVisible(true);
+      this.changePasswordButton.setVisible(true);
+      this.deleteProfileButton.setVisible(true);
+    }
+  }
 
+  /** getter and setter methods for all private attributes. */
   public StackPane getCenterPane() {
     return centerPane;
   }
@@ -282,11 +266,17 @@ public class MainController implements Initializable {
     return rightPane;
   }
 
-  public JFXButton getPlayButton() { return playButton; }
+  public JFXButton getPlayButton() {
+    return playButton;
+  }
 
-  public Label getWelcomeLabel() { return welcomeLabel; }
+  public Label getWelcomeLabel() {
+    return welcomeLabel;
+  }
 
-  public void setWelcomeLabel (String username) { welcomeLabel.setText(username);}
+  public void setWelcomeLabel(String username) {
+    welcomeLabel.setText(username);
+  }
 
   public JFXButton getLoginButton() {
     return loginButton;
@@ -300,12 +290,12 @@ public class MainController implements Initializable {
     return logoutButton;
   }
 
-  public void setUser(Player player) {
-    this.user = player;
-  }
-
   public Player getUser() {
     return this.user;
+  }
+
+  public void setUser(Player player) {
+    this.user = player;
   }
 
   public boolean getLoggedIn() {
@@ -316,7 +306,9 @@ public class MainController implements Initializable {
     this.loggedIn = log;
   }
 
-  public boolean getHosting(){ return this.hosting; }
+  public boolean getHosting() {
+    return this.hosting;
+  }
 
   public void setHosting(boolean host) {
     this.hosting = host;
@@ -334,12 +326,12 @@ public class MainController implements Initializable {
     this.server = serv;
   }
 
-  public void setGameSession(GameSession session) {
-    this.gameSession = session;
-  }
-
   public GameSession getGameSession() {
     return this.gameSession;
+  }
+
+  public void setGameSession(GameSession session) {
+    this.gameSession = session;
   }
 
   public JFXButton getDeleteProfileButton() {
@@ -378,43 +370,43 @@ public class MainController implements Initializable {
     return winRateLabel;
   }
 
-  public void setGameCount(String gameCount) {
-    this.gameCount.setText(gameCount);
-  }
-
-  public void setWinCount(String winCount) {
-    this.winCount.setText(winCount);
-  }
-
-  public void setLoseCount(String loseCount) {
-    this.loseCount.setText(loseCount);
-  }
-
-  public void setWinRate(String winRate) {
-    this.winRate.setText(winRate);
-  }
-
-  public void setAvgPoints(String avgScore) {
-    this.avgPoints.setText(avgScore);
-  }
   public Label getGameCount() {
     return gameCount;
+  }
+
+  public void setGameCount(String gameCount) {
+    this.gameCount.setText(gameCount);
   }
 
   public Label getWinCount() {
     return winCount;
   }
 
+  public void setWinCount(String winCount) {
+    this.winCount.setText(winCount);
+  }
+
   public Label getLoseCount() {
     return loseCount;
+  }
+
+  public void setLoseCount(String loseCount) {
+    this.loseCount.setText(loseCount);
   }
 
   public Label getWinRate() {
     return winRate;
   }
 
+  public void setWinRate(String winRate) {
+    this.winRate.setText(winRate);
+  }
+
   public Label getAvgPoints() {
     return avgPoints;
   }
 
+  public void setAvgPoints(String avgScore) {
+    this.avgPoints.setText(avgScore);
+  }
 }

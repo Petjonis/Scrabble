@@ -1,3 +1,10 @@
+/**
+ * This controller class initializes a new window to change a users password with all needed
+ * listeners and methods to change it and makes sure everything goes fine.
+ *
+ * @author fpetek
+ * @version 1.0
+ */
 package controller;
 
 import com.jfoenix.controls.JFXButton;
@@ -18,23 +25,17 @@ import javafx.stage.Stage;
 
 public class ChangePasswordController implements Initializable {
 
-  @FXML
-  private JFXButton changeButton;
+  @FXML private JFXButton changeButton;
 
-  @FXML
-  private PasswordField currentPasswordField;
+  @FXML private PasswordField currentPasswordField;
 
-  @FXML
-  private PasswordField newPasswordField;
+  @FXML private PasswordField newPasswordField;
 
-  @FXML
-  private PasswordField confirmPasswordField;
+  @FXML private PasswordField confirmPasswordField;
 
-  @FXML
-  private Label errorLabel;
+  @FXML private Label errorLabel;
 
-  @FXML
-  private Button closeButton;
+  @FXML private Button closeButton;
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -61,7 +62,7 @@ public class ChangePasswordController implements Initializable {
         informationAlert.show();
 
       } else {
-        /** New password and Confirm password doesn't match*/
+        /** New password and Confirm password doesn't match */
         this.errorLabel.setText("New Password and Confirm new password doesn't match!");
         this.errorLabel.setVisible(true);
         this.currentPasswordField.clear();
@@ -70,7 +71,7 @@ public class ChangePasswordController implements Initializable {
         this.currentPasswordField.requestFocus();
       }
     } else {
-      /** Current password wrong*/
+      /** Current password wrong */
       this.errorLabel.setText("Current password wrong!");
       this.errorLabel.setVisible(true);
       this.currentPasswordField.clear();
@@ -82,6 +83,7 @@ public class ChangePasswordController implements Initializable {
     MainController.mainController.db.disconnect();
   }
 
+  /** Methods that user can use tab or enter to navigate through textfields. */
   @FXML
   void close(ActionEvent event) {
     Stage stage = (Stage) closeButton.getScene().getWindow();

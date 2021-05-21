@@ -1,3 +1,10 @@
+/**
+ * This controller class initializes a new window to change a username with all needed methods
+ * listeners and methods.
+ *
+ * @author fpetek
+ * @version 1.0
+ */
 package controller;
 
 import com.jfoenix.controls.JFXButton;
@@ -15,21 +22,15 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
-
-
 public class ChangeUsernameController implements Initializable {
 
-  @FXML
-  private JFXButton changeButton;
+  @FXML private JFXButton changeButton;
 
-  @FXML
-  private TextField newUsernameField;
+  @FXML private TextField newUsernameField;
 
-  @FXML
-  private Label errorLabel;
+  @FXML private Label errorLabel;
 
-  @FXML
-  private Button closeButton;
+  @FXML private Button closeButton;
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -67,6 +68,7 @@ public class ChangeUsernameController implements Initializable {
     stage.close();
   }
 
+  /** Methods that user can use tab or enter to navigate through textfields. */
   public void userNameKeyPressed(KeyEvent keyEvent) {
     if (keyEvent.getCode() == KeyCode.TAB) {
       changeButton.requestFocus();
