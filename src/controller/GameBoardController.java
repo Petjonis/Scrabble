@@ -10,6 +10,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.ProgressBar;
@@ -21,15 +22,17 @@ import javafx.util.Pair;
 import model.*;
 import settings.GlobalSettings;
 
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 
-public class GameBoardController {
+public class GameBoardController implements Initializable {
     private static final Integer STARTTIME = 120;
     private final IntegerProperty timeSeconds = new SimpleIntegerProperty(STARTTIME * 100);
-
     private Board board;
     private TileBag tb;
     private TileRack tr;
+
     @FXML
     private GridPane boardGrid;
     @FXML
@@ -69,7 +72,7 @@ public class GameBoardController {
             board.clearTilesPending();
             /* TODO: Send playedWords to Server */
 
-            tr.refillFromBag();
+            //tr.refillFromBag(tb);
             for (Pair<String, Integer> p : playedWords) {
                 System.out.println("Word: " + p.getKey() + ", Score: " + p.getValue());
             }
@@ -82,8 +85,10 @@ public class GameBoardController {
         /* TODO */
     }
 
-    public void initialize() {
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
         board = new Board();
+        board.initializeDictionary();
         //for test, should get tilebag from GameSession
         tb = new TileBag();
         //for test, should get tilerack from player

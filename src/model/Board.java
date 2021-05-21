@@ -20,12 +20,11 @@ public class Board {
 
     private final Square[][] squares = new Square[GlobalSettings.ROWS][GlobalSettings.COLUMNS];
     private final ArrayList<Tile> tilesPendingConfirmation = new ArrayList<>();
-    private final DictionaryChecker dictionary;
+    private DictionaryChecker dictionary;
 
     public Board() {
         initializeBoard();
         initializeSpecialSquares();
-        this.dictionary = new DictionaryChecker();
     }
 
     private void initializeBoard() {
@@ -50,6 +49,10 @@ public class Board {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void initializeDictionary(){
+        this.dictionary = new DictionaryChecker();
     }
 
     private void flipsOf(int row, int col, String bonusType) {

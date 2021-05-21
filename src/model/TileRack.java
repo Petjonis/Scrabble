@@ -8,12 +8,16 @@ public class TileRack {
 
     private ObservableList<Tile> tileRack = FXCollections.observableArrayList();
     private ListChangeListener<Tile> currentListener;
-    private TileBag tileBag;
 
     public TileRack(TileBag tileBag) {
-        this.tileBag = tileBag;
         for (int i = 0; i < 7; i++) {
             tileRack.add(tileBag.drawLetter());
+        }
+    }
+
+    public TileRack(Tile[] tiles){
+        for (Tile t : tiles) {
+            tileRack.add(t);
         }
     }
 
@@ -38,7 +42,7 @@ public class TileRack {
         tileRack.add(t);
     }
 
-    public void refillFromBag() {
+    public void refillFromBag(TileBag tileBag) {
         while (!tileBag.isEmpty() && tileRack.size() < 7) {
             tileRack.add(tileBag.drawLetter());
         }
