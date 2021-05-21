@@ -118,8 +118,10 @@ public class ServerProtocol extends Thread {
             break;
           case LEAVE_GAME:
             LeaveGameMessage lgMsg = (LeaveGameMessage) m ;
-            if (server.userExistsP(lgMsg.getFrom())) {
-              server.removeClient(lgMsg.getFrom());
+            user = lgMsg.getFrom();
+            if (server.userExistsP(user) && user.equals(server.getUserFromId(lgMsg.getId()))) {
+              server.removeClient(user);
+              server.removeIdToClient(lgMsg.getId(),user );
               server.getGameSession().setPlayerNames(server.getClientNames());
               server.sendToAll(new RemovingPlayerListMessage(lgMsg.getFrom()));
             }
@@ -127,8 +129,9 @@ public class ServerProtocol extends Thread {
           case DISCONNECT:
             DisconnectMessage dcMsg = (DisconnectMessage) m;
             user = dcMsg.getFrom();
-            server.sendToAllBut(user, new DisconnectMessage(user));
+            server.sendToAllBut(user, new DisconnectMessage(user, dcMsg.getId()));
             server.removeClient(user);
+            server.removeIdToClient(dcMsg.getId(), user);
             System.out.println(user + " left the Lobby.");
             break;
           case PASS_MESSAGE:

@@ -20,7 +20,6 @@ import messages.Message;
 import messages.RemovingPlayerListMessage;
 import messages.SendChatMessage;
 import messages.UpdatePlayerListMessage;
-import model.GameSession;
 
 public class Client extends Thread {
 
@@ -28,7 +27,6 @@ public class Client extends Thread {
   private ObjectOutputStream out;
   private ObjectInputStream in;
   private boolean running = true;
-  private GameSession gameSession;
 
   /**
    * Constructor for the client.
@@ -110,7 +108,7 @@ public class Client extends Thread {
     running = false;
     try {
       if (!clientSocket.isClosed()) {
-        this.out.writeObject(new DisconnectMessage(MainController.mainController.getUser().getUserName()));
+        this.out.writeObject(new DisconnectMessage(MainController.mainController.getUser().getUserName(),MainController.mainController.getUser().getPlayerID()));
         clientSocket.close();
       }
     } catch (IOException e) {

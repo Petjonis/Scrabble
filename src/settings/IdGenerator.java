@@ -9,7 +9,7 @@ public class IdGenerator {
   public static Integer createID(){
     Integer id;
     do {
-      id = Integer.valueOf((int)( Math.random()* Integer.MAX_VALUE) + 1);
+      id = Integer.valueOf((int)( Math.random()* 1000) + 1);
     } while (!(idSet.add(id)));
     return id;
   }

@@ -164,7 +164,7 @@ public class GameInfoController implements Initializable {
     Optional<ButtonType> result = confirmationAlert.showAndWait();
     if (result.get() == ButtonType.OK) {
       MainController.mainController.getConnection().sendToServer(
-          new LeaveGameMessage(MainController.mainController.getUser().getUserName()));
+          new LeaveGameMessage(MainController.mainController.getUser().getUserName(),MainController.mainController.getUser().getPlayerID()));
       if (MainController.mainController.getHosting()) {
         MainController.mainController.getServer().stopServer();
       }

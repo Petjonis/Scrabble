@@ -9,13 +9,19 @@ package messages;
 public class DisconnectMessage extends Message {
 
   private static final long serialVersionUID = 1L;
+  private int id;
 
-  public DisconnectMessage(String from) {
+  public DisconnectMessage(String from, int idNumber) {
     super(MessageType.DISCONNECT, from);
+    this.id = idNumber;
   }
 
   @Override
   public Object clone() {
     return super.clone();
+  }
+
+  public int getId(){
+    return this.id;
   }
 }
