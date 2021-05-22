@@ -1,5 +1,7 @@
 package messages;
 
+import model.Player;
+
 public class RequestPlayerListMessage extends Message {
 
   private static final long serialVersionUID = 1L;
@@ -12,7 +14,7 @@ public class RequestPlayerListMessage extends Message {
    * @author socho
    */
 
-  public RequestPlayerListMessage(String from) {
+  public RequestPlayerListMessage(Player from) {
     super(MessageType.REQUEST_PLAYERLIST, from);
   }
 }

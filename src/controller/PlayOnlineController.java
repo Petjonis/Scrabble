@@ -99,7 +99,7 @@ public class PlayOnlineController implements Initializable {
         if (MainController.mainController.getConnection().isOk()) {
           MainController.mainController.getConnection()
               .sendToServer(
-                  new ConnectMessage(MainController.mainController.getUser().getUserName(),
+                  new ConnectMessage(MainController.mainController.getUser(),
                       MainController.mainController.getUser().getPlayerID()));
           MainController.mainController.getPlayButton().setDisable(true);
           MainController.mainController
@@ -124,6 +124,7 @@ public class PlayOnlineController implements Initializable {
     if (this.port > 49151 && this.port < 50001) {
       gameSession = new GameSession(this.port);
       gameSession.setHost(MainController.mainController.getUser());
+      gameSession.getServer().setServerHost(MainController.mainController.getUser());
       MainController.mainController.setGameSession(gameSession);
       MainController.mainController.setHosting(true);
       MainController.mainController.setServer(gameSession.getServer());
@@ -175,7 +176,7 @@ public class PlayOnlineController implements Initializable {
             .setGameSession(MainController.mainController.getUser().getActiveSession());
         MainController.mainController.getConnection()
             .sendToServer(
-                new ConnectMessage(MainController.mainController.getUser().getUserName(),
+                new ConnectMessage(MainController.mainController.getUser(),
                     MainController.mainController.getUser().getPlayerID()));
         System.out
             .println(MainController.mainController.getUser().getUserName() + " is connected.");

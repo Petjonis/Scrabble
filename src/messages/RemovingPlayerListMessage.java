@@ -2,6 +2,7 @@ package messages;
 
 
 import java.util.ArrayList;
+import model.Player;
 
 public class RemovingPlayerListMessage extends Message{
   private static final long serialVersionUID = 1L;
@@ -11,7 +12,7 @@ public class RemovingPlayerListMessage extends Message{
    *
    * @param from is the user.
    */
-  public RemovingPlayerListMessage(String from) {
+  public RemovingPlayerListMessage(Player from) {
     super(MessageType.REMOVE_PLAYERLIST, from);
 
   }

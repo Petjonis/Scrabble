@@ -20,6 +20,8 @@ import messages.Message;
 import messages.RemovingPlayerListMessage;
 import messages.SendChatMessage;
 import messages.UpdatePlayerListMessage;
+import model.ComputerPlayer;
+import model.Player;
 
 public class Client extends Thread {
 
@@ -56,7 +58,9 @@ public class Client extends Thread {
    * this method is crucial for getting the info for the client-side.
    */
   public void run() {
-    String user, text;
+    Player user;
+    String text;
+    boolean token;
     while (running) {
       try {
         Message m = (Message) in.readObject();
@@ -64,7 +68,11 @@ public class Client extends Thread {
           case UPDATE_PLAYERLIST:
             UpdatePlayerListMessage uplMsg = (UpdatePlayerListMessage) m;
             System.out.println("Players on the list: " + uplMsg.getActivePlayers());
-            ArrayList<String> liste = uplMsg.getActivePlayers();
+
+            ArrayList<Player> liste = uplMsg.getActivePlayers();
+            for (Player p : liste) {
+              System.out.println(p.getUserName());
+            }
             GameInfoController.gameInfoController.updatePlayerList(liste);
             break;
           case REMOVE_PLAYERLIST:
@@ -75,13 +83,13 @@ public class Client extends Thread {
             SendChatMessage scMsg = (SendChatMessage) m;
             user = scMsg.getFrom();
             text = scMsg.getText();
-            boolean token = scMsg.getHosting();
+            token = scMsg.getHosting();
             GameInfoController.gameInfoController.updateChat(user, text, token);
             break;
           case DISCONNECT:
             DisconnectMessage dcMsg = (DisconnectMessage) m;
             user = dcMsg.getFrom();
-            GameInfoController.gameInfoController.updateChat("[System]",user + " left the game.", false);
+            GameInfoController.gameInfoController.updateChat(new ComputerPlayer("Server"),user.getUserName() + " left the game.", false);
             break;
           default:
             break;
@@ -108,7 +116,7 @@ public class Client extends Thread {
     running = false;
     try {
       if (!clientSocket.isClosed()) {
-        this.out.writeObject(new DisconnectMessage(MainController.mainController.getUser().getUserName(),MainController.mainController.getUser().getPlayerID()));
+        this.out.writeObject(new DisconnectMessage(MainController.mainController.getUser(),MainController.mainController.getUser().getPlayerID()));
         clientSocket.close();
       }
     } catch (IOException e) {

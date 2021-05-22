@@ -18,6 +18,7 @@ import java.util.Set;
 
 import messages.Message;
 import model.GameSession;
+import model.HumanPlayer;
 import model.Player;
 
 public class Server {
@@ -35,38 +36,38 @@ public class Server {
   /**
    * collects all connected clients' user names in a HashMap.
    */
-  private HashMap<String, ServerProtocol> clients = new HashMap<>();
+  private HashMap<Player, ServerProtocol> clients = new HashMap<>();
 
-  public synchronized void removeClient(String clientName) {
+  public synchronized void removeClient(Player clientName) {
     this.clients.remove(clientName);
   }
 
-  public synchronized boolean userExistsP(String name) {
+  public synchronized boolean userExistsP(Player name) {
     return this.clients.containsKey(name);
   }
 
-  public synchronized void addClient(String name, ServerProtocol protocol) {
+  public synchronized void addClient(Player name, ServerProtocol protocol) {
     this.clients.put(name, protocol);
   }
 
-  public synchronized Set<String> getClientNames() {
-    Set<String> clientNames = this.clients.keySet();
-    return new HashSet<String>(clientNames);
+  public synchronized Set<Player> getClientNames() {
+    Set<Player> clientNames = this.clients.keySet();
+    return new HashSet<Player>(clientNames);
   }
 
   /** every client user has a unique id which is also held in a HashMap.*/
 
-  private HashMap<Integer, String> clientsIDMap = new HashMap<>();
+  private HashMap<Integer, Player> clientsIDMap = new HashMap<>();
 
-  public synchronized void addIdToClient(Integer id, String clientName){
+  public synchronized void addIdToClient(Integer id, Player clientName){
     clientsIDMap.put(id, clientName);
   }
 
-  public synchronized String getUserFromId(Integer id){
+  public synchronized Player getUserFromId(Integer id){
     return clientsIDMap.get(id);
   }
 
-  public synchronized void removeIdToClient(Integer id, String clientName){
+  public synchronized void removeIdToClient(Integer id, Player clientName){
     clientsIDMap.remove(id, clientName);
   }
 
@@ -107,9 +108,9 @@ public class Server {
   /**
    * method for sending messages.
    */
-  private synchronized void sendTo(List<String> clientNames, Message m) {
-    List<String> clientFails = new ArrayList<String>();
-    for (String clName : clientNames) {
+  private synchronized void sendTo(List<Player> clientNames, Message m) {
+    List<Player> clientFails = new ArrayList<Player>();
+    for (Player clName : clientNames) {
       try {
         ServerProtocol c = clients.get(clName);
         c.sendToClient((Message) (m.clone()));
@@ -118,7 +119,7 @@ public class Server {
         continue;
       }
     }
-    for (String c : clientFails) {
+    for (Player c : clientFails) {
       System.out.println("Client " + c + " removed (because of send failure).");
       removeClient(c);
     }
@@ -128,24 +129,24 @@ public class Server {
    * send to all clients.
    */
   public void sendToAll(Message m) {
-    sendTo(new ArrayList<String>(getClientNames()), (Message) (m.clone()));
+    sendTo(new ArrayList<Player>(getClientNames()), (Message) (m.clone()));
   }
 
   /**
    * sending to specific client/s.
    */
-  public void sendToAll (ArrayList<String> list, Message m){
+  public void sendToAll (ArrayList<Player> list, Message m){
     sendTo (list, (Message) (m.clone()));
   }
 
   /**
    * send to all clients except for one.
    */
-  public void sendToAllBut(String name, Message m) {
+  public void sendToAllBut(Player name, Message m) {
     synchronized (this.clients) {
-      Set<String> senderList = getClientNames();
+      Set<Player> senderList = getClientNames();
       senderList.remove(name);
-      sendTo(new ArrayList<String>(senderList), m);
+      sendTo(new ArrayList<Player>(senderList), m);
     }
   }
 

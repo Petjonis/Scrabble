@@ -55,7 +55,7 @@ public class GameBoardController implements Initializable {
   void pass(ActionEvent event) throws IOException {
     /* TODO */
     MainController.mainController.getConnection().sendToServer(
-        new PassMessage(MainController.mainController.getUser().getUserName(),
+        new PassMessage(MainController.mainController.getUser(),
             MainController.mainController.getUser().getPlayerID()));
     MainController.mainController.getUser().pass();
   }

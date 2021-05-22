@@ -21,6 +21,7 @@ import java.util.ResourceBundle;
 import messages.LeaveGameMessage;
 import messages.RequestPlayerListMessage;
 import messages.SendChatMessage;
+import model.Player;
 
 public class GameInfoController implements Initializable {
 
@@ -61,13 +62,13 @@ public class GameInfoController implements Initializable {
           .add(MainController.mainController.getUser().getUserName() + " [Host]: " + sendText
               .getText());
       MainController.mainController.getConnection().sendToServer(
-          new SendChatMessage(MainController.mainController.getUser().getUserName(),
+          new SendChatMessage(MainController.mainController.getUser(),
               sendText.getText(), true));
     } else {
       chatList.getItems()
           .add(MainController.mainController.getUser().getUserName() + ": " + sendText.getText());
       MainController.mainController.getConnection()
-          .sendToServer(new SendChatMessage(MainController.mainController.getUser().getUserName(),
+          .sendToServer(new SendChatMessage(MainController.mainController.getUser(),
               sendText.getText(), false));
     }
     sendText.clear();
@@ -97,27 +98,27 @@ public class GameInfoController implements Initializable {
 
   public void sendRequestMessage() throws IOException {
     MainController.mainController.getConnection().sendToServer(
-        new RequestPlayerListMessage(MainController.mainController.getUser().getUserName()));
+        new RequestPlayerListMessage(MainController.mainController.getUser()));
   }
 
   /**
    * update methods for players list, last words list and chat.
    */
 
-  public void updatePlayerList(ArrayList<String> players) {
-    for (String player : players) {
+  public void updatePlayerList(ArrayList<Player> players) {
+    for (Player player : players) {
       if (playerList.getItems().isEmpty()) {
-        playerList.getItems().add(player);
+        playerList.getItems().add(player.getUserName());
       } else if (!playerList.getItems().isEmpty() && !playerList.getItems()
-          .contains(player)) {
-        playerList.getItems().add(player);
+          .contains(player.getUserName())) {
+        playerList.getItems().add(player.getUserName());
       }
     }
   }
 
-  public void removePlayerFromPlayerList(String from) {
-    if (playerList.getItems().contains(from)) {
-      playerList.getItems().remove(from);
+  public void removePlayerFromPlayerList(Player from) {
+    if (playerList.getItems().contains(from.getUserName())) {
+      playerList.getItems().remove(from.getUserName());
     }
   }
 
@@ -130,11 +131,11 @@ public class GameInfoController implements Initializable {
    *
    * @author socho
    */
-  public void updateChat(String from, String text, boolean token) {
+  public void updateChat(Player from, String text, boolean token) {
     if (token) {
-      chatList.getItems().add(from + " [Host]: " + text);
+      chatList.getItems().add(from.getUserName() + " [Host]: " + text);
     } else {
-      chatList.getItems().add(from + ": " + text);
+      chatList.getItems().add(from.getUserName() + ": " + text);
     }
   }
 
@@ -164,7 +165,7 @@ public class GameInfoController implements Initializable {
     Optional<ButtonType> result = confirmationAlert.showAndWait();
     if (result.get() == ButtonType.OK) {
       MainController.mainController.getConnection().sendToServer(
-          new LeaveGameMessage(MainController.mainController.getUser().getUserName(),MainController.mainController.getUser().getPlayerID()));
+          new LeaveGameMessage(MainController.mainController.getUser(),MainController.mainController.getUser().getPlayerID()));
       if (MainController.mainController.getHosting()) {
         MainController.mainController.getServer().stopServer();
       }

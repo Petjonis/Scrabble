@@ -7,8 +7,30 @@
 
 package model;
 
-public class HumanPlayer extends Player {
+import java.io.Serializable;
+import messages.Message;
 
+public class HumanPlayer extends Player implements Serializable {
+
+  public HumanPlayer(Player user){
+   this.setUserName(user.getUserName());
+   this.setPlayerID(user.getPlayerID());
+   this.setActiveSession(user.getActiveSession());
+   this.setBag(user.getBag());
+   this.setRack(user.getRack());
+   this.setScore(user.getScore());
+   this.setPassCount(user.getPassCount());
+  }
+
+  public HumanPlayer(String userName, int id){
+    this.setUserName(userName);
+    this.setPlayerID(id);
+    this.setActiveSession(null);
+    this.setBag(null);
+    this.setRack(null);
+    this.setScore(0);
+    this.setPassCount(0);
+  }
   @Override
   public void startTurn() {
   }
@@ -30,4 +52,21 @@ public class HumanPlayer extends Player {
 
   @Override
   public void put() {}
+
+
+  public Object clone() {
+    HumanPlayer clone = null;
+    try {
+      clone = (HumanPlayer) super.clone();
+    } catch (CloneNotSupportedException e) {
+    }
+    clone.setUserName(getUserName());
+    clone.setPlayerID(getPlayerID());
+    clone.setActiveSession(getActiveSession());
+    clone.setBag(getBag());
+    clone.setRack(getRack());
+    clone.setScore(getScore());
+    clone.setPassCount(getPassCount());
+    return clone;
+  }
 }

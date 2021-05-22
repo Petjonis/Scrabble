@@ -1,6 +1,7 @@
 package messages;
 
 import java.util.ArrayList;
+import model.Player;
 
 /**
  * this message will be sent when the player list has to be updated.
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 public class UpdatePlayerListMessage extends Message {
 
   private static final long serialVersionUID = 1L;
-  private ArrayList<String> activePlayers;
+  private ArrayList<Player> activePlayers;
 
   /**
    * constructor for message.
@@ -19,12 +20,12 @@ public class UpdatePlayerListMessage extends Message {
    * @param from
    * @param newList updated player list
    */
-  public UpdatePlayerListMessage(String from, ArrayList<String> newList) {
+  public UpdatePlayerListMessage(Player from, ArrayList<Player> newList) {
     super(MessageType.UPDATE_PLAYERLIST, from);
     this.activePlayers = newList;
   }
 
-  public ArrayList<String> getActivePlayers() {
+  public ArrayList<Player> getActivePlayers() {
     return this.activePlayers;
   }
 }

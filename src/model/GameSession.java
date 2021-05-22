@@ -1,6 +1,5 @@
 package model;
 
-import controller.MainController;
 import java.util.ArrayList;
 import java.util.Set;
 import network.Server;
@@ -13,7 +12,7 @@ public class GameSession {
   private static int gameLobbyId = 0;
   private static ArrayList<GameSession> sessions = new ArrayList<GameSession>();
   private GameState state;
-  private ArrayList<String> playerNames;
+  private ArrayList<Player> playerNames;
   private Server server;
   private Player host;
   private TileBag tilebag;
@@ -21,7 +20,6 @@ public class GameSession {
   public GameSession(int portNumber) {
     this.server = new Server(portNumber);
     this.server.setGameSession(this);
-    this.server.setServerHost(this.host);
     gameLobbyId++;
     this.state = GameState.WAITING_LOBBY;
     this.tilebag = new TileBag();
@@ -43,13 +41,13 @@ public class GameSession {
     return this.gameLobbyId;
   }
 
-  public ArrayList<String> getPlayerNames() {
-    this.playerNames = new ArrayList<String>(this.server.getClientNames());
+  public ArrayList<Player> getPlayerNames() {
+    this.playerNames = new ArrayList<Player>(this.server.getClientNames());
     return playerNames;
   }
 
-  public void setPlayerNames(Set<String> list) {
-    this.playerNames = new ArrayList<String>(list);
+  public void setPlayerNames(Set<Player> list) {
+    this.playerNames = new ArrayList<Player>(list);
   }
 
   public Player getHost() {

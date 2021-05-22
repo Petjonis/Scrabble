@@ -1,5 +1,7 @@
 package messages;
 
+import model.Player;
+
 public class SendChatMessage extends Message{
   private static final long serialVersionUID = 1L;
 
@@ -13,7 +15,7 @@ public class SendChatMessage extends Message{
    * @param token is for knowing if the host sent it or a client.
 
    */
-  public SendChatMessage(String from, String chat, boolean token) {
+  public SendChatMessage(Player from, String chat, boolean token) {
     super(MessageType.SEND_MESSAGE, from);
     this.text = chat;
     this.hosting = token;

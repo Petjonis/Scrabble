@@ -1,5 +1,7 @@
 package messages;
 
+import model.Player;
+
 /**
  * ShutDownMessage will be sent to the clients if the server shuts down.
  *
@@ -10,8 +12,8 @@ public class ShutDownMessage extends Message {
 
   private static final long serialVersionUID = 1L;
 
-  public ShutDownMessage() {
-    super(MessageType.SERVERSHUTDOWN, "server");
+  public ShutDownMessage(Player from) {
+    super(MessageType.SERVERSHUTDOWN, from);
   }
 
   @Override

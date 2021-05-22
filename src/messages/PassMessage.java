@@ -12,7 +12,7 @@ public class PassMessage extends Message {
    *
    * @param from is user.
    */
-  public PassMessage(String from, int idNumber) {
+  public PassMessage(Player from, int idNumber) {
     super(MessageType.PASS_MESSAGE, from);
     this.id = idNumber;
   }

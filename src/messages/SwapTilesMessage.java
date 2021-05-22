@@ -7,6 +7,7 @@
 
 package messages;
 
+import model.Player;
 import model.Tile;
 
 public class SwapTilesMessage extends Message{
@@ -21,7 +22,7 @@ public class SwapTilesMessage extends Message{
 	 * @param tiles are the specific tiles to swap from rack.
 	 * @param from is user who wants to swap tiles.
 	 */
-	public SwapTilesMessage(Tile[] tiles, String from) {
+	public SwapTilesMessage(Tile[] tiles, Player from) {
 		super(MessageType.SWAP_TILES, from);
 		this.tiles = tiles;
 	}

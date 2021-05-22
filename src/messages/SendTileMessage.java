@@ -1,5 +1,6 @@
 package messages;
 
+import model.Player;
 import model.Square;
 import model.Tile;
 
@@ -25,7 +26,7 @@ public class SendTileMessage extends Message {
    * @author socho
    */
 
-  public SendTileMessage(Tile tile, Square[][] pos, String from) {
+  public SendTileMessage(Tile tile, Square[][] pos, Player from) {
     super(MessageType.SEND_TILE, from);
     this.sendingTile = tile;
     this.position = pos;

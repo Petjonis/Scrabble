@@ -41,12 +41,24 @@ public abstract class Player {
     return passCount;
   }
 
+  public void setPassCount(int passCount) {
+    this.passCount = passCount;
+  }
+
   public void incrementPassCount() {
     this.passCount++;
   }
 
   public void resetPassCount() {
     this.passCount = 0;
+  }
+
+  public TileRack getRack() {
+    return rack;
+  }
+
+  public void setRack(TileRack rack) {
+    this.rack = rack;
   }
 
   public TileBag getBag() {

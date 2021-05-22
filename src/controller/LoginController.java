@@ -1,7 +1,6 @@
 package controller;
 
 import com.jfoenix.controls.JFXButton;
-import com.sun.tools.javac.Main;
 import db.Database;
 import java.io.IOException;
 import java.net.URL;
@@ -18,7 +17,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import model.HumanPlayer;
-import settings.IdGenerator;
 
 public class LoginController implements Initializable {
 
@@ -64,9 +62,7 @@ public class LoginController implements Initializable {
         /** login is successful. */
         System.out.println("Login successful!");
 
-        MainController.mainController.setUser(new HumanPlayer());
-        MainController.mainController.getUser().setUserName(usernameField.getText());
-        MainController.mainController.getUser().setPlayerID(IdGenerator.createID());
+        MainController.mainController.setUser(new HumanPlayer(usernameField.getText(), MainController.mainController.db.getId(usernameField.getText())));
         MainController.mainController.setLoggedIn(true);
 
         MainController.mainController.getWelcomeLabel().setText(usernameField.getText());

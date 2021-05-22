@@ -28,7 +28,7 @@ public class ServerProtocol extends Thread {
   private ObjectOutputStream out;
   private Server server;
   private GameSession gameSession;
-  private String clientName;
+  private Player clientName;
   private boolean running = true;
   public static int id = 0;
 
@@ -77,8 +77,7 @@ public class ServerProtocol extends Thread {
     Tile tile;
     Tile[] tiles;
     Square [][] position;
-    String user;
-    Player player;
+    Player user;
     int index;
     ArrayList<String> list;
 
@@ -91,18 +90,17 @@ public class ServerProtocol extends Thread {
         index = cMsg.getId();
         this.clientName = user;
         if(server.getClientNames().size() == 0) {
-          server.addClient(user + " [Host] ", this);
+          server.addClient(user, this);
           server.addIdToClient(index, user);
         }else{
           server.addClient(user, this);
           server.addIdToClient(index, user);
         }
         this.gameSession.setPlayerNames(server.getClientNames());
-        System.out.println(this.clientName + " was added to the Lobby.");
+        System.out.println(this.clientName.getUserName() + " was added to the Lobby.");
         /** checking for who is in the same one lobby. */
         System.out.println(this.gameSession.getPlayerNames());
         System.out.println(server.getIds());
-        //sendToClient();
       } else {
         disconnect();
       }
@@ -113,8 +111,7 @@ public class ServerProtocol extends Thread {
 
         switch (m.getMessageType()) {
           case REQUEST_PLAYERLIST:
-            server.sendToAll(new UpdatePlayerListMessage("host", server.getGameSession()
-                .getPlayerNames()));
+            server.sendToAll(new UpdatePlayerListMessage(server.getServerHost(), new ArrayList<Player>(server.getClientNames())));
             break;
           case LEAVE_GAME:
             LeaveGameMessage lgMsg = (LeaveGameMessage) m ;
@@ -149,7 +146,7 @@ public class ServerProtocol extends Thread {
             SendChatMessage scMsg = (SendChatMessage) m;
             user = scMsg.getFrom();
             if (scMsg.getHosting()) {
-              server.sendToAllBut(user + " [Host] ", scMsg);
+              server.sendToAllBut(server.getServerHost(), scMsg);
             }else{
               server.sendToAllBut(user, scMsg);
             }

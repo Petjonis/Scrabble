@@ -1,5 +1,7 @@
 package messages;
 
+import model.Player;
+
 public class LeaveGameMessage extends Message{
   private static final long serialVersionUID = 1L;
   private int id;
@@ -8,7 +10,7 @@ public class LeaveGameMessage extends Message{
    *
    * @param from
    */
-  public LeaveGameMessage(String from, int idNumber) {
+  public LeaveGameMessage(Player from, int idNumber) {
     super(MessageType.LEAVE_GAME, from);
     this.id = idNumber;
   }

@@ -1,5 +1,7 @@
 package messages;
 
+import model.Player;
+
 /**
  * ConnectMessage which will be sent if the client connects with the server successfully.
  *
@@ -11,7 +13,7 @@ public class ConnectMessage extends Message {
   private static final long serialVersionUID = 1L;
   private int id;
 
-  public ConnectMessage(String name, int idNumber) {
+  public ConnectMessage(Player name, int idNumber) {
     super(MessageType.CONNECT, name);
     this.id = idNumber;
   }
