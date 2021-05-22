@@ -1,10 +1,9 @@
 package messages;
 
 
-import java.util.ArrayList;
 import model.Player;
 
-public class RemovingPlayerListMessage extends Message{
+public class RemovingPlayerListMessage extends Message {
   private static final long serialVersionUID = 1L;
 
   /**

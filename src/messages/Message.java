@@ -46,6 +46,7 @@ public abstract class Message implements Serializable, Cloneable {
     try {
       clone = (Message) super.clone();
     } catch (CloneNotSupportedException e) {
+      e.printStackTrace();
     }
     clone.meType = meType;
     clone.playerUser = new HumanPlayer(playerUser);

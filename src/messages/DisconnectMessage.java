@@ -23,7 +23,7 @@ public class DisconnectMessage extends Message {
     return super.clone();
   }
 
-  public int getId(){
+  public int getId() {
     return this.id;
   }
 }
