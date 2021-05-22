@@ -16,7 +16,7 @@ public class SendChatMessage extends Message{
 
    */
   public SendChatMessage(Player from, String chat, boolean token) {
-    super(MessageType.SEND_MESSAGE, from);
+    super(MessageType.SEND_CHAT_MESSAGE, from);
     this.text = chat;
     this.hosting = token;
   }

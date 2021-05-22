@@ -68,7 +68,7 @@ public class Client extends Thread {
           case UPDATE_PLAYERLIST:
             UpdatePlayerListMessage uplMsg = (UpdatePlayerListMessage) m;
             System.out.println("Players on the list: " + uplMsg.getActivePlayers());
-
+            System.out.println(uplMsg.getPlayer().getUserName());
             ArrayList<Player> liste = uplMsg.getActivePlayers();
             for (Player p : liste) {
               System.out.println(p.getUserName());
@@ -77,19 +77,19 @@ public class Client extends Thread {
             break;
           case REMOVE_PLAYERLIST:
             RemovingPlayerListMessage rplMsg = (RemovingPlayerListMessage) m;
-            GameInfoController.gameInfoController.removePlayerFromPlayerList(rplMsg.getFrom());
+            GameInfoController.gameInfoController.removePlayerFromPlayerList(rplMsg.getPlayer());
             break;
-          case SEND_MESSAGE:
+          case SEND_CHAT_MESSAGE:
             SendChatMessage scMsg = (SendChatMessage) m;
-            user = scMsg.getFrom();
+            user = scMsg.getPlayer();
             text = scMsg.getText();
             token = scMsg.getHosting();
             GameInfoController.gameInfoController.updateChat(user, text, token);
             break;
           case DISCONNECT:
             DisconnectMessage dcMsg = (DisconnectMessage) m;
-            user = dcMsg.getFrom();
-            GameInfoController.gameInfoController.updateChat(new ComputerPlayer("Server"),user.getUserName() + " left the game.", false);
+            user = dcMsg.getPlayer();
+            GameInfoController.gameInfoController.updateChat(new ComputerPlayer("[Server]"),user.getUserName() + " left the game.", false);
             break;
           default:
             break;

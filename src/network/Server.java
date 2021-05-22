@@ -38,16 +38,16 @@ public class Server {
    */
   private HashMap<Player, ServerProtocol> clients = new HashMap<>();
 
-  public synchronized void removeClient(Player clientName) {
-    this.clients.remove(clientName);
+  public synchronized void removeClient(Player client) {
+    this.clients.remove(client);
   }
 
-  public synchronized boolean userExistsP(Player name) {
-    return this.clients.containsKey(name);
+  public synchronized boolean userExistsP(Player client) {
+    return this.clients.containsKey(client);
   }
 
-  public synchronized void addClient(Player name, ServerProtocol protocol) {
-    this.clients.put(name, protocol);
+  public synchronized void addClient(Player client, ServerProtocol protocol) {
+    this.clients.put(client, protocol);
   }
 
   public synchronized Set<Player> getClientNames() {
@@ -59,16 +59,16 @@ public class Server {
 
   private HashMap<Integer, Player> clientsIDMap = new HashMap<>();
 
-  public synchronized void addIdToClient(Integer id, Player clientName){
-    clientsIDMap.put(id, clientName);
+  public synchronized void addIdToClient(Integer id, Player client){
+    clientsIDMap.put(id, client);
   }
 
   public synchronized Player getUserFromId(Integer id){
     return clientsIDMap.get(id);
   }
 
-  public synchronized void removeIdToClient(Integer id, Player clientName){
-    clientsIDMap.remove(id, clientName);
+  public synchronized void removeIdToClient(Integer id, Player client){
+    clientsIDMap.remove(id, client);
   }
 
   public synchronized Set<Integer> getIds() {

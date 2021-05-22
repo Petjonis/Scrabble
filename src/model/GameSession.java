@@ -12,7 +12,7 @@ public class GameSession {
   private static int gameLobbyId = 0;
   private static ArrayList<GameSession> sessions = new ArrayList<GameSession>();
   private GameState state;
-  private ArrayList<Player> playerNames;
+  private ArrayList<Player> players;
   private Server server;
   private Player host;
   private TileBag tilebag;
@@ -41,13 +41,13 @@ public class GameSession {
     return this.gameLobbyId;
   }
 
-  public ArrayList<Player> getPlayerNames() {
-    this.playerNames = new ArrayList<Player>(this.server.getClientNames());
-    return playerNames;
+  public ArrayList<Player> getPlayers() {
+    this.players = new ArrayList<Player>(this.server.getClientNames());
+    return players;
   }
 
-  public void setPlayerNames(Set<Player> list) {
-    this.playerNames = new ArrayList<Player>(list);
+  public void setPlayers(Set<Player> list) {
+    this.players = new ArrayList<Player>(list);
   }
 
   public Player getHost() {

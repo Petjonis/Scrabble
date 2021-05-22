@@ -13,8 +13,8 @@ public class ConnectMessage extends Message {
   private static final long serialVersionUID = 1L;
   private int id;
 
-  public ConnectMessage(Player name, int idNumber) {
-    super(MessageType.CONNECT, name);
+  public ConnectMessage(Player player, int idNumber) {
+    super(MessageType.CONNECT, player);
     this.id = idNumber;
   }
 

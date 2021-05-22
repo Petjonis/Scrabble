@@ -8,9 +8,8 @@
 package model;
 
 import java.io.Serializable;
-import messages.Message;
 
-public class HumanPlayer extends Player implements Serializable {
+public class HumanPlayer extends Player implements Serializable, Cloneable {
 
   public HumanPlayer(Player user){
    this.setUserName(user.getUserName());
@@ -53,20 +52,4 @@ public class HumanPlayer extends Player implements Serializable {
   @Override
   public void put() {}
 
-
-  public Object clone() {
-    HumanPlayer clone = null;
-    try {
-      clone = (HumanPlayer) super.clone();
-    } catch (CloneNotSupportedException e) {
-    }
-    clone.setUserName(getUserName());
-    clone.setPlayerID(getPlayerID());
-    clone.setActiveSession(getActiveSession());
-    clone.setBag(getBag());
-    clone.setRack(getRack());
-    clone.setScore(getScore());
-    clone.setPassCount(getPassCount());
-    return clone;
-  }
 }

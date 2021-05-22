@@ -86,7 +86,7 @@ public class ServerProtocol extends Thread {
       m = (Message) in.readObject();
       if (m.getMessageType() == MessageType.CONNECT) {
         ConnectMessage cMsg = (ConnectMessage) m;
-        user = cMsg.getFrom();
+        user = cMsg.getPlayer();
         index = cMsg.getId();
         this.clientName = user;
         if(server.getClientNames().size() == 0) {
@@ -96,10 +96,10 @@ public class ServerProtocol extends Thread {
           server.addClient(user, this);
           server.addIdToClient(index, user);
         }
-        this.gameSession.setPlayerNames(server.getClientNames());
+        this.gameSession.setPlayers(server.getClientNames());
         System.out.println(this.clientName.getUserName() + " was added to the Lobby.");
         /** checking for who is in the same one lobby. */
-        System.out.println(this.gameSession.getPlayerNames());
+        System.out.println(this.gameSession.getPlayers());
         System.out.println(server.getIds());
       } else {
         disconnect();
@@ -115,17 +115,17 @@ public class ServerProtocol extends Thread {
             break;
           case LEAVE_GAME:
             LeaveGameMessage lgMsg = (LeaveGameMessage) m ;
-            user = lgMsg.getFrom();
+            user = lgMsg.getPlayer();
             if (server.userExistsP(user) && user.equals(server.getUserFromId(lgMsg.getId()))) {
               server.removeClient(user);
               server.removeIdToClient(lgMsg.getId(),user );
-              server.getGameSession().setPlayerNames(server.getClientNames());
-              server.sendToAll(new RemovingPlayerListMessage(lgMsg.getFrom()));
+              server.getGameSession().setPlayers(server.getClientNames());
+              server.sendToAll(new RemovingPlayerListMessage(lgMsg.getPlayer()));
             }
             break;
           case DISCONNECT:
             DisconnectMessage dcMsg = (DisconnectMessage) m;
-            user = dcMsg.getFrom();
+            user = dcMsg.getPlayer();
             server.sendToAllBut(user, new DisconnectMessage(user, dcMsg.getId()));
             server.removeClient(user);
             server.removeIdToClient(dcMsg.getId(), user);
@@ -133,18 +133,18 @@ public class ServerProtocol extends Thread {
             break;
           case PASS_MESSAGE:
             PassMessage pMsg = (PassMessage) m;
-            user = pMsg.getFrom();
+            user = pMsg.getPlayer();
             break;
           case SEND_TILE:
             SendTileMessage stMsg = (SendTileMessage) m;
             tile = stMsg.getTile();
             position = stMsg.getPosition();
-            user = stMsg.getFrom();
+            user = stMsg.getPlayer();
             server.sendToAll(stMsg);
             break;
-          case SEND_MESSAGE:
+          case SEND_CHAT_MESSAGE:
             SendChatMessage scMsg = (SendChatMessage) m;
-            user = scMsg.getFrom();
+            user = scMsg.getPlayer();
             if (scMsg.getHosting()) {
               server.sendToAllBut(server.getServerHost(), scMsg);
             }else{
@@ -153,7 +153,7 @@ public class ServerProtocol extends Thread {
             break;
           case SWAP_TILES:
             SwapTilesMessage swtMsg = (SwapTilesMessage) m;
-            user = swtMsg.getFrom();
+            user = swtMsg.getPlayer();
             tiles = swtMsg.getTiles();
             /** put them into bag and then draw? or draw and put back after?
             drawable if rack already full? */
