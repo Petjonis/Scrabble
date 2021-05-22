@@ -8,10 +8,10 @@ public class LeaveGameMessage extends Message{
   /**
    * constructor for message.
    *
-   * @param from
+   * @param player
    */
-  public LeaveGameMessage(Player from, int idNumber) {
-    super(MessageType.LEAVE_GAME, from);
+  public LeaveGameMessage(Player player, int idNumber) {
+    super(MessageType.LEAVE_GAME, player);
     this.id = idNumber;
   }
 

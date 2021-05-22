@@ -1,7 +1,6 @@
 package controller;
 
 import com.jfoenix.controls.JFXButton;
-import com.sun.tools.javac.Main;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -128,7 +127,6 @@ public class PlayOnlineController implements Initializable {
       MainController.mainController.setGameSession(gameSession);
       MainController.mainController.setHosting(true);
       MainController.mainController.setServer(gameSession.getServer());
-      MainController.mainController.getUser().setActiveSession(gameSession);
       return true;
     } else {
       portErrorLabel.setText("port number is not available.");
@@ -171,9 +169,6 @@ public class PlayOnlineController implements Initializable {
     if (this.port > 49151 && this.port < 50001) {
       MainController.mainController.connectToServer("localhost", this.port);
       if (MainController.mainController.getConnection().isOk()) {
-        MainController.mainController.getUser().setActiveSession(new GameSession(this.port));
-        MainController.mainController
-            .setGameSession(MainController.mainController.getUser().getActiveSession());
         MainController.mainController.getConnection()
             .sendToServer(
                 new ConnectMessage(MainController.mainController.getUser(),

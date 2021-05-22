@@ -16,14 +16,14 @@ public abstract class Message implements Serializable, Cloneable {
   private static final long serialVersionUID = 1L;
 
   private MessageType meType;
-  private Player player;
+  private Player playerUser;
 
   /**
    * constructor for message.
    */
-  public Message(MessageType type, Player from) {
+  public Message(MessageType type, Player player) {
     this.meType = type;
-    this.player = new HumanPlayer(from);
+    this.playerUser = player;
   }
 
   public MessageType getMessageType() {
@@ -31,11 +31,11 @@ public abstract class Message implements Serializable, Cloneable {
   }
 
   public Player getPlayer() {
-    return this.player;
+    return this.playerUser;
   }
 
   public void setPlayer(Player playerClient) {
-    this.player =  playerClient;
+    this.playerUser =  playerClient;
   }
 
   /**
@@ -48,7 +48,7 @@ public abstract class Message implements Serializable, Cloneable {
     } catch (CloneNotSupportedException e) {
     }
     clone.meType = meType;
-    clone.player = new HumanPlayer(player);
+    clone.playerUser = new HumanPlayer(playerUser);
     return clone;
   }
 }

@@ -17,11 +17,11 @@ public class UpdatePlayerListMessage extends Message {
   /**
    * constructor for message.
    *
-   * @param from
+   * @param player
    * @param newList updated player list
    */
-  public UpdatePlayerListMessage(Player from, ArrayList<Player> newList) {
-    super(MessageType.UPDATE_PLAYERLIST, from);
+  public UpdatePlayerListMessage(Player player, ArrayList<Player> newList) {
+    super(MessageType.UPDATE_PLAYERLIST, player);
     this.activePlayers = newList;
   }
 

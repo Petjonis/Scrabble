@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Set;
 import network.Server;
@@ -42,7 +43,7 @@ public class GameSession {
   }
 
   public ArrayList<Player> getPlayers() {
-    this.players = new ArrayList<Player>(this.server.getClientNames());
+    this.players = new ArrayList<Player>(this.server.getClients());
     return players;
   }
 

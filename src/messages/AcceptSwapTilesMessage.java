@@ -6,13 +6,14 @@ import model.Tile;
 public class AcceptSwapTilesMessage extends Message{
 
   private Tile [] swapTiles;
+
   /**
    * constructor for message.
-   * @param from is the user.
+   * @param player is the user.
    * @param newTiles are all new tiles which the user will receive.
    */
-  public AcceptSwapTilesMessage(Player from, Tile [] newTiles) {
-    super(MessageType.ACCEPT_SWAP_TILES, from);
+  public AcceptSwapTilesMessage(Player player, Tile [] newTiles) {
+    super(MessageType.ACCEPT_SWAP_TILES, player);
     this.swapTiles = newTiles;
   }
 

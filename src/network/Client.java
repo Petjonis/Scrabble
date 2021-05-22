@@ -68,11 +68,7 @@ public class Client extends Thread {
           case UPDATE_PLAYERLIST:
             UpdatePlayerListMessage uplMsg = (UpdatePlayerListMessage) m;
             System.out.println("Players on the list: " + uplMsg.getActivePlayers());
-            System.out.println(uplMsg.getPlayer().getUserName());
             ArrayList<Player> liste = uplMsg.getActivePlayers();
-            for (Player p : liste) {
-              System.out.println(p.getUserName());
-            }
             GameInfoController.gameInfoController.updatePlayerList(liste);
             break;
           case REMOVE_PLAYERLIST:

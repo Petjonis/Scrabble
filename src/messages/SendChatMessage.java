@@ -10,13 +10,13 @@ public class SendChatMessage extends Message{
   /**
    * constructor for message.
    *
-   * @param from is for the player who sends the message.
+   * @param player is for the player who sends the message.
    * @param chat is for the text, which the player wrote.
    * @param token is for knowing if the host sent it or a client.
 
    */
-  public SendChatMessage(Player from, String chat, boolean token) {
-    super(MessageType.SEND_CHAT_MESSAGE, from);
+  public SendChatMessage(Player player, String chat, boolean token) {
+    super(MessageType.SEND_CHAT_MESSAGE, player);
     this.text = chat;
     this.hosting = token;
   }

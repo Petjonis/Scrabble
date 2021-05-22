@@ -28,7 +28,7 @@ public class ServerProtocol extends Thread {
   private ObjectOutputStream out;
   private Server server;
   private GameSession gameSession;
-  private Player clientName;
+  private Player client;
   private boolean running = true;
   public static int id = 0;
 
@@ -81,26 +81,18 @@ public class ServerProtocol extends Thread {
     int index;
     ArrayList<String> list;
 
-
     try {
       m = (Message) in.readObject();
       if (m.getMessageType() == MessageType.CONNECT) {
         ConnectMessage cMsg = (ConnectMessage) m;
         user = cMsg.getPlayer();
         index = cMsg.getId();
-        this.clientName = user;
-        if(server.getClientNames().size() == 0) {
-          server.addClient(user, this);
-          server.addIdToClient(index, user);
-        }else{
-          server.addClient(user, this);
-          server.addIdToClient(index, user);
-        }
-        this.gameSession.setPlayers(server.getClientNames());
-        System.out.println(this.clientName.getUserName() + " was added to the Lobby.");
-        /** checking for who is in the same one lobby. */
-        System.out.println(this.gameSession.getPlayers());
-        System.out.println(server.getIds());
+        this.client = user;
+        server.addClient(user, this);
+        server.addIdToClient(index, user);
+
+        this.gameSession.setPlayers(server.getClients());
+        System.out.println(this.client.getUserName() + " was added to the Lobby.");
       } else {
         disconnect();
       }
@@ -111,7 +103,7 @@ public class ServerProtocol extends Thread {
 
         switch (m.getMessageType()) {
           case REQUEST_PLAYERLIST:
-            server.sendToAll(new UpdatePlayerListMessage(server.getServerHost(), new ArrayList<Player>(server.getClientNames())));
+            server.sendToAll(new UpdatePlayerListMessage(server.getServerHost(), new ArrayList<Player>(server.getClients())));
             break;
           case LEAVE_GAME:
             LeaveGameMessage lgMsg = (LeaveGameMessage) m ;
@@ -119,14 +111,14 @@ public class ServerProtocol extends Thread {
             if (server.userExistsP(user) && user.equals(server.getUserFromId(lgMsg.getId()))) {
               server.removeClient(user);
               server.removeIdToClient(lgMsg.getId(),user );
-              server.getGameSession().setPlayers(server.getClientNames());
+              server.getGameSession().setPlayers(server.getClients());
               server.sendToAll(new RemovingPlayerListMessage(lgMsg.getPlayer()));
             }
             break;
           case DISCONNECT:
             DisconnectMessage dcMsg = (DisconnectMessage) m;
             user = dcMsg.getPlayer();
-            server.sendToAllBut(user, new DisconnectMessage(user, dcMsg.getId()));
+            server.sendToAllBut(user.getPlayerID(), new DisconnectMessage(user, dcMsg.getId()));
             server.removeClient(user);
             server.removeIdToClient(dcMsg.getId(), user);
             System.out.println(user + " left the Lobby.");
@@ -145,11 +137,7 @@ public class ServerProtocol extends Thread {
           case SEND_CHAT_MESSAGE:
             SendChatMessage scMsg = (SendChatMessage) m;
             user = scMsg.getPlayer();
-            if (scMsg.getHosting()) {
-              server.sendToAllBut(server.getServerHost(), scMsg);
-            }else{
-              server.sendToAllBut(user, scMsg);
-            }
+            server.sendToAllBut(user.getPlayerID(), scMsg);
             break;
           case SWAP_TILES:
             SwapTilesMessage swtMsg = (SwapTilesMessage) m;
@@ -168,7 +156,7 @@ public class ServerProtocol extends Thread {
     } catch (IOException e) {
       running = false;
       if (socket.isClosed()) {
-        System.out.println("Socket was closed. Client: " + clientName);
+        System.out.println("Socket was closed. Client: " + client);
       } else {
         try {
           socket.close();

@@ -22,12 +22,12 @@ public class SendTileMessage extends Message {
    *
    * @param tile is for what kind of tile will be moved.
    * @param pos  is for the position of the tile on the board
-   * @param from is for the user who moved this tile.
+   * @param player is for the user who moved this tile.
    * @author socho
    */
 
-  public SendTileMessage(Tile tile, Square[][] pos, Player from) {
-    super(MessageType.SEND_TILE, from);
+  public SendTileMessage(Tile tile, Square[][] pos, Player player) {
+    super(MessageType.SEND_TILE, player);
     this.sendingTile = tile;
     this.position = pos;
   }

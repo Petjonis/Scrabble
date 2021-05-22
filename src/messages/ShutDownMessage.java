@@ -1,5 +1,6 @@
 package messages;
 
+import model.ComputerPlayer;
 import model.Player;
 
 /**
@@ -12,8 +13,8 @@ public class ShutDownMessage extends Message {
 
   private static final long serialVersionUID = 1L;
 
-  public ShutDownMessage(Player from) {
-    super(MessageType.SERVERSHUTDOWN, from);
+  public ShutDownMessage() {
+    super(MessageType.SERVERSHUTDOWN, new ComputerPlayer("[Server]"));
   }
 
   @Override

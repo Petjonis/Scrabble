@@ -8,6 +8,7 @@ package network;
  */
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -50,7 +51,7 @@ public class Server {
     this.clients.put(client, protocol);
   }
 
-  public synchronized Set<Player> getClientNames() {
+  public synchronized Set<Player> getClients() {
     Set<Player> clientNames = this.clients.keySet();
     return new HashSet<Player>(clientNames);
   }
@@ -129,7 +130,7 @@ public class Server {
    * send to all clients.
    */
   public void sendToAll(Message m) {
-    sendTo(new ArrayList<Player>(getClientNames()), (Message) (m.clone()));
+    sendTo(new ArrayList<Player>(getClients()), (Message) (m.clone()));
   }
 
   /**
@@ -142,10 +143,13 @@ public class Server {
   /**
    * send to all clients except for one.
    */
-  public void sendToAllBut(Player name, Message m) {
+  public void sendToAllBut(int idNumber, Message m) {
     synchronized (this.clients) {
-      Set<Player> senderList = getClientNames();
-      senderList.remove(name);
+      Set<Player> senderList = getClients();
+      Player removePlayer = getUserFromId(idNumber);
+      if(userExistsP(removePlayer)) {
+        senderList.remove(removePlayer);
+      }
       sendTo(new ArrayList<Player>(senderList), m);
     }
   }

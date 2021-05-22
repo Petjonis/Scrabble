@@ -7,11 +7,12 @@
 
 package model;
 
-public abstract class Player {
+import java.io.Serializable;
+
+public abstract class Player implements Serializable {
 
   private String username;
   private int playerID;
-  private GameSession activeSession;
   private TileBag bag;
   private TileRack rack;
   private int score;
@@ -83,14 +84,6 @@ public abstract class Player {
 
   public void setPlayerID(int idNumber) {
     this.playerID = idNumber;
-  }
-
-  public void setActiveSession(GameSession game) {
-    this.activeSession = game;
-  }
-
-  public GameSession getActiveSession() {
-    return this.activeSession;
   }
 
 }

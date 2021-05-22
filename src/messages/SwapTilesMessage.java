@@ -20,10 +20,10 @@ public class SwapTilesMessage extends Message{
 	 * constructor for "swapping a tile" message.
 	 *
 	 * @param tiles are the specific tiles to swap from rack.
-	 * @param from is user who wants to swap tiles.
+	 * @param player is user who wants to swap tiles.
 	 */
-	public SwapTilesMessage(Tile[] tiles, Player from) {
-		super(MessageType.SWAP_TILES, from);
+	public SwapTilesMessage(Tile[] tiles, Player player) {
+		super(MessageType.SWAP_TILES, player);
 		this.tiles = tiles;
 	}
 

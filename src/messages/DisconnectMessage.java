@@ -13,8 +13,8 @@ public class DisconnectMessage extends Message {
   private static final long serialVersionUID = 1L;
   private int id;
 
-  public DisconnectMessage(Player from, int idNumber) {
-    super(MessageType.DISCONNECT, from);
+  public DisconnectMessage(Player player, int idNumber) {
+    super(MessageType.DISCONNECT, player);
     this.id = idNumber;
   }
 

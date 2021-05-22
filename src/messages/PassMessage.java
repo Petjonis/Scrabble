@@ -10,10 +10,10 @@ public class PassMessage extends Message {
   /**
    * constructor for "pass turn" message.
    *
-   * @param from is user.
+   * @param player is user.
    */
-  public PassMessage(Player from, int idNumber) {
-    super(MessageType.PASS_MESSAGE, from);
+  public PassMessage(Player player, int idNumber) {
+    super(MessageType.PASS_MESSAGE, player);
     this.id = idNumber;
   }
 

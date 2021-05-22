@@ -10,10 +10,10 @@ public class RemovingPlayerListMessage extends Message{
   /**
    * constructor for message.
    *
-   * @param from is the user.
+   * @param player is the user.
    */
-  public RemovingPlayerListMessage(Player from) {
-    super(MessageType.REMOVE_PLAYERLIST, from);
+  public RemovingPlayerListMessage(Player player) {
+    super(MessageType.REMOVE_PLAYERLIST, player);
 
   }
 

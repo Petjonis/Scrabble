@@ -14,7 +14,6 @@ public class HumanPlayer extends Player implements Serializable, Cloneable {
   public HumanPlayer(Player user){
    this.setUserName(user.getUserName());
    this.setPlayerID(user.getPlayerID());
-   this.setActiveSession(user.getActiveSession());
    this.setBag(user.getBag());
    this.setRack(user.getRack());
    this.setScore(user.getScore());
@@ -24,7 +23,6 @@ public class HumanPlayer extends Player implements Serializable, Cloneable {
   public HumanPlayer(String userName, int id){
     this.setUserName(userName);
     this.setPlayerID(id);
-    this.setActiveSession(null);
     this.setBag(null);
     this.setRack(null);
     this.setScore(0);
