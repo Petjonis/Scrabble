@@ -104,13 +104,19 @@ public class RegisterController implements Initializable {
     db.disconnect();
   }
 
-
+  /**
+   * Sign up can be pressed with the "ENTER" key.
+   */
   public void signUpKeyPressed(KeyEvent keyEvent) {
-    if(keyEvent.getCode() == KeyCode.ENTER) {
+    if (keyEvent.getCode() == KeyCode.ENTER) {
       createAccount(new ActionEvent());
     }
   }
 
+  /**
+   * when username text field is on focus, password text field can be selected by pressing "TAB" or
+   * "ENTER" key.
+   */
   public void userNameKeyPressed(KeyEvent keyEvent) {
     if (keyEvent.getCode() == KeyCode.TAB) {
       passwordField.requestFocus();
@@ -119,6 +125,10 @@ public class RegisterController implements Initializable {
     }
   }
 
+  /**
+   * when password text field is on focus, confirm text field can be selected by pressing "TAB" or
+   * "ENTER" key.
+   */
   public void passwordKeyPressed(KeyEvent keyEvent) {
     if (keyEvent.getCode() == KeyCode.TAB) {
       confirmField.requestFocus();
@@ -127,6 +137,10 @@ public class RegisterController implements Initializable {
     }
   }
 
+  /**
+   * when confirm text field is on focus, image viewer can be selected by pressing "TAB" or "ENTER"
+   * key.
+   */
   public void confirmKeyPassword(KeyEvent keyEvent) {
     if (keyEvent.getCode() == KeyCode.TAB) {
       previewImage.requestFocus();
@@ -135,11 +149,15 @@ public class RegisterController implements Initializable {
     }
   }
 
+  /**
+   * when image viewer is on focus, image viewer can be used by pressing "ENTER" key and sign up
+   * button can be selected by pressing "TAB" key.
+   */
   public void avatarKeyPressed(KeyEvent keyEvent) {
     if (keyEvent.getCode() == KeyCode.ENTER) {
       chooseFile(new ActionEvent());
     } else if (keyEvent.getCode() == KeyCode.TAB) {
-     createButton.requestFocus();
+      createButton.requestFocus();
     }
   }
 }

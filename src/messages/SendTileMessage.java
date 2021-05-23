@@ -18,7 +18,7 @@ public class SendTileMessage extends Message {
   private Square[][] position;
 
   /**
-   * constructor for "sending a tile" message
+   * constructor for "sending a tile" message.
    *
    * @param tile is for what kind of tile will be moved.
    * @param pos  is for the position of the tile on the board

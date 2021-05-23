@@ -62,7 +62,8 @@ public class LoginController implements Initializable {
         /** login is successful. */
         System.out.println("Login successful!");
 
-        MainController.mainController.setUser(new HumanPlayer(usernameField.getText(), MainController.mainController.db.getId(usernameField.getText())));
+        MainController.mainController.setUser(new HumanPlayer(usernameField.getText(),
+            MainController.mainController.db.getId(usernameField.getText())));
         MainController.mainController.setLoggedIn(true);
 
         MainController.mainController.getWelcomeLabel().setText(usernameField.getText());
@@ -180,12 +181,19 @@ public class LoginController implements Initializable {
     }
   }
 
+  /**
+   * when "Login" button is selected, it can be pressed with an "ENTER" key.
+   */
   public void loginKeyPressed(KeyEvent keyEvent) throws IOException {
     if (keyEvent.getCode() == KeyCode.ENTER) {
       login(new ActionEvent());
     }
   }
 
+  /**
+   * after entering password in the password-text field and pressing "TAB" or "ENTER" key, login
+   * button will be selected.
+   */
   public void passwordKeyPressed(KeyEvent keyEvent) {
     if (keyEvent.getCode() == KeyCode.TAB) {
       loginButton.requestFocus();

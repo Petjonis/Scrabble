@@ -4,8 +4,10 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextArea;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -15,9 +17,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-
-import java.net.URL;
-import java.util.ResourceBundle;
 import messages.LeaveGameMessage;
 import messages.RequestPlayerListMessage;
 import messages.SendChatMessage;
@@ -102,7 +101,9 @@ public class GameInfoController implements Initializable {
   }
 
   /**
-   * update methods for players list, last words list and chat.
+   * update methods for players list.
+   *
+   * @author socho
    */
 
   public void updatePlayerList(ArrayList<Player> players) {
@@ -116,6 +117,11 @@ public class GameInfoController implements Initializable {
     }
   }
 
+  /**
+   * removing player from playerlist.
+   *
+   * @author socho
+   */
   public void removePlayerFromPlayerList(Player from) {
     if (playerList.getItems().contains(from.getUserName())) {
       playerList.getItems().remove(from.getUserName());
@@ -165,7 +171,8 @@ public class GameInfoController implements Initializable {
     Optional<ButtonType> result = confirmationAlert.showAndWait();
     if (result.get() == ButtonType.OK) {
       MainController.mainController.getConnection().sendToServer(
-          new LeaveGameMessage(MainController.mainController.getUser(),MainController.mainController.getUser().getPlayerID()));
+          new LeaveGameMessage(MainController.mainController.getUser(),
+              MainController.mainController.getUser().getPlayerID()));
       if (MainController.mainController.getHosting()) {
         MainController.mainController.getServer().stopServer();
       }
