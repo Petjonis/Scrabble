@@ -14,12 +14,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+
+import controller.ResultController;
 import javafx.event.ActionEvent;
-import messages.DisconnectMessage;
-import messages.Message;
-import messages.RemovingPlayerListMessage;
-import messages.SendChatMessage;
-import messages.UpdatePlayerListMessage;
+import messages.*;
 import model.ComputerPlayer;
 import model.Player;
 
@@ -65,6 +63,10 @@ public class Client extends Thread {
       try {
         Message m = (Message) in.readObject();
         switch (m.getMessageType()) {
+          case RESULT_MESSAGE:
+            ResultPlayerListMessage replMsg = (ResultPlayerListMessage) m;
+            ResultController.resultController.getPlayers(replMsg.getActivePlayers());
+            break;
           case UPDATE_PLAYERLIST:
             UpdatePlayerListMessage uplMsg = (UpdatePlayerListMessage) m;
             System.out.println("Players on the list: " + uplMsg.getActivePlayers());

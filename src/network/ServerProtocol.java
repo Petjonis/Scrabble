@@ -15,20 +15,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
-import messages.AcceptSwapTilesMessage;
-import messages.ConnectMessage;
-import messages.DisconnectMessage;
-import messages.LeaveGameMessage;
-import messages.PassMessage;
-import messages.Message;
-import messages.MessageType;
-import messages.RemovingPlayerListMessage;
-import messages.RequestPlayerListMessage;
-import messages.SendChatMessage;
-import messages.SendTileMessage;
-import messages.ShutDownMessage;
-import messages.SwapTilesMessage;
-import messages.UpdatePlayerListMessage;
+
+import messages.*;
 import model.GameSession;
 import model.Player;
 import model.Square;
@@ -115,6 +103,10 @@ public class ServerProtocol extends Thread {
         m = (Message) in.readObject();
 
         switch (m.getMessageType()) {
+          case RESULT_MESSAGE:
+            server.sendToAll(new ResultPlayerListMessage(server.getServerHost(),
+                    new ArrayList<Player>(server.getClients())));
+            break;
           case REQUEST_PLAYERLIST:
             server.sendToAll(new UpdatePlayerListMessage(server.getServerHost(),
                 new ArrayList<Player>(server.getClients())));
