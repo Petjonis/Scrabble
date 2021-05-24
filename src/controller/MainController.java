@@ -119,6 +119,7 @@ public class MainController implements Initializable {
 
     /** Player not logged in, so "Logout"-button will not be visible. */
     if (!mainController.getLoggedIn()) {
+      this.playButton.setDisable(true);
       this.logoutButton.setVisible(false);
       this.welcomeLabel.setVisible(false);
       this.changeUsernameButton.setVisible(false);
@@ -155,6 +156,9 @@ public class MainController implements Initializable {
     getSignupButton().setVisible(true);
     getLogoutButton().setVisible(false);
     getWelcomeLabel().setVisible(false);
+    this.changeUsernameButton.setVisible(false);
+    this.changePasswordButton.setVisible(false);
+    this.deleteProfileButton.setVisible(false);
     this.editProfileIcon.setVisible(false);
     this.gameCountLabel.setVisible(false);
     this.winCountLabel.setVisible(false);

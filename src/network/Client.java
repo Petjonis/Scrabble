@@ -9,15 +9,19 @@ package network;
 
 import controller.GameInfoController;
 import controller.MainController;
+import controller.ResultController;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
-
-import controller.ResultController;
-import javafx.event.ActionEvent;
-import messages.*;
+import javafx.application.Platform;
+import messages.DisconnectMessage;
+import messages.Message;
+import messages.RemovingPlayerListMessage;
+import messages.ResultPlayerListMessage;
+import messages.SendChatMessage;
+import messages.UpdatePlayerListMessage;
 import model.ComputerPlayer;
 import model.Player;
 
@@ -69,27 +73,63 @@ public class Client extends Thread {
             break;
           case UPDATE_PLAYERLIST:
             UpdatePlayerListMessage uplMsg = (UpdatePlayerListMessage) m;
-            System.out.println("Players on the list: " + uplMsg.getActivePlayers());
             ArrayList<Player> liste = uplMsg.getActivePlayers();
-            GameInfoController.gameInfoController.updatePlayerList(liste);
+            Platform.runLater(new Runnable() {
+              @Override
+              public void run() {
+                GameInfoController.gameInfoController.updatePlayerList(liste);
+              }
+            });
             break;
           case REMOVE_PLAYERLIST:
             RemovingPlayerListMessage rplMsg = (RemovingPlayerListMessage) m;
-            GameInfoController.gameInfoController.removePlayerFromPlayerList(rplMsg.getPlayer());
+            Platform.runLater(new Runnable() {
+              @Override
+              public void run() {
+                GameInfoController.gameInfoController
+                    .removePlayerFromPlayerList(rplMsg.getPlayer().getUserName());
+              }
+            });
             break;
           case SEND_CHAT_MESSAGE:
             SendChatMessage scMsg = (SendChatMessage) m;
-            user = scMsg.getPlayer();
-            text = scMsg.getText();
-            token = scMsg.getHosting();
-            GameInfoController.gameInfoController.updateChat(user, text, token);
+            Platform.runLater(new Runnable() {
+              @Override
+              public void run() {
+                GameInfoController.gameInfoController.updateChat(scMsg.getPlayer(), scMsg.getText(),
+                    scMsg.getHosting());
+              }
+            });
             break;
           case DISCONNECT:
             DisconnectMessage dcMsg = (DisconnectMessage) m;
-            user = dcMsg.getPlayer();
-            GameInfoController.gameInfoController
-                .updateChat(new ComputerPlayer("[Server]"), user.getUserName() + " left the game.",
-                    false);
+            Platform.runLater(new Runnable() {
+              @Override
+              public void run() {
+                GameInfoController.gameInfoController
+                    .updateChat(new ComputerPlayer("[Server]"),
+                        dcMsg.getPlayer().getUserName() + " left the game.",
+                        false);
+              }
+            });
+            break;
+          case SERVERSHUTDOWN:
+            MainController.mainController.disconnect();
+            Platform.runLater(new Runnable() {
+              @Override
+              public void run() {
+                try {
+                  MainController.mainController
+                      .changePane(MainController.mainController.getCenterPane(),
+                          "/view/Start.fxml");
+                } catch (IOException e) {
+                  e.printStackTrace();
+                }
+                MainController.mainController.getRightPane().getChildren().clear();
+
+                MainController.mainController.getPlayButton().setDisable(false);
+              }
+            });
             break;
           default:
             break;

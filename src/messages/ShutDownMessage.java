@@ -12,13 +12,19 @@ import model.Player;
 public class ShutDownMessage extends Message {
 
   private static final long serialVersionUID = 1L;
+  private int id;
 
-  public ShutDownMessage() {
-    super(MessageType.SERVERSHUTDOWN, new ComputerPlayer("[Server]"));
+  public ShutDownMessage(Player player, int idNumber) {
+    super(MessageType.SERVERSHUTDOWN, player);
+    this.id = idNumber;
   }
 
   @Override
   public Object clone() {
     return super.clone();
+  }
+
+  public int getId() {
+    return this.id;
   }
 }

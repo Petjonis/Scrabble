@@ -10,16 +10,20 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import messages.LeaveGameMessage;
 import messages.RequestPlayerListMessage;
 import messages.SendChatMessage;
+import messages.ShutDownMessage;
 import model.Player;
 
 public class GameInfoController implements Initializable {
@@ -118,13 +122,13 @@ public class GameInfoController implements Initializable {
   }
 
   /**
-   * removing player from playerlist.
+   * removing player from player list.
    *
    * @author socho
    */
-  public void removePlayerFromPlayerList(Player from) {
-    if (playerList.getItems().contains(from.getUserName())) {
-      playerList.getItems().remove(from.getUserName());
+  public void removePlayerFromPlayerList(String from) {
+    if (playerList.getItems().contains(from)) {
+      playerList.getItems().remove(from);
     }
   }
 
@@ -170,18 +174,32 @@ public class GameInfoController implements Initializable {
     confirmationAlert.setHeaderText("Do you want to leave this game session?");
     Optional<ButtonType> result = confirmationAlert.showAndWait();
     if (result.get() == ButtonType.OK) {
-      MainController.mainController.getConnection().sendToServer(
-          new LeaveGameMessage(MainController.mainController.getUser(),
-              MainController.mainController.getUser().getPlayerID()));
-      if (MainController.mainController.getHosting()) {
-        MainController.mainController.getServer().stopServer();
-      }
-      MainController.mainController.disconnect();
-      MainController.mainController
-          .changePane(MainController.mainController.getCenterPane(), "/view/Start.fxml");
-      MainController.mainController.getRightPane().getChildren().clear();
+      switch (String.valueOf(MainController.mainController.getHosting())) {
+        case "true":
+          MainController.mainController.getConnection().sendToServer(
+              new ShutDownMessage(MainController.mainController.getUser(),
+                  MainController.mainController.getUser().getPlayerID()));
 
-      MainController.mainController.getPlayButton().setDisable(false);
+          MainController.mainController
+              .changePane(MainController.mainController.getCenterPane(), "/view/Start.fxml");
+          MainController.mainController.getRightPane().getChildren().clear();
+
+          MainController.mainController.getPlayButton().setDisable(false);
+          break;
+        case "false":
+          MainController.mainController.getConnection().sendToServer(
+              new LeaveGameMessage(MainController.mainController.getUser(),
+                  MainController.mainController.getUser().getPlayerID()));
+          MainController.mainController.disconnect();
+
+          MainController.mainController
+              .changePane(MainController.mainController.getCenterPane(), "/view/Start.fxml");
+          MainController.mainController.getRightPane().getChildren().clear();
+          MainController.mainController.getPlayButton().setDisable(false);
+          break;
+        default:
+          break;
+      }
     }
   }
 }

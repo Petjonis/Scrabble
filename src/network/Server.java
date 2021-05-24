@@ -86,7 +86,7 @@ public class Server {
     running = true;
     try {
       hostSocket = new ServerSocket(this.port);
-      System.out.println("Server runs");
+      System.out.println("Server runs...");
 
       while (running) {
         if (clients.size() < 4) {
@@ -123,7 +123,7 @@ public class Server {
       }
     }
     for (Player c : clientFails) {
-      System.out.println("Client " + c + " removed (because of send failure).");
+      System.out.println("Client " + c.getUserName() + " removed (because of send failure).");
       removeClient(c);
     }
   }
