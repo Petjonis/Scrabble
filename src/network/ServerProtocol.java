@@ -15,7 +15,20 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
-import messages.*;
+import messages.AcceptSwapTilesMessage;
+import messages.ConnectMessage;
+import messages.DisconnectMessage;
+import messages.LeaveGameMessage;
+import messages.PassMessage;
+import messages.Message;
+import messages.MessageType;
+import messages.RemovingPlayerListMessage;
+import messages.RequestPlayerListMessage;
+import messages.SendChatMessage;
+import messages.SendTileMessage;
+import messages.ShutDownMessage;
+import messages.SwapTilesMessage;
+import messages.UpdatePlayerListMessage;
 import model.GameSession;
 import model.Player;
 import model.Square;
@@ -76,7 +89,7 @@ public class ServerProtocol extends Thread {
     Message m;
     Tile tile;
     Tile[] tiles;
-    Square [][] position;
+    Square[][] position;
     Player user;
     int index;
     ArrayList<String> list;
@@ -84,9 +97,9 @@ public class ServerProtocol extends Thread {
     try {
       m = (Message) in.readObject();
       if (m.getMessageType() == MessageType.CONNECT) {
-        ConnectMessage cMsg = (ConnectMessage) m;
-        user = cMsg.getPlayer();
-        index = cMsg.getId();
+        ConnectMessage connectMsg = (ConnectMessage) m;
+        user = connectMsg.getPlayer();
+        index = connectMsg.getId();
         this.client = user;
         server.addClient(user, this);
         server.addIdToClient(index, user);
@@ -103,14 +116,15 @@ public class ServerProtocol extends Thread {
 
         switch (m.getMessageType()) {
           case REQUEST_PLAYERLIST:
-            server.sendToAll(new UpdatePlayerListMessage(server.getServerHost(), new ArrayList<Player>(server.getClients())));
+            server.sendToAll(new UpdatePlayerListMessage(server.getServerHost(),
+                new ArrayList<Player>(server.getClients())));
             break;
           case LEAVE_GAME:
-            LeaveGameMessage lgMsg = (LeaveGameMessage) m ;
+            LeaveGameMessage lgMsg = (LeaveGameMessage) m;
             user = lgMsg.getPlayer();
             if (server.userExistsP(user) && user.equals(server.getUserFromId(lgMsg.getId()))) {
               server.removeClient(user);
-              server.removeIdToClient(lgMsg.getId(),user );
+              server.removeIdToClient(lgMsg.getId(), user);
               server.getGameSession().setPlayers(server.getClients());
               server.sendToAll(new RemovingPlayerListMessage(lgMsg.getPlayer()));
             }
@@ -124,8 +138,8 @@ public class ServerProtocol extends Thread {
             System.out.println(user + " left the Lobby.");
             break;
           case PASS_MESSAGE:
-            PassMessage pMsg = (PassMessage) m;
-            user = pMsg.getPlayer();
+            PassMessage passMsg = (PassMessage) m;
+            user = passMsg.getPlayer();
             break;
           case SEND_TILE:
             SendTileMessage stMsg = (SendTileMessage) m;
@@ -144,7 +158,7 @@ public class ServerProtocol extends Thread {
             user = swtMsg.getPlayer();
             tiles = swtMsg.getTiles();
             /** put them into bag and then draw? or draw and put back after?
-            drawable if rack already full? */
+             drawable if rack already full? */
             gameSession.getTilebag().addTiles(tiles);
             break;
           default:

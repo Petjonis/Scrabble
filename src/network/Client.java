@@ -85,7 +85,9 @@ public class Client extends Thread {
           case DISCONNECT:
             DisconnectMessage dcMsg = (DisconnectMessage) m;
             user = dcMsg.getPlayer();
-            GameInfoController.gameInfoController.updateChat(new ComputerPlayer("[Server]"),user.getUserName() + " left the game.", false);
+            GameInfoController.gameInfoController
+                .updateChat(new ComputerPlayer("[Server]"), user.getUserName() + " left the game.",
+                    false);
             break;
           default:
             break;
@@ -112,7 +114,8 @@ public class Client extends Thread {
     running = false;
     try {
       if (!clientSocket.isClosed()) {
-        this.out.writeObject(new DisconnectMessage(MainController.mainController.getUser(),MainController.mainController.getUser().getPlayerID()));
+        this.out.writeObject(new DisconnectMessage(MainController.mainController.getUser(),
+            MainController.mainController.getUser().getPlayerID()));
         clientSocket.close();
       }
     } catch (IOException e) {

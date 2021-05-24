@@ -56,24 +56,26 @@ public class Server {
     return new HashSet<Player>(clientNames);
   }
 
-  /** every client user has a unique id which is also held in a HashMap.*/
+  /**
+   * every client user has a unique id which is also held in a HashMap.
+   */
 
-  private HashMap<Integer, Player> clientsIDMap = new HashMap<>();
+  private HashMap<Integer, Player> clientsIdMap = new HashMap<>();
 
-  public synchronized void addIdToClient(Integer id, Player client){
-    clientsIDMap.put(id, client);
+  public synchronized void addIdToClient(Integer id, Player client) {
+    clientsIdMap.put(id, client);
   }
 
-  public synchronized Player getUserFromId(Integer id){
-    return clientsIDMap.get(id);
+  public synchronized Player getUserFromId(Integer id) {
+    return clientsIdMap.get(id);
   }
 
-  public synchronized void removeIdToClient(Integer id, Player client){
-    clientsIDMap.remove(id, client);
+  public synchronized void removeIdToClient(Integer id, Player client) {
+    clientsIdMap.remove(id, client);
   }
 
   public synchronized Set<Integer> getIds() {
-    Set<Integer> idNumbers = this.clientsIDMap.keySet();
+    Set<Integer> idNumbers = this.clientsIdMap.keySet();
     return new HashSet<Integer>(idNumbers);
   }
 
@@ -93,7 +95,7 @@ public class Server {
           ServerProtocol clientConnectionThread = new ServerProtocol(clientSocket, this,
               this.gameSession);
           clientConnectionThread.start();
-        }else {
+        } else {
           System.out.println("This game session is full.");
         }
       }
@@ -136,8 +138,8 @@ public class Server {
   /**
    * sending to specific client/s.
    */
-  public void sendToAll (ArrayList<Player> list, Message m){
-    sendTo (list, (Message) (m.clone()));
+  public void sendToAll(ArrayList<Player> list, Message m) {
+    sendTo(list, (Message) (m.clone()));
   }
 
   /**
@@ -147,7 +149,7 @@ public class Server {
     synchronized (this.clients) {
       Set<Player> senderList = getClients();
       Player removePlayer = getUserFromId(idNumber);
-      if(userExistsP(removePlayer)) {
+      if (userExistsP(removePlayer)) {
         senderList.remove(removePlayer);
       }
       sendTo(new ArrayList<Player>(senderList), m);
