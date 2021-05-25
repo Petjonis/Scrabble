@@ -11,11 +11,10 @@ import model.Player;
 public class ConnectMessage extends Message {
 
   private static final long serialVersionUID = 1L;
-  private int id;
 
-  public ConnectMessage(Player player, int idNumber) {
+
+  public ConnectMessage(Player player) {
     super(MessageType.CONNECT, player);
-    this.id = idNumber;
   }
 
   @Override
@@ -23,7 +22,5 @@ public class ConnectMessage extends Message {
     return super.clone();
   }
 
-  public int getId() {
-    return this.id;
-  }
+
 }

@@ -6,15 +6,14 @@ package network;
  * @author socho
  * @version 1.0
  */
-import com.sun.tools.javac.Main;
-import controller.GameBoardController;
-import controller.GameInfoController;
+
 import controller.MainController;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+
 
 import messages.*;
 import model.GameSession;
@@ -24,14 +23,15 @@ import model.Tile;
 
 public class ServerProtocol extends Thread {
 
-  public static int id = 0;
+  public int id = 0;
   private Socket socket;
   private ObjectInputStream in;
   private ObjectOutputStream out;
   private Server server;
   private GameSession gameSession;
-  private Player client;
   private boolean running = true;
+  private static int passCount = 0 ;
+  public Player user;
 
   ServerProtocol(Socket client, Server server, GameSession session) throws IOException {
     this.socket = client;
@@ -78,7 +78,6 @@ public class ServerProtocol extends Thread {
     Tile tile;
     Tile[] tiles;
     Square[][] position;
-    Player user;
     int index;
     ArrayList<String> list;
 
@@ -87,13 +86,12 @@ public class ServerProtocol extends Thread {
       if (m.getMessageType() == MessageType.CONNECT) {
         ConnectMessage connectMsg = (ConnectMessage) m;
         user = connectMsg.getPlayer();
-        index = connectMsg.getId();
-        this.client = user;
+        user.setPlayerID(gameSession.getPlayers().size());
         server.addClient(user, this);
-        this.gameSession.getPlayers().add(user);
-        server.addIdToClient(index, user);
-
-        System.out.println(this.client.getUserName() + " was added to the Lobby.");
+        gameSession.getPlayers().add(user);
+        server.addIdToClient(id, user);
+        sendToClient(new ConnectMessage(user));
+        System.out.println(user.getUserName() + " was added to the Lobby.");
       } else {
         disconnect();
       }
@@ -108,9 +106,6 @@ public class ServerProtocol extends Thread {
             server.sendToAllBut(
                 pMsg.getPlayer().getPlayerID(),
                 new PlayMessage(pMsg.getPlayer(), pMsg.getPlayedWords(), pMsg.getTiles()));
-            break;
-          case STARTGAME_FIRST:
-            StartGameFirstMessage sgfMsg = (StartGameFirstMessage) m;
             break;
           case RESULT_MESSAGE:
             server.sendToAll(new ResultPlayerListMessage(server.getServerHost(),
@@ -147,8 +142,21 @@ public class ServerProtocol extends Thread {
             MainController.mainController.setHosting(false);
             break;
           case PASS_MESSAGE:
-            PassMessage passMsg = (PassMessage) m;
-            user = passMsg.getPlayer();
+            PassMessage passMessage = (PassMessage) m;
+            user = passMessage.getPlayer();
+            id = passMessage.getId();
+            incrementPass();
+            if (passCount == 6) {
+              System.out.println("pass count is six. GAME OVER! ");
+              server.sendToAll(new EndGameMessage(server.getServerHost()));
+            }
+            int indexNumber = 0 ;
+              indexNumber = gameSession.getPlayers().get(id).getPlayerID();
+              System.out.println(indexNumber);
+              Player player =  gameSession.getPlayers().get((indexNumber+1 >= gameSession.getPlayers().size()) ? 0 : indexNumber+1);
+              ArrayList<Player> newList = new ArrayList<>();
+              newList.add(player);
+              server.sendToAll(newList, new PassMessage(player, player.getPlayerID()));
             break;
           case SEND_TILE:
             SendTileMessage stMsg = (SendTileMessage) m;
@@ -178,7 +186,7 @@ public class ServerProtocol extends Thread {
     } catch (IOException e) {
       running = false;
       if (socket.isClosed()) {
-        System.out.println("Socket was closed. Client: " + client);
+        System.out.println("Socket was closed. Client: " + user);
       } else {
         try {
           socket.close();
@@ -190,5 +198,9 @@ public class ServerProtocol extends Thread {
       System.out.println(e2.getMessage());
       e2.printStackTrace();
     }
+  }
+
+  public void incrementPass(){
+    this.passCount++;
   }
 }

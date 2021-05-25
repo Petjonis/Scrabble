@@ -97,8 +97,7 @@ public class PlayOnlineController implements Initializable {
         if (MainController.mainController.getConnection().isOk()) {
           MainController.mainController.getConnection()
               .sendToServer(
-                  new ConnectMessage(MainController.mainController.getUser(),
-                      MainController.mainController.getUser().getPlayerID()));
+                  new ConnectMessage(MainController.mainController.getUser()));
           MainController.mainController.getPlayButton().setDisable(true);
           MainController.mainController
               .changePane(MainController.mainController.getRightPane(), "/view/GameInfo.fxml");
@@ -170,8 +169,7 @@ public class PlayOnlineController implements Initializable {
       if (MainController.mainController.getConnection().isOk()) {
         MainController.mainController.getConnection()
             .sendToServer(
-                new ConnectMessage(MainController.mainController.getUser(),
-                    MainController.mainController.getUser().getPlayerID()));
+                new ConnectMessage(MainController.mainController.getUser()));
         System.out
             .println(MainController.mainController.getUser().getUserName() + " is connected.");
         MainController.mainController.getPlayButton().setDisable(true);

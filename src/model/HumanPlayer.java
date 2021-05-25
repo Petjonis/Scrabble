@@ -8,7 +8,6 @@
 package model;
 
 import controller.GameBoardController;
-import controller.GameInfoController;
 import java.io.Serializable;
 
 public class HumanPlayer extends Player implements Serializable, Cloneable {
@@ -18,19 +17,19 @@ public class HumanPlayer extends Player implements Serializable, Cloneable {
    this.setPlayerID(user.getPlayerID());
    this.setRack(user.getRack());
    this.setScore(user.getScore());
-   this.setPassCount(user.getPassCount());
   }
 
-  public HumanPlayer(String userName, int id){
+  public HumanPlayer(String userName){
     this.setUserName(userName);
-    this.setPlayerID(id);
+    this.setPlayerID(0);
     this.setRack(null);
     this.setScore(0);
-    this.setPassCount(0);
   }
+
   @Override
   public void startTurn() {
     setPlaying(true);
+    GameBoardController.gameBoardController.getTileRack().setDisable(false);
     GameBoardController.gameBoardController.getPlayButton().setDisable(false);
     GameBoardController.gameBoardController.getPassButton().setDisable(false);
     GameBoardController.gameBoardController.getSwapButton().setDisable(false);
@@ -41,15 +40,15 @@ public class HumanPlayer extends Player implements Serializable, Cloneable {
   @Override
   public void endTurn() {
     setPlaying(false);
-    GameBoardController.gameBoardController.getPlayButton().setDisable(false);
-    GameBoardController.gameBoardController.getPassButton().setDisable(false);
-    GameBoardController.gameBoardController.getSwapButton().setDisable(false);
-    GameBoardController.gameBoardController.getUndoButton().setDisable(false);
+    GameBoardController.gameBoardController.getTileRack().setDisable(true);
+    GameBoardController.gameBoardController.getPlayButton().setDisable(true);
+    GameBoardController.gameBoardController.getPassButton().setDisable(true);
+    GameBoardController.gameBoardController.getSwapButton().setDisable(true);
+    GameBoardController.gameBoardController.getUndoButton().setDisable(true);
   }
 
   @Override
   public void pass() {
-    this.incrementPassCount();
     this.endTurn();
   }
 

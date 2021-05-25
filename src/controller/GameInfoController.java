@@ -104,7 +104,9 @@ public class GameInfoController implements Initializable {
       startGameButton.setVisible(false);
       chatList.getItems()
           .add("[System]: Hello " + MainController.mainController.getUser().getUserName() + "!");
+
     }
+    chatList.getItems().add("ID: " + MainController.mainController.getUser().getPlayerID());
     try {
       sendRequestMessage();
     } catch (IOException e) {

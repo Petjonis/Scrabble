@@ -15,7 +15,6 @@ public abstract class Player implements Serializable {
   private int playerID;
   private Tile [] rack;
   private int score;
-  private int passCount;
   private boolean isPlaying = false ;
 
   public abstract void startTurn();
@@ -43,22 +42,6 @@ public abstract class Player implements Serializable {
     this.score = score;
   }
 
-  public int getPassCount() {
-    return passCount;
-  }
-
-  public void setPassCount(int passCount) {
-    this.passCount = passCount;
-  }
-
-  public void incrementPassCount() {
-    this.passCount++;
-  }
-
-  public void resetPassCount() {
-    this.passCount = 0;
-  }
-
   public Tile [] getRack() {
     return rack;
   }
@@ -66,7 +49,6 @@ public abstract class Player implements Serializable {
   public void setRack(Tile [] rack) {
     this.rack = rack;
   }
-
 
   public String getUserName() {
     return username;

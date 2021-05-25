@@ -17,6 +17,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import javafx.application.Platform;
+import messages.ConnectMessage;
 import messages.DisconnectMessage;
 import messages.Message;
 import messages.RemovingPlayerListMessage;
@@ -66,6 +67,10 @@ public class Client extends Thread {
       try {
         Message m = (Message) in.readObject();
         switch (m.getMessageType()) {
+          case CONNECT:
+            ConnectMessage connectMsg = (ConnectMessage) m;
+            MainController.mainController.getUser().setPlayerID(connectMsg.getPlayer().getPlayerID());
+            break;
           case STARTGAME_FIRST:
             StartGameFirstMessage sgfMsg = (StartGameFirstMessage) m;
             Tile [] playerTiles = sgfMsg.getTiles();
@@ -111,6 +116,9 @@ public class Client extends Thread {
               }
             });
             break;
+          case PASS_MESSAGE:
+            GameBoardController.gameBoardController.activate();
+            break;
           case DISCONNECT:
             DisconnectMessage dcMsg = (DisconnectMessage) m;
             Platform.runLater(new Runnable() {
@@ -138,6 +146,21 @@ public class Client extends Thread {
                 MainController.mainController.getRightPane().getChildren().clear();
 
                 MainController.mainController.getPlayButton().setDisable(false);
+              }
+            });
+            break;
+          case END_GAME:
+            Platform.runLater(new Runnable() {
+              @Override
+              public void run() {
+                try {
+                  MainController.mainController
+                      .changePane(MainController.mainController.getCenterPane(),
+                          "/view/Result.fxml");
+                  MainController.mainController.getRightPane().getChildren().clear();
+                } catch (IOException e) {
+                  e.printStackTrace();
+                }
               }
             });
             break;

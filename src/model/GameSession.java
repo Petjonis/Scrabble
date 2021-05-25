@@ -20,6 +20,7 @@ public class GameSession{
   public GameSession(int portNumber) {
     this.server = new Server(portNumber);
     this.server.setGameSession(this);
+    this.players = new ArrayList<>();
     gameLobbyId++;
     this.state = GameState.WAITING_LOBBY;
     this.tilebag = new TileBag();
@@ -42,7 +43,6 @@ public class GameSession{
   }
 
   public ArrayList<Player> getPlayers() {
-    this.players = new ArrayList<Player>(this.server.getClients());
     return players;
   }
 

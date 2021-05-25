@@ -56,7 +56,7 @@ public class GameBoardController implements Initializable {
     MainController.mainController.getConnection().sendToServer(
         new PassMessage(MainController.mainController.getUser(),
             MainController.mainController.getUser().getPlayerID()));
-    MainController.mainController.getUser().pass();
+    deactivate();
   }
 
   @FXML
@@ -321,7 +321,7 @@ public class GameBoardController implements Initializable {
     }
   }
 
-  private void deactivate(){
+  public void deactivate(){
     tileRack.setDisable(true);
     boardGrid.setDisable(true);
     playButton.setDisable(true);
@@ -330,7 +330,7 @@ public class GameBoardController implements Initializable {
     undoButton.setDisable(true);
   }
 
-  private void activate(){
+  public void activate(){
     tileRack.setDisable(false);
     boardGrid.setDisable(false);
     playButton.setDisable(false);
@@ -347,6 +347,8 @@ public class GameBoardController implements Initializable {
       activate();
     }
   }
+
+  public GridPane getTileRack() { return tileRack; }
 
   public JFXButton getPlayButton() {
     return playButton;

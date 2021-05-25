@@ -14,7 +14,6 @@ public class ComputerPlayer extends Player {
     this.setPlayerID(user.getPlayerID());
     this.setRack(user.getRack());
     this.setScore(user.getScore());
-    this.setPassCount(user.getPassCount());
   }
 
   public ComputerPlayer(String compName){
@@ -22,7 +21,6 @@ public class ComputerPlayer extends Player {
   this.setPlayerID(0);
   this.setRack(null);
   this.setScore(0);
-  this.setPassCount(0);
 }
   @Override
   public void startTurn() {}
@@ -32,7 +30,6 @@ public class ComputerPlayer extends Player {
 
   @Override
   public void pass() {
-    this.incrementPassCount();
     this.endTurn();
   }
 
