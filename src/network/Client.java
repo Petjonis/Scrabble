@@ -7,6 +7,7 @@ package network;
  * @version 1.0
  */
 
+import controller.GameBoardController;
 import controller.GameInfoController;
 import controller.MainController;
 import controller.ResultController;
@@ -16,12 +17,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import javafx.application.Platform;
-import messages.DisconnectMessage;
-import messages.Message;
-import messages.RemovingPlayerListMessage;
-import messages.ResultPlayerListMessage;
-import messages.SendChatMessage;
-import messages.UpdatePlayerListMessage;
+import javafx.util.Pair;
+import messages.*;
 import model.ComputerPlayer;
 import model.Player;
 
@@ -59,10 +56,22 @@ public class Client extends Thread {
    * this method is crucial for getting the info for the client-side.
    */
   public void run() {
+    ArrayList<Pair<String, Integer>> words;
     while (running) {
       try {
         Message m = (Message) in.readObject();
         switch (m.getMessageType()) {
+          case PASS_MESSAGE:
+            PlayMessage pMsg = (PlayMessage) m;
+            words = pMsg.getPlayedWords();
+            //Add played tiles to everybody's board
+            GameBoardController.gameBoardController.addFinalTilesToBoardGrid(pMsg.getTiles());
+            //Add values to Player.score
+            for(Pair<String, Integer> p : words){
+              pMsg.getPlayer().addScore(p.getValue());
+            }
+
+            break;
           case RESULT_MESSAGE:
             ResultPlayerListMessage replMsg = (ResultPlayerListMessage) m;
             ResultController.resultController.getPlayers(replMsg.getActivePlayers());

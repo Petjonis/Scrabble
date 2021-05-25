@@ -104,6 +104,12 @@ public class ServerProtocol extends Thread {
         m = (Message) in.readObject();
 
         switch (m.getMessageType()) {
+          case PLAY_MESSAGE:
+            PlayMessage pMsg = (PlayMessage) m;
+            server.sendToAllBut(
+                pMsg.getPlayer().getPlayerID(),
+                new PlayMessage(pMsg.getPlayer(), pMsg.getPlayedWords(), pMsg.getTiles()));
+            break;
           case STARTGAME_FIRST:
             StartGameFirstMessage sgfMsg = (StartGameFirstMessage) m;
             break;
