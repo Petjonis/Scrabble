@@ -117,7 +117,7 @@ public class MainController implements Initializable {
   public void initialize(URL url, ResourceBundle resourceBundle) {
     mainController = this;
 
-    /** Player not logged in, so "Logout"-button will not be visible. */
+    /** Player not logged in, so "Logout"-button, Statistics and edit-button will not be visible. */
     if (!mainController.getLoggedIn()) {
       this.playButton.setDisable(true);
       this.logoutButton.setVisible(false);
@@ -177,7 +177,11 @@ public class MainController implements Initializable {
   }
 
   @FXML
-  void openLearn(ActionEvent event) {
+  void openLearn(ActionEvent event) throws IOException {
+    /**
+      just for testing result screen
+     */
+    changePane(centerPane, "/view/Result.fxml");
   }
 
   @FXML
