@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +17,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -24,11 +26,15 @@ import messages.LeaveGameMessage;
 import messages.RequestPlayerListMessage;
 import messages.SendChatMessage;
 import messages.ShutDownMessage;
+import messages.StartGameFirstMessage;
+import model.GameSession;
 import model.Player;
 
 public class GameInfoController implements Initializable {
 
   public static GameInfoController gameInfoController;
+
+
 
   @FXML
   private AnchorPane gameInfoPane;
@@ -37,7 +43,16 @@ public class GameInfoController implements Initializable {
   private JFXListView<String> playerList;
 
   @FXML
+  private JFXListView<Integer> scoreList;
+
+  @FXML
+  private Label lastPlayedWordsLabel;
+
+  @FXML
   private JFXListView<String> lastWordList;
+
+  @FXML
+  private JFXButton startGameButton;
 
   @FXML
   private JFXListView<String> chatList;
@@ -85,10 +100,13 @@ public class GameInfoController implements Initializable {
     gameInfoController = this;
 
     if (MainController.mainController.getHosting()) {
+      lastPlayedWordsLabel.setVisible(false);
+      lastWordList.setVisible(false);
       chatList.getItems()
           .add("[System]: " + MainController.mainController.getUser().getUserName()
               + ", you are the host!");
     } else {
+      startGameButton.setVisible(false);
       chatList.getItems()
           .add("[System]: Hello " + MainController.mainController.getUser().getUserName() + "!");
     }
@@ -114,13 +132,18 @@ public class GameInfoController implements Initializable {
     for (Player player : players) {
       if (playerList.getItems().isEmpty()) {
         playerList.getItems().add(player.getUserName());
+        scoreList.getItems().add(player.getScore());
       } else if (!playerList.getItems().isEmpty() && !playerList.getItems()
           .contains(player.getUserName())) {
         playerList.getItems().add(player.getUserName());
+        scoreList.getItems().add(player.getScore());
       }
     }
   }
 
+  public void addScoreToLeaderBoard(int score){
+    scoreList.getItems().add(score);
+  }
   /**
    * removing player from player list.
    *
@@ -201,5 +224,16 @@ public class GameInfoController implements Initializable {
           break;
       }
     }
+  }
+
+  public void startGame(ActionEvent actionEvent) throws IOException {
+    if (MainController.mainController.getHosting()){
+      lastPlayedWordsLabel.setVisible(true);
+      lastWordList.setVisible(true);
+      startGameButton.setVisible(false);
+    }
+
+
+
   }
 }

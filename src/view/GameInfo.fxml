@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
-<?import de.jensd.fx.glyphs.materialicons.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import de.jensd.fx.glyphs.materialicons.MaterialIconView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="gameInfoPane" prefHeight="768.0" prefWidth="308.0" style="-fx-background-color: #272522;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GameInfoController">
+<AnchorPane fx:id="gameInfoPane" prefHeight="768.0" prefWidth="308.0" style="-fx-background-color: #272522;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GameInfoController">
    <children>
-      <JFXListView fx:id="playerList" layoutX="12.0" layoutY="45.0" prefHeight="134.0" prefWidth="284.0" style="-fx-background-color: #312E2B;" stylesheets="@Style.css" />
+      <JFXListView fx:id="playerList" layoutX="12.0" layoutY="45.0" prefHeight="134.0" prefWidth="190.0" style="-fx-background-color: #312E2B;" stylesheets="@Style.css" />
       <JFXListView fx:id="lastWordList" layoutX="12.0" layoutY="215.0" prefHeight="111.0" prefWidth="284.0" style="-fx-background-color: #312E2B;" stylesheets="@Style.css" />
       <JFXListView fx:id="chatList" layoutX="12.0" layoutY="362.0" prefHeight="332.0" prefWidth="284.0" style="-fx-background-color: #312E2B;" stylesheets="@Style.css" />
       <JFXTextArea fx:id="sendText" focusColor="#7fa650" layoutX="14.0" layoutY="706.0" onKeyPressed="#chatKeyPressed" prefHeight="39.0" prefWidth="213.0" style="-fx-text-inner-color: #dbd9d7;" />
@@ -22,7 +24,7 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <Label layoutX="12.0" layoutY="185.0" prefHeight="21.0" prefWidth="203.0" text="Last Played Words" textFill="#ababab">
+      <Label fx:id="lastPlayedWordsLabel" layoutX="12.0" layoutY="185.0" prefHeight="21.0" prefWidth="203.0" text="Last Played Words" textFill="#ababab">
          <font>
             <Font size="20.0" />
          </font>
@@ -33,5 +35,11 @@
          </font>
       </Label>
       <JFXButton fx:id="leaveGameButton" layoutX="203.0" layoutY="8.0" onAction="#leave" prefHeight="30.0" prefWidth="93.0" style="-fx-background-color: #9c0505;" text="Leave game" textFill="WHITE" />
+      <JFXListView fx:id="scoreList" layoutX="203.0" layoutY="45.0" prefHeight="134.0" prefWidth="93.0" style="-fx-background-color: #312E2B;" stylesheets="@Style.css" />
+      <JFXButton fx:id="startGameButton" layoutX="73.0" layoutY="231.0" onAction="#startGame" prefHeight="58.0" prefWidth="162.0" style="-fx-background-color: #7FA650;" text="Start game" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </JFXButton>
    </children>
 </AnchorPane>

@@ -8,6 +8,7 @@ package network;
  */
 
 import com.sun.tools.javac.Main;
+import controller.GameBoardController;
 import controller.GameInfoController;
 import controller.MainController;
 import java.io.IOException;
@@ -103,6 +104,9 @@ public class ServerProtocol extends Thread {
         m = (Message) in.readObject();
 
         switch (m.getMessageType()) {
+          case STARTGAME_FIRST:
+            StartGameFirstMessage sgfMsg = (StartGameFirstMessage) m;
+            break;
           case RESULT_MESSAGE:
             server.sendToAll(new ResultPlayerListMessage(server.getServerHost(),
                     new ArrayList<Player>(server.getClients())));

@@ -1,6 +1,5 @@
 package model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Set;
 import network.Server;
@@ -8,7 +7,7 @@ import network.Server;
 /**
  * class represents the game session which is essential for the network game.
  */
-public class GameSession {
+public class GameSession{
 
   private static int gameLobbyId = 0;
   private static ArrayList<GameSession> sessions = new ArrayList<GameSession>();
@@ -27,13 +26,13 @@ public class GameSession {
     this.sessions.add(this);
   }
 
-  public GameState getState() {
-    return this.state;
-  }
-
   /**
    * getter and setter methods for all attributes.
    */
+
+  public GameState getState() {
+    return this.state;
+  }
   public void setState(GameState gs) {
     this.state = gs;
   }

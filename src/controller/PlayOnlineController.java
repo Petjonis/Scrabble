@@ -12,7 +12,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
-
 import messages.ConnectMessage;
 import model.GameSession;
 

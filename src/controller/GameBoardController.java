@@ -20,9 +20,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 import javafx.util.Pair;
-import messages.GameBoardPlayerListMessage;
 import messages.PassMessage;
-import messages.SendTileMessage;
 import model.*;
 import settings.GlobalSettings;
 
@@ -115,12 +113,6 @@ public class GameBoardController implements Initializable {
       }
     }
 
-    try {
-      MainController.mainController.getConnection().sendToServer(new GameBoardPlayerListMessage(MainController.mainController
-          .getUser(), new ArrayList<Player>()));
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
 
     //start demo progress bar
     //startProgressBar();
