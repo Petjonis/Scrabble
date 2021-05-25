@@ -6,7 +6,6 @@ package network;
  * @author socho
  * @version 1.0
  */
-
 import com.sun.tools.javac.Main;
 import controller.GameBoardController;
 import controller.GameInfoController;
@@ -25,6 +24,7 @@ import model.Tile;
 
 public class ServerProtocol extends Thread {
 
+  public static int id = 0;
   private Socket socket;
   private ObjectInputStream in;
   private ObjectOutputStream out;
@@ -32,7 +32,6 @@ public class ServerProtocol extends Thread {
   private GameSession gameSession;
   private Player client;
   private boolean running = true;
-  public static int id = 0;
 
   ServerProtocol(Socket client, Server server, GameSession session) throws IOException {
     this.socket = client;
@@ -46,19 +45,14 @@ public class ServerProtocol extends Thread {
     }
   }
 
-
-  /**
-   * sends to this client.
-   */
+  /** sends to this client. */
   public void sendToClient(Message m) throws IOException {
     this.out.writeObject(m);
     out.flush();
     out.reset();
   }
 
-  /**
-   * close streams and socket.
-   */
+  /** close streams and socket. */
   public void disconnect() {
     running = false;
     try {
@@ -67,7 +61,6 @@ public class ServerProtocol extends Thread {
       e.printStackTrace();
     }
   }
-
 
   /**
    * Clients will be connected to the server only when they send the Connect-Message. and Clients
@@ -99,7 +92,7 @@ public class ServerProtocol extends Thread {
         disconnect();
       }
 
-      /** while the server runs many different messages will reach the server.*/
+      /** while the server runs many different messages will reach the server. */
       while (running) {
         m = (Message) in.readObject();
 
@@ -114,19 +107,21 @@ public class ServerProtocol extends Thread {
             StartGameFirstMessage sgfMsg = (StartGameFirstMessage) m;
             break;
           case RESULT_MESSAGE:
-            server.sendToAll(new ResultPlayerListMessage(server.getServerHost(),
-                    new ArrayList<Player>(server.getClients())));
+            server.sendToAll(
+                new ResultPlayerListMessage(
+                    server.getServerHost(), new ArrayList<Player>(server.getClients())));
             break;
           case REQUEST_PLAYERLIST:
-            server.sendToAll(new UpdatePlayerListMessage(server.getServerHost(),
-                new ArrayList<Player>(server.getClients())));
+            server.sendToAll(
+                new UpdatePlayerListMessage(
+                    server.getServerHost(), new ArrayList<Player>(server.getClients())));
             break;
           case LEAVE_GAME:
             LeaveGameMessage lgMsg = (LeaveGameMessage) m;
             user = lgMsg.getPlayer();
             if (server.getIds().contains(lgMsg.getId())) {
-              server
-                  .sendToAllBut(lgMsg.getId(), new RemovingPlayerListMessage(user, lgMsg.getId()));
+              server.sendToAllBut(
+                  lgMsg.getId(), new RemovingPlayerListMessage(user, lgMsg.getId()));
               server.removeClient(user);
               server.removeIdToClient(lgMsg.getId(), user);
               server.getGameSession().setPlayers(server.getClients());
@@ -142,8 +137,8 @@ public class ServerProtocol extends Thread {
             break;
           case SERVERSHUTDOWN:
             ShutDownMessage sdMsg = (ShutDownMessage) m;
-            server.sendToAllBut(sdMsg.getId(), new ShutDownMessage(sdMsg.getPlayer(),
-                sdMsg.getId()));
+            server.sendToAllBut(
+                sdMsg.getId(), new ShutDownMessage(sdMsg.getPlayer(), sdMsg.getId()));
             server.stopServer();
             MainController.mainController.setHosting(false);
             break;
@@ -167,14 +162,15 @@ public class ServerProtocol extends Thread {
             SwapTilesMessage swtMsg = (SwapTilesMessage) m;
             user = swtMsg.getPlayer();
             tiles = swtMsg.getTiles();
-            /** put them into bag and then draw? or draw and put back after?
-             drawable if rack already full? */
+            /**
+             * put them into bag and then draw? or draw and put back after? drawable if rack already
+             * full?
+             */
             gameSession.getTilebag().addTiles(tiles);
             break;
           default:
             break;
         }
-
       }
 
     } catch (IOException e) {

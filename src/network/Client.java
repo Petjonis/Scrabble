@@ -1,11 +1,11 @@
-package network;
-
 /**
  * This class establish the connection to the server and operates the client-side.
  *
  * @author socho
+ * @author fpetek
  * @version 1.0
  */
+package network;
 
 import controller.GameBoardController;
 import controller.GameInfoController;
@@ -29,9 +29,7 @@ public class Client extends Thread {
   private ObjectInputStream in;
   private boolean running = true;
 
-  /**
-   * Constructor for the client.
-   */
+  /** Constructor for the client. */
   public Client(String ip, int port) throws IOException {
     try {
 
@@ -45,16 +43,12 @@ public class Client extends Thread {
     }
   }
 
-  /**
-   * checks if the connection is alright.
-   */
+  /** checks if the connection is alright. */
   public boolean isOk() {
     return (clientSocket != null) && (clientSocket.isConnected()) && !(clientSocket.isClosed());
   }
 
-  /**
-   * this method is crucial for getting the info for the client-side.
-   */
+  /** this method is crucial for getting the info for the client-side. */
   public void run() {
     ArrayList<Pair<String, Integer>> words;
     while (running) {
@@ -64,10 +58,10 @@ public class Client extends Thread {
           case PASS_MESSAGE:
             PlayMessage pMsg = (PlayMessage) m;
             words = pMsg.getPlayedWords();
-            //Add played tiles to everybody's board
+            // Add played tiles to everybody's board
             GameBoardController.gameBoardController.addFinalTilesToBoardGrid(pMsg.getTiles());
-            //Add values to Player.score
-            for(Pair<String, Integer> p : words){
+            // Add values to Player.score
+            for (Pair<String, Integer> p : words) {
               pMsg.getPlayer().addScore(p.getValue());
             }
 
@@ -79,62 +73,66 @@ public class Client extends Thread {
           case UPDATE_PLAYERLIST:
             UpdatePlayerListMessage uplMsg = (UpdatePlayerListMessage) m;
             ArrayList<Player> liste = uplMsg.getActivePlayers();
-            Platform.runLater(new Runnable() {
-              @Override
-              public void run() {
-                GameInfoController.gameInfoController.updatePlayerList(liste);
-              }
-            });
+            Platform.runLater(
+                new Runnable() {
+                  @Override
+                  public void run() {
+                    GameInfoController.gameInfoController.updatePlayerList(liste);
+                  }
+                });
             break;
           case REMOVE_PLAYERLIST:
             RemovingPlayerListMessage rplMsg = (RemovingPlayerListMessage) m;
-            Platform.runLater(new Runnable() {
-              @Override
-              public void run() {
-                GameInfoController.gameInfoController
-                    .removePlayerFromPlayerList(rplMsg.getPlayer().getUserName());
-              }
-            });
+            Platform.runLater(
+                new Runnable() {
+                  @Override
+                  public void run() {
+                    GameInfoController.gameInfoController.removePlayerFromPlayerList(
+                        rplMsg.getPlayer().getUserName());
+                  }
+                });
             break;
           case SEND_CHAT_MESSAGE:
             SendChatMessage scMsg = (SendChatMessage) m;
-            Platform.runLater(new Runnable() {
-              @Override
-              public void run() {
-                GameInfoController.gameInfoController.updateChat(scMsg.getPlayer(), scMsg.getText(),
-                    scMsg.getHosting());
-              }
-            });
+            Platform.runLater(
+                new Runnable() {
+                  @Override
+                  public void run() {
+                    GameInfoController.gameInfoController.updateChat(
+                        scMsg.getPlayer(), scMsg.getText(), scMsg.getHosting());
+                  }
+                });
             break;
           case DISCONNECT:
             DisconnectMessage dcMsg = (DisconnectMessage) m;
-            Platform.runLater(new Runnable() {
-              @Override
-              public void run() {
-                GameInfoController.gameInfoController
-                    .updateChat(new ComputerPlayer("[Server]"),
+            Platform.runLater(
+                new Runnable() {
+                  @Override
+                  public void run() {
+                    GameInfoController.gameInfoController.updateChat(
+                        new ComputerPlayer("[Server]"),
                         dcMsg.getPlayer().getUserName() + " left the game.",
                         false);
-              }
-            });
+                  }
+                });
             break;
           case SERVERSHUTDOWN:
             MainController.mainController.disconnect();
-            Platform.runLater(new Runnable() {
-              @Override
-              public void run() {
-                try {
-                  MainController.mainController
-                      .changePane(MainController.mainController.getCenterPane(),
-                          "/view/Start.fxml");
-                } catch (IOException e) {
-                  e.printStackTrace();
-                }
-                MainController.mainController.getRightPane().getChildren().clear();
+            Platform.runLater(
+                new Runnable() {
+                  @Override
+                  public void run() {
+                    try {
+                      MainController.mainController.changePane(
+                          MainController.mainController.getCenterPane(), "/view/Start.fxml");
+                    } catch (IOException e) {
+                      e.printStackTrace();
+                    }
+                    MainController.mainController.getRightPane().getChildren().clear();
 
-                MainController.mainController.getPlayButton().setDisable(false);
-              }
-            });
+                    MainController.mainController.getPlayButton().setDisable(false);
+                  }
+                });
             break;
           default:
             break;
@@ -145,24 +143,22 @@ public class Client extends Thread {
     }
   }
 
-  /**
-   * method for sending out a message to the server.
-   */
+  /** method for sending out a message to the server. */
   public void sendToServer(Message m) throws IOException {
     this.out.writeObject(m);
     out.flush();
     out.reset();
   }
 
-  /**
-   * clients disconnects and closes sockets.
-   */
+  /** clients disconnects and closes sockets. */
   public void disconnect() {
     running = false;
     try {
       if (!clientSocket.isClosed()) {
-        this.out.writeObject(new DisconnectMessage(MainController.mainController.getUser(),
-            MainController.mainController.getUser().getPlayerID()));
+        this.out.writeObject(
+            new DisconnectMessage(
+                MainController.mainController.getUser(),
+                MainController.mainController.getUser().getPlayerID()));
         clientSocket.close();
       }
     } catch (IOException e) {

@@ -1,3 +1,11 @@
+/**
+ * Class to controll stuff.
+ *
+ * @author fjaehrli
+ * @author fpetek
+ * @author socho
+ * @version 1.0
+ */
 package controller;
 
 import com.jfoenix.controls.JFXButton;
@@ -38,80 +46,55 @@ public class MainController implements Initializable {
   private Client connection;
   private GameSession gameSession;
 
-  @FXML
-  private JFXButton playButton;
+  @FXML private JFXButton playButton;
 
-  @FXML
-  private JFXButton learnButton;
+  @FXML private JFXButton learnButton;
 
-  @FXML
-  private JFXButton rulebookButton;
+  @FXML private JFXButton rulebookButton;
 
-  @FXML
-  private JFXButton deleteProfileButton;
+  @FXML private JFXButton deleteProfileButton;
 
-  @FXML
-  private JFXButton changeUsernameButton;
+  @FXML private JFXButton changeUsernameButton;
 
-  @FXML
-  private JFXButton changePasswordButton;
+  @FXML private JFXButton changePasswordButton;
 
-  @FXML
-  private JFXButton loginButton;
+  @FXML private JFXButton loginButton;
 
-  @FXML
-  private JFXButton signupButton;
+  @FXML private JFXButton signupButton;
 
-  @FXML
-  private JFXButton logoutButton;
+  @FXML private JFXButton logoutButton;
 
-  @FXML
-  private Label welcomeLabel;
+  @FXML private Label welcomeLabel;
 
-  @FXML
-  private Label gameCountLabel;
+  @FXML private Label gameCountLabel;
 
-  @FXML
-  private Label winCountLabel;
+  @FXML private Label winCountLabel;
 
-  @FXML
-  private Label loseCountLabel;
+  @FXML private Label loseCountLabel;
 
-  @FXML
-  private Label winRateLabel;
+  @FXML private Label winRateLabel;
 
-  @FXML
-  private Label avgPointsLabel;
+  @FXML private Label avgPointsLabel;
 
-  @FXML
-  private Label gameCount;
+  @FXML private Label gameCount;
 
-  @FXML
-  private Label winCount;
+  @FXML private Label winCount;
 
-  @FXML
-  private Label loseCount;
+  @FXML private Label loseCount;
 
-  @FXML
-  private Label winRate;
+  @FXML private Label winRate;
 
-  @FXML
-  private Label avgPoints;
+  @FXML private Label avgPoints;
 
-  @FXML
-  private FontAwesomeIconView editProfileIcon;
+  @FXML private FontAwesomeIconView editProfileIcon;
 
-  @FXML
-  private BorderPane borderPane;
+  @FXML private BorderPane borderPane;
 
-  @FXML
-  private FlowPane startPane;
+  @FXML private FlowPane startPane;
 
-  @FXML
-  private StackPane centerPane;
+  @FXML private StackPane centerPane;
 
-  @FXML
-  private StackPane rightPane;
+  @FXML private StackPane rightPane;
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -178,9 +161,7 @@ public class MainController implements Initializable {
 
   @FXML
   void openLearn(ActionEvent event) throws IOException {
-    /**
-      just for testing result screen
-     */
+    /** just for testing result screen */
     changePane(centerPane, "/view/Result.fxml");
   }
 
@@ -220,9 +201,7 @@ public class MainController implements Initializable {
     openNewWindow("/view/DeleteAccount.fxml", "ChangeAccount");
   }
 
-  /**
-   * method for opening a new window.
-   */
+  /** method for opening a new window. */
   public void openNewWindow(String filename, String title) {
     try {
       FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(filename));
@@ -240,9 +219,7 @@ public class MainController implements Initializable {
     }
   }
 
-  /**
-   * method for changing the pane, especially for the center and right pane.
-   */
+  /** method for changing the pane, especially for the center and right pane. */
   public void changePane(StackPane pane, String fxmlPath) throws IOException {
     pane.getChildren().clear();
     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlPath));
@@ -294,9 +271,7 @@ public class MainController implements Initializable {
     }
   }
 
-  /**
-   * getter and setter methods for all private attributes.
-   */
+  /** getter and setter methods for all private attributes. */
   public StackPane getCenterPane() {
     return centerPane;
   }

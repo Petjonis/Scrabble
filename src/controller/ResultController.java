@@ -1,3 +1,10 @@
+/**
+ * This controller class initializes the result view, depending on
+ * how many players participated in the game, when a game is over.
+ *
+ * @author fpetek
+ * @version 1.0
+ */
 package controller;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;

@@ -1,11 +1,13 @@
-package messages;
-
 /**
  * This class contains all messagetypes between server and client as enums.
  *
- * @author socho, fpetek
+ * @author socho
+ * @author fpetek
  * @version 1.0
  */
+
+package messages;
+
 public enum MessageType {
   CONNECT,
   DISCONNECT,

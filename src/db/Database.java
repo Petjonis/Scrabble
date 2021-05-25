@@ -3,8 +3,7 @@
  *
  * @author fpetek
  * @version 1.1
- **/
-
+ */
 package db;
 
 import java.sql.Connection;
@@ -41,9 +40,7 @@ public class Database {
     }
   }
 
-  /**
-   * Closes connection to database.
-   */
+  /** Closes connection to database. */
   public void disconnect() {
     try {
       this.connection.close();

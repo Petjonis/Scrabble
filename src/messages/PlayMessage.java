@@ -14,7 +14,9 @@ public class PlayMessage extends Message {
 	/**
 	 * constructor for message.
 	 *
-	 * @param player
+	 * @param player is player who presses play.
+	 * @param playedWords contains the accepted played words.
+	 * @param tiles are all the tiles who represent the words.
 	 */
 	public PlayMessage(Player player, ArrayList<Pair<String, Integer>> playedWords, ArrayList<Tile> tiles) {
 		super(MessageType.PLAY_MESSAGE, player);
