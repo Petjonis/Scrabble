@@ -257,6 +257,11 @@ public class Board {
         return new Pair<>(sb.toString(), score * wordMultiplier);
     }
 
+    public Tile[] getRow(int row){
+        /* TODO */
+        return null;
+    }
+
     public void clearTilesPending() {
         tilesPendingConfirmation.clear();
     }
@@ -269,9 +274,10 @@ public class Board {
         return tilesPendingConfirmation;
     }
 
-    /*
-     public static void main(String [] args) {
+
+    /* public static void main(String [] args) {
      Board b = new Board();
+     b.initializeDictionary();
      b.addTilePending('H',1,7,7);
      b.addTilePending('E',1,8,7);
      b.addTilePending('L',1,9,7);
@@ -330,10 +336,6 @@ public class Board {
      System.out.println();
      }
 
-
-     }
-
-     */
-
+     }*/
 
 }

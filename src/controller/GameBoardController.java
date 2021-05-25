@@ -23,7 +23,6 @@ import javafx.util.Pair;
 import messages.PassMessage;
 import model.*;
 import settings.GlobalSettings;
-
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -33,9 +32,7 @@ public class GameBoardController implements Initializable {
   private static final Integer STARTTIME = 120;
   private final IntegerProperty timeSeconds = new SimpleIntegerProperty(STARTTIME * 100);
   private Board board;
-  private TileBag tb;
   private TileRack tr;
-  private GameSession gameSession;
 
   @FXML
   private GridPane boardGrid;
@@ -95,16 +92,15 @@ public class GameBoardController implements Initializable {
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     gameBoardController = this;
-    gameSession = MainController.mainController.getGameSession();
 
     board = new Board();
     board.initializeDictionary();
     //for test, should get tilebag from GameSession
-    tb = new TileBag();
+    //tb = new TileBag();
     //for test, should get tilerack from player
-    tr = new TileRack(tb);
-    renderTileRack();
-    tr.registerChangeListener(c -> renderTileRack());
+//    tr = new TileRack(tb);
+//    renderTileRack();
+//    tr.registerChangeListener(c -> renderTileRack());
 
     //Adding StackPane to every Cell in the GridPane and Adding the Target Events to each StackPane.
     for (int row = 0; row < GlobalSettings.ROWS; row++) {
@@ -113,7 +109,7 @@ public class GameBoardController implements Initializable {
       }
     }
 
-
+    deactivate();
     //start demo progress bar
     //startProgressBar();
 
@@ -313,6 +309,33 @@ public class GameBoardController implements Initializable {
       StackPane stackPane = new StackPane();
       stackPane.setStyle("-fx-background-color:#878787; -fx-border-color: #000000");
       tileRack.add(stackPane, i, 0);
+    }
+  }
+
+  private void deactivate(){
+    tileRack.setDisable(true);
+    boardGrid.setDisable(true);
+    playButton.setDisable(true);
+    passButton.setDisable(true);
+    swapButton.setDisable(true);
+    undoButton.setDisable(true);
+  }
+
+  private void activate(){
+    tileRack.setDisable(false);
+    boardGrid.setDisable(false);
+    playButton.setDisable(false);
+    passButton.setDisable(false);
+    swapButton.setDisable(false);
+    undoButton.setDisable(false);
+  }
+
+  public void initializeGame(Tile[] tileRack, boolean isActivePlayer){
+    tr = new TileRack(tileRack);
+    renderTileRack();
+    tr.registerChangeListener(c -> renderTileRack());
+    if(isActivePlayer) {
+      activate();
     }
   }
 
