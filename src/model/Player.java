@@ -17,6 +17,7 @@ public abstract class Player implements Serializable {
   private TileRack rack;
   private int score;
   private int passCount;
+  private boolean isPlaying = false ;
 
   public abstract void startTurn();
 
@@ -29,6 +30,11 @@ public abstract class Player implements Serializable {
   public abstract void swap();
 
   public abstract void put();
+
+
+  public void addScore(int addition) {
+    this.score += addition;
+  }
 
   public int getScore() {
     return score;
@@ -86,4 +92,7 @@ public abstract class Player implements Serializable {
     this.playerID = idNumber;
   }
 
+  public void setPlaying(boolean onTurn) { this.isPlaying = onTurn; }
+
+  public boolean getPlaying() { return this.isPlaying; }
 }

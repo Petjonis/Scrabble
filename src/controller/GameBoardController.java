@@ -20,7 +20,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 import javafx.util.Pair;
+import messages.GameBoardPlayerListMessage;
 import messages.PassMessage;
+import messages.SendTileMessage;
 import model.*;
 import settings.GlobalSettings;
 
@@ -29,12 +31,13 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class GameBoardController implements Initializable {
-
+  public static GameBoardController gameBoardController;
   private static final Integer STARTTIME = 120;
   private final IntegerProperty timeSeconds = new SimpleIntegerProperty(STARTTIME * 100);
   private Board board;
   private TileBag tb;
   private TileRack tr;
+  private GameSession gameSession;
 
   @FXML
   private GridPane boardGrid;
@@ -78,7 +81,6 @@ public class GameBoardController implements Initializable {
       addFinalTilesToBoardGrid(board.getTilesPendingConfirmation());
       board.clearTilesPending();
       /* TODO: Send playedWords to Server */
-
       //tr.refillFromBag(tb);
       for (Pair<String, Integer> p : playedWords) {
         System.out.println("Word: " + p.getKey() + ", Score: " + p.getValue());
@@ -94,6 +96,9 @@ public class GameBoardController implements Initializable {
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
+    gameBoardController = this;
+    gameSession = MainController.mainController.getGameSession();
+
     board = new Board();
     board.initializeDictionary();
     //for test, should get tilebag from GameSession
@@ -108,6 +113,13 @@ public class GameBoardController implements Initializable {
       for (int col = 0; col < GlobalSettings.COLUMNS; col++) {
         addStackPaneToBoardGrid(row, col);
       }
+    }
+
+    try {
+      MainController.mainController.getConnection().sendToServer(new GameBoardPlayerListMessage(MainController.mainController
+          .getUser(), new ArrayList<Player>()));
+    } catch (IOException e) {
+      e.printStackTrace();
     }
 
     //start demo progress bar
@@ -310,5 +322,25 @@ public class GameBoardController implements Initializable {
       stackPane.setStyle("-fx-background-color:#878787; -fx-border-color: #000000");
       tileRack.add(stackPane, i, 0);
     }
+  }
+
+  public JFXButton getPlayButton() {
+    return playButton;
+  }
+
+  public JFXButton getPassButton() {
+    return passButton;
+  }
+
+  public JFXButton getSwapButton() {
+    return swapButton;
+  }
+
+  public JFXButton getUndoButton() {
+    return undoButton;
+  }
+
+  public ProgressBar getProgressBar() {
+    return progressBar;
   }
 }

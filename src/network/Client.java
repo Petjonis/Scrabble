@@ -48,7 +48,6 @@ public class Client extends Thread {
     }
   }
 
-
   /**
    * checks if the connection is alright.
    */
@@ -60,9 +59,6 @@ public class Client extends Thread {
    * this method is crucial for getting the info for the client-side.
    */
   public void run() {
-    Player user;
-    String text;
-    boolean token;
     while (running) {
       try {
         Message m = (Message) in.readObject();

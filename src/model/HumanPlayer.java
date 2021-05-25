@@ -7,6 +7,8 @@
 
 package model;
 
+import controller.GameBoardController;
+import controller.GameInfoController;
 import java.io.Serializable;
 
 public class HumanPlayer extends Player implements Serializable, Cloneable {
@@ -30,10 +32,22 @@ public class HumanPlayer extends Player implements Serializable, Cloneable {
   }
   @Override
   public void startTurn() {
+    setPlaying(true);
+    GameBoardController.gameBoardController.getPlayButton().setDisable(false);
+    GameBoardController.gameBoardController.getPassButton().setDisable(false);
+    GameBoardController.gameBoardController.getSwapButton().setDisable(false);
+    GameBoardController.gameBoardController.getUndoButton().setDisable(false);
+    GameBoardController.gameBoardController.startProgressBar();
   }
 
   @Override
-  public void endTurn() {}
+  public void endTurn() {
+    setPlaying(false);
+    GameBoardController.gameBoardController.getPlayButton().setDisable(false);
+    GameBoardController.gameBoardController.getPassButton().setDisable(false);
+    GameBoardController.gameBoardController.getSwapButton().setDisable(false);
+    GameBoardController.gameBoardController.getUndoButton().setDisable(false);
+  }
 
   @Override
   public void pass() {
