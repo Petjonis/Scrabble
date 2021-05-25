@@ -21,6 +21,7 @@ import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 import javafx.util.Pair;
 import messages.PassMessage;
+import messages.PlayMessage;
 import model.*;
 import settings.GlobalSettings;
 import java.net.URL;
@@ -70,12 +71,20 @@ public class GameBoardController implements Initializable {
   }
 
   @FXML
-  void play(ActionEvent event) {
+  void play(ActionEvent event) throws IOException {
     ArrayList<Pair<String, Integer>> playedWords = board.playedWords();
     if (playedWords != null) {
       addFinalTilesToBoardGrid(board.getTilesPendingConfirmation());
-      board.clearTilesPending();
       /* TODO: Send playedWords to Server */
+      MainController.mainController
+          .getConnection()
+          .sendToServer(
+              new PlayMessage(
+                  MainController.mainController.getUser(),
+                  playedWords,
+                  board.getTilesPendingConfirmation()));
+      board.clearTilesPending();
+
       //tr.refillFromBag(tb);
       for (Pair<String, Integer> p : playedWords) {
         System.out.println("Word: " + p.getKey() + ", Score: " + p.getValue());
@@ -251,7 +260,7 @@ public class GameBoardController implements Initializable {
   }
 
 
-  private void addFinalTilesToBoardGrid(ArrayList<Tile> tiles) {
+  public void addFinalTilesToBoardGrid(ArrayList<Tile> tiles) {
     for (Tile t : tiles) {
       removeStackPaneFromBoardGrid(t.getRow(), t.getCol());
       TileController tmp = new TileController();
