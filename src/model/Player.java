@@ -13,8 +13,7 @@ public abstract class Player implements Serializable {
 
   private String username;
   private int playerID;
-  private TileBag bag;
-  private TileRack rack;
+  private Tile [] rack;
   private int score;
   private int passCount;
   private boolean isPlaying = false ;
@@ -60,21 +59,14 @@ public abstract class Player implements Serializable {
     this.passCount = 0;
   }
 
-  public TileRack getRack() {
+  public Tile [] getRack() {
     return rack;
   }
 
-  public void setRack(TileRack rack) {
+  public void setRack(Tile [] rack) {
     this.rack = rack;
   }
 
-  public TileBag getBag() {
-    return bag;
-  }
-
-  public void setBag(TileBag bag) {
-    this.bag = bag;
-  }
 
   public String getUserName() {
     return username;

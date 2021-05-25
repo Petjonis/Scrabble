@@ -7,7 +7,7 @@ public class StartGameFirstMessage extends Message{
   private static final long serialVersionUID = 1L;
 
   private Tile [] tiles;
-  private boolean isPlaying;
+  private boolean isActive;
   /**
    * constructor for message.
    *
@@ -16,14 +16,14 @@ public class StartGameFirstMessage extends Message{
   public StartGameFirstMessage(Player player, Tile[] tiles , boolean isActive) {
     super(MessageType.STARTGAME_FIRST, player);
     this.tiles = tiles;
-    this.isPlaying = isActive;
+    this.isActive = isActive;
   }
 
   public Tile [] getTiles(){
     return this.tiles;
   }
 
-  private boolean getPlaying(){
-    return this.isPlaying;
+  public boolean getActive(){
+    return this.isActive;
   }
 }

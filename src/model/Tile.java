@@ -7,9 +7,9 @@
 
 package model;
 
-import java.util.Objects;
+import java.io.Serializable;
 
-public class Tile {
+public class Tile implements Serializable {
   private char letter;
   private int value;
   private Position pos;

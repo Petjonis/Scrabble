@@ -4,7 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
-public class TileRack {
+public class TileRack  {
 
     private ObservableList<Tile> tileRack = FXCollections.observableArrayList();
     private ListChangeListener<Tile> currentListener;

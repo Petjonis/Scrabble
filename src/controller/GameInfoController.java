@@ -8,12 +8,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
@@ -21,20 +18,18 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
 import messages.LeaveGameMessage;
 import messages.RequestPlayerListMessage;
 import messages.SendChatMessage;
 import messages.ShutDownMessage;
 import messages.StartGameFirstMessage;
-import model.GameSession;
 import model.Player;
+import model.Tile;
+import model.TileRack;
 
 public class GameInfoController implements Initializable {
 
   public static GameInfoController gameInfoController;
-
-
 
   @FXML
   private AnchorPane gameInfoPane;
@@ -233,7 +228,15 @@ public class GameInfoController implements Initializable {
       startGameButton.setVisible(false);
     }
 
+    for (Player player : MainController.mainController.getGameSession().getPlayers()){
+      TileRack playerTiles = new TileRack(MainController.mainController.getGameSession().getTilebag());
 
+      Tile [] tileRack = new Tile[7];
+      playerTiles.getTileRack().toArray(tileRack);
+      player.setRack(tileRack);
+      boolean isActive = MainController.mainController.getGameSession().getPlayers().indexOf(player) == 1;
+      MainController.mainController.getServer().getClientsHashMap().get(player).sendToClient(new StartGameFirstMessage(player, tileRack, isActive));
+    }
 
   }
 }

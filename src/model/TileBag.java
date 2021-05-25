@@ -58,4 +58,7 @@ public class TileBag {
     return tileBag.isEmpty();
   }
 
+  public int getSize() {
+    return tileBag.size();
+  }
 }
