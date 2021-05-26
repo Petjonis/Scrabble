@@ -15,6 +15,8 @@ import model.Player;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.ResourceBundle;
 
 public class ResultController implements Initializable {
@@ -50,7 +52,11 @@ public class ResultController implements Initializable {
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     resultController = this;
+    this.setShizzl();
+  }
 
+  public void setShizzl(){
+    Collections.sort(players, Player.PlayerScore);
     switch (this.players.size()) {
       case 1:
         silverStar.setVisible(false);
@@ -106,7 +112,11 @@ public class ResultController implements Initializable {
     }
   }
 
-  public void getPlayers(ArrayList<Player> players) {
+  public void setPlayers(ArrayList<Player> players) {
     this.players = players;
   }
+  public ArrayList<Player> getPlayers(){
+    return this.players;
+  }
 }
+
