@@ -134,9 +134,7 @@ public class GameInfoController implements Initializable {
     }
   }
 
-  public void addScoreToLeaderBoard(int score){
-    scoreList.getItems().add(score);
-  }
+
   /**
    * removing player from player list.
    *
@@ -160,7 +158,7 @@ public class GameInfoController implements Initializable {
     for(Pair<String,Integer> p : playedWords){
       score += p.getValue();
     }
-    scoreList.getItems().set(index,score);
+    scoreList.getItems().set(index,score+scoreList.getItems().get(index));
   }
 
   public void setActivePlayer(int nextPlayer){
@@ -243,13 +241,10 @@ public class GameInfoController implements Initializable {
       startGameButton.setVisible(false);
 
     }
-
     for (Player player : MainController.mainController.getGameSession().getPlayers()){
       TileRack playerTiles = new TileRack(MainController.mainController.getGameSession().getTilebag());
-
       Tile [] tileRack = new Tile[7];
       playerTiles.getTileRack().toArray(tileRack);
-      player.setRack(tileRack);
       boolean isActive = MainController.mainController.getGameSession().getPlayers().indexOf(player) == 1;
       MainController.mainController.getServer().getClientsHashMap().get(player).sendToClient(new StartGameFirstMessage(player, tileRack, isActive));
     }

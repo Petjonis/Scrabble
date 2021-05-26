@@ -12,14 +12,12 @@ public class ComputerPlayer extends Player {
   public ComputerPlayer(Player user){
     this.setUserName(user.getUserName());
     this.setPlayerID(user.getPlayerID());
-    this.setRack(user.getRack());
     this.setScore(user.getScore());
   }
 
   public ComputerPlayer(String compName){
   this.setUserName(compName);
   this.setPlayerID(0);
-  this.setRack(null);
   this.setScore(0);
 }
   @Override

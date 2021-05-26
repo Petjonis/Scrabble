@@ -13,7 +13,6 @@ public abstract class Player implements Serializable {
 
   private String username;
   private int playerID;
-  private Tile [] rack;
   private int score;
   private boolean isPlaying = false ;
 
@@ -40,14 +39,6 @@ public abstract class Player implements Serializable {
 
   public void setScore(int score) {
     this.score = score;
-  }
-
-  public Tile [] getRack() {
-    return rack;
-  }
-
-  public void setRack(Tile [] rack) {
-    this.rack = rack;
   }
 
   public String getUserName() {
