@@ -113,10 +113,6 @@ public class Client extends Thread {
               }
             });
             break;
-          case RESULT_MESSAGE:
-            ResultPlayerListMessage replMsg = (ResultPlayerListMessage) m;
-            ResultController.resultController.getPlayers(replMsg.getActivePlayers());
-            break;
           case UPDATE_PLAYERLIST:
             UpdatePlayerListMessage uplMsg = (UpdatePlayerListMessage) m;
             ArrayList<Player> liste = uplMsg.getActivePlayers();
@@ -181,19 +177,22 @@ public class Client extends Thread {
             });
             break;
           case END_GAME:
-            Platform.runLater(new Runnable() {
-              @Override
-              public void run() {
-                try {
-                  MainController.mainController
-                      .changePane(MainController.mainController.getCenterPane(),
-                          "/view/Result.fxml");
-                  MainController.mainController.getRightPane().getChildren().clear();
-                } catch (IOException e) {
-                  e.printStackTrace();
-                }
-              }
-            });
+            EndGameMessage egMsg = (EndGameMessage) m;
+            Platform.runLater(
+                new Runnable() {
+                  @Override
+                  public void run() {
+                    try {
+                      MainController.mainController.changePane(
+                          MainController.mainController.getCenterPane(), "/view/Result.fxml");
+                      ResultController.resultController.setPlayers(egMsg.getPlayers());
+                      ResultController.resultController.setShizzl();
+                      MainController.mainController.getRightPane().getChildren().clear();
+                    } catch (IOException e) {
+                      e.printStackTrace();
+                    }
+                  }
+                });
             break;
           default:
             break;

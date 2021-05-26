@@ -112,10 +112,6 @@ public class ServerProtocol extends Thread {
             sendToClient(new EndPlayMessage(pMsg.getPlayer(), newTileRack));
             server.sendToAll(new StartPlayMessage(nextPlayer));
             break;
-          case RESULT_MESSAGE:
-            server.sendToAll(new ResultPlayerListMessage(server.getServerHost(),
-                    new ArrayList<Player>(server.getClients())));
-            break;
           case REQUEST_PLAYERLIST:
             server.sendToAll(new UpdatePlayerListMessage(server.getServerHost(),
                 server.getGameSession().getPlayers()));
@@ -153,7 +149,7 @@ public class ServerProtocol extends Thread {
             incrementPass();
             if (passCount == 6) {
               System.out.println("pass count is six. GAME OVER! ");
-              server.sendToAll(new EndGameMessage(server.getServerHost()));
+              server.sendToAll(new EndGameMessage(server.getServerHost(), server.getGameSession().getPlayers()));
             }
             int indexNumber = 0 ;
               indexNumber = gameSession.getPlayers().get(id).getPlayerID();
