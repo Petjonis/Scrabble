@@ -58,20 +58,6 @@ public class ResultController implements Initializable {
   public void setShizzl(){
     Collections.sort(players, Player.PlayerScore);
     switch (this.players.size()) {
-      case 1:
-        silverStar.setVisible(false);
-        secondPlace.setVisible(false);
-        secondScore.setVisible(false);
-        bronzeStar.setVisible(false);
-        thirdPlace.setVisible(false);
-        thirdScore.setVisible(false);
-        trash.setVisible(false);
-        fourthPlace.setVisible(false);
-        fourthScore.setVisible(false);
-
-        firstPlace.setText(players.get(0).getUserName());
-        firstScore.setText(Integer.toString(players.get(0).getScore()));
-        break;
       case 2:
         bronzeStar.setVisible(false);
         thirdPlace.setVisible(false);
