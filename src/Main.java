@@ -1,7 +1,6 @@
 
-import java.io.IOException;
-
 import controller.MainController;
+import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -30,6 +29,14 @@ public class Main extends Application {
     public void changeScene(String fxml) throws IOException {
         Parent pane = FXMLLoader.load(getClass().getResource(fxml));
         stg.getScene().setRoot(pane);
+    }
+
+    @Override
+    public void stop() throws IOException {
+        if (MainController.mainController.getHosting()) {
+            MainController.mainController.getServer().stopServer();
+        }
+        MainController.mainController.disconnect();
     }
 
 }
