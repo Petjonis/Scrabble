@@ -53,7 +53,6 @@ public class GameBoardController implements Initializable {
 
   @FXML
   void pass(ActionEvent event) throws IOException {
-    /* TODO */
     undoMove();
     MainController.mainController.getConnection().sendToServer(
         new PassMessage(MainController.mainController.getUser()));

@@ -116,7 +116,7 @@ public class ServerProtocol extends Thread {
                               pMsg.getTileRack()));
             playerTiles = new TileRack(pMsg.getTileRack());
             playerTiles.refillFromBag(MainController.mainController.getGameSession().getTilebag());
-            Tile[] newTileRack = new Tile[7];
+            Tile[] newTileRack = new Tile[playerTiles.getTileRack().size()];
             playerTiles.getTileRack().toArray(newTileRack);
             sendToClient(new EndPlayMessage(pMsg.getPlayer(), newTileRack));
             server.sendToAll(new StartPlayMessage(nextPlayer));
@@ -173,7 +173,7 @@ public class ServerProtocol extends Thread {
             currentPlayerIndex = swtMsg.getPlayer().getPlayerID();
             nextPlayer =  gameSession.getPlayers().get((currentPlayerIndex+1 >= gameSession.getPlayers().size()) ? 0 : currentPlayerIndex+1);
             playerTiles = new TileRack(MainController.mainController.getGameSession().getTilebag());
-            Tile[] newTilesRack = new Tile[7];
+            Tile[] newTilesRack = new Tile[playerTiles.getTileRack().size()];
             playerTiles.getTileRack().toArray(newTilesRack);
             MainController.mainController.getGameSession().getTilebag().addTiles(swtMsg.getTiles());
             sendToClient(new EndPlayMessage(swtMsg.getPlayer(), newTilesRack));
