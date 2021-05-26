@@ -8,6 +8,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Comparator;
 
 public abstract class Player implements Serializable {
 
@@ -60,4 +61,13 @@ public abstract class Player implements Serializable {
   public void setPlaying(boolean onTurn) { this.isPlaying = onTurn; }
 
   public boolean getPlaying() { return this.isPlaying; }
+
+  public static Comparator<Player> PlayerScore = new Comparator<Player>() {
+    @Override
+    public int compare(Player p1, Player p2) {
+      int s1 = p1.getScore();
+      int s2 = p2.getScore();
+      return s2-s1;
+    }
+  };
 }
