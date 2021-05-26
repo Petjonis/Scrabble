@@ -136,13 +136,15 @@ public class GameInfoController implements Initializable {
 
 
   /**
-   * removing player from player list.
+   * removing player from player list and removing score from score list.
    *
    * @author socho
    */
   public void removePlayerFromPlayerList(String from) {
     if (playerList.getItems().contains(from)) {
+      int index = playerList.getItems().indexOf(from);
       playerList.getItems().remove(from);
+      scoreList.getItems().remove(index-1);
     }
   }
 
