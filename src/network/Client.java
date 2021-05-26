@@ -106,10 +106,10 @@ public class Client extends Thread {
             Platform.runLater(new Runnable() {
               @Override
               public void run() {
-                GameBoardController.gameBoardController.addFinalTilesToBoardGrid(pMsg.getTiles());
+                GameBoardController.gameBoardController.addFinalTilesToBoardGrid(pMsg.getTilesPlayed());
                 GameInfoController.gameInfoController.updateLastWordList(pMsg.getPlayedWords());
                 GameInfoController.gameInfoController.updateScoreBoard(
-                        pMsg.getPlayer().getPlayerID(),pMsg.getPlayedWords());
+                        pMsg.getPlayer().getPlayerID(),pMsg.getPlayedWords(), pMsg.getTilesPlayed().size() == 7);
               }
             });
             break;
@@ -144,7 +144,19 @@ public class Client extends Thread {
             });
             break;
           case PASS_MESSAGE:
-            GameBoardController.gameBoardController.activate();
+            PassMessage passMsg = (PassMessage) m;
+            Player nextP = passMsg.getPlayer();
+            Platform.runLater(new Runnable() {
+              @Override
+              public void run() {
+                if(nextP.getPlayerID() == MainController.mainController.getUser().getPlayerID()){
+                  GameBoardController.gameBoardController.activate();
+                } else {
+                  GameBoardController.gameBoardController.deactivate();
+                }
+                GameInfoController.gameInfoController.setActivePlayer(nextP.getPlayerID());
+              }
+            });
             break;
           case DISCONNECT:
             DisconnectMessage dcMsg = (DisconnectMessage) m;

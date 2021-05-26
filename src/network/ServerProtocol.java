@@ -105,20 +105,22 @@ public class ServerProtocol extends Thread {
             PlayMessage pMsg = (PlayMessage) m;
             words = pMsg.getPlayedWords();
             //Adding played points to player score
+            if(pMsg.getTilesPlayed().size() == 7){
+              gameSession.getPlayerByID(pMsg.getPlayer().getPlayerID()).addScore(50);
+            }
             for(Pair<String, Integer> p : words){
               gameSession.getPlayerByID(pMsg.getPlayer().getPlayerID()).addScore(p.getValue());
             }
             int currentPlayerIndex = pMsg.getPlayer().getPlayerID();
             Player nextPlayer =  gameSession.getPlayers().get((currentPlayerIndex+1 >= gameSession.getPlayers().size()) ? 0 : currentPlayerIndex+1);
-            server.sendToAll(new PlayMessage(pMsg.getPlayer(), pMsg.getPlayedWords(),
-                            pMsg.getTiles(), pMsg.getTileRack()));
+            server.sendToAll(new PlayMessage(pMsg.getPlayer(), pMsg.getPlayedWords(), pMsg.getTilesPlayed(),
+                              pMsg.getTileRack()));
             TileRack playerTiles = new TileRack(pMsg.getTileRack());
             playerTiles.refillFromBag(MainController.mainController.getGameSession().getTilebag());
             Tile[] newTileRack = new Tile[7];
             playerTiles.getTileRack().toArray(newTileRack);
             sendToClient(new EndPlayMessage(pMsg.getPlayer(), newTileRack));
             server.sendToAll(new StartPlayMessage(nextPlayer));
-
             break;
           case REQUEST_PLAYERLIST:
             server.sendToAll(new UpdatePlayerListMessage(server.getServerHost(),
@@ -152,20 +154,14 @@ public class ServerProtocol extends Thread {
             break;
           case PASS_MESSAGE:
             PassMessage passMessage = (PassMessage) m;
-            user = passMessage.getPlayer();
-            id = passMessage.getId();
+            int currentP = passMessage.getPlayer().getPlayerID();
+            Player nextP =  gameSession.getPlayers().get((currentP+1 >= gameSession.getPlayers().size()) ? 0 : currentP+1);
             incrementPass();
             if (passCount == 6) {
               System.out.println("pass count is six. GAME OVER! ");
               server.sendToAll(new EndGameMessage(server.getServerHost(), server.getGameSession().getPlayers()));
             }
-            int indexNumber = 0 ;
-              indexNumber = gameSession.getPlayers().get(id).getPlayerID();
-              System.out.println(indexNumber);
-              Player player =  gameSession.getPlayers().get((indexNumber+1 >= gameSession.getPlayers().size()) ? 0 : indexNumber+1);
-              ArrayList<Player> newList = new ArrayList<>();
-              newList.add(player);
-              server.sendToAll(newList, new PassMessage(player, player.getPlayerID()));
+            server.sendToAll(new PassMessage(nextP));
             break;
           case SEND_TILE:
             SendTileMessage stMsg = (SendTileMessage) m;
@@ -212,3 +208,5 @@ public class ServerProtocol extends Thread {
     this.passCount++;
   }
 }
+
+

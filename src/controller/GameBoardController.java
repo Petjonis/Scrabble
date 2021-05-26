@@ -54,9 +54,7 @@ public class GameBoardController implements Initializable {
   void pass(ActionEvent event) throws IOException {
     /* TODO */
     MainController.mainController.getConnection().sendToServer(
-        new PassMessage(MainController.mainController.getUser(),
-            MainController.mainController.getUser().getPlayerID()));
-    deactivate();
+        new PassMessage(MainController.mainController.getUser()));
   }
 
   @FXML
@@ -76,15 +74,12 @@ public class GameBoardController implements Initializable {
     if (playedWords != null) {
       Tile [] tileRack = new Tile[tr.getTileRack().size()];
       tr.getTileRack().toArray(tileRack);
-      /* TODO: Send playedWords to Server */
       MainController.mainController
           .getConnection()
           .sendToServer(
               new PlayMessage(
                   MainController.mainController.getUser(),
-                  playedWords,
-                  board.getTilesPendingConfirmation(), tileRack));
-
+                  playedWords, board.getTilesPendingConfirmation(), tileRack));
       board.clearTilesPending();
       for (Pair<String, Integer> p : playedWords) {
         System.out.println("Word: " + p.getKey() + ", Score: " + p.getValue());

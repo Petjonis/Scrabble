@@ -153,12 +153,13 @@ public class GameInfoController implements Initializable {
     lastWordList.scrollTo(lastWordList.getItems().size()-1);
   }
 
-  public void updateScoreBoard(int index, ArrayList<Pair<String, Integer>> playedWords){
+  public void updateScoreBoard(int index, ArrayList<Pair<String, Integer>> playedWords, boolean isBonus){
     int score = 0;
     for(Pair<String,Integer> p : playedWords){
       score += p.getValue();
     }
     scoreList.getItems().set(index,score+scoreList.getItems().get(index));
+    if(isBonus){ scoreList.getItems().set(index,50 + scoreList.getItems().get(index));}
   }
 
   public void setActivePlayer(int nextPlayer){

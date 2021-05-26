@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class PlayMessage extends Message {
 
 	private ArrayList<Pair<String, Integer>> playedWords;
-	private ArrayList<Tile> tiles;
+	private ArrayList<Tile> tilesPlayed;
 	private Tile[] tileRack;
 
 	/**
@@ -17,12 +17,12 @@ public class PlayMessage extends Message {
 	 *
 	 * @param player is player who presses play.
 	 * @param playedWords contains the accepted played words.
-	 * @param tiles are all the tiles who represent the words.
+	 * @param tilesPlayed tiles that represent the  played word.
 	 */
-	public PlayMessage(Player player, ArrayList<Pair<String, Integer>> playedWords, ArrayList<Tile> tiles, Tile[] tileRack) {
+	public PlayMessage(Player player, ArrayList<Pair<String, Integer>> playedWords, ArrayList<Tile> tilesPlayed, Tile[] tileRack) {
 		super(MessageType.PLAY_MESSAGE, player);
 		this.playedWords = playedWords;
-		this.tiles = tiles;
+		this.tilesPlayed = tilesPlayed;
 		this.tileRack = tileRack;
 	}
 
@@ -30,7 +30,7 @@ public class PlayMessage extends Message {
 		return playedWords;
 	}
 
-	public ArrayList<Tile> getTiles(){ return tiles; }
+	public ArrayList<Tile> getTilesPlayed(){ return tilesPlayed; }
 
 	public Tile[] getTileRack(){ return tileRack; }
 }
