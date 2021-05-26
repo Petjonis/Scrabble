@@ -40,19 +40,20 @@
          <MaterialIconView fill="#ababab" glyphName="PLAY_CIRCLE_OUTLINE" size="20" />
       </graphic>
       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-         <TextField fx:id="portField" layoutX="44.0" layoutY="116.0" prefHeight="35.0" prefWidth="220.0" promptText="Enter Host Port" />
+         <TextField fx:id="portField" layoutX="44.0" layoutY="124.0" onKeyPressed="#hostPortKeyPressed" prefHeight="35.0" prefWidth="220.0" promptText="Enter Host Port" />
+         <TextField fx:id="ipField" layoutX="44.0" layoutY="82.0" onKeyPressed="#ipFieldKeyPressed" prefHeight="35.0" prefWidth="220.0" promptText="Enter Host Ip" />
          <Label alignment="CENTER" layoutX="44.0" layoutY="14.0" prefHeight="46.0" prefWidth="221.0" text="Join a Game Session" textFill="#ababab">
             <font>
                <Font name="System Bold" size="22.0" />
             </font>
          </Label>
-         <JFXButton fx:id="joinButton" buttonType="RAISED" focusTraversable="false" layoutX="44.0" layoutY="200.0" onAction="#join" prefHeight="45.0" prefWidth="220.0" style="-fx-background-radius: 10; -fx-background-color: #7FA650;" text="Join" textFill="WHITE">
+         <JFXButton fx:id="joinButton" buttonType="RAISED" focusTraversable="false" layoutX="44.0" layoutY="211.0" onAction="#join" onKeyPressed="#joinKeyPressed" prefHeight="45.0" prefWidth="220.0" style="-fx-background-radius: 10; -fx-background-color: #7FA650;" text="Join" textFill="WHITE">
             <font>
                <Font name="System Bold" size="23.0" />
             </font>
          </JFXButton>
          <Separator layoutX="54.0" layoutY="53.0" prefWidth="200.0" style="-fx-background-color: #312E2B;" />
-         <Label fx:id="errorLabel" layoutX="44.0" layoutY="159.0" prefHeight="17.0" prefWidth="220.0" text="Error!" textFill="#bf1313" />
+         <Label fx:id="errorLabel" layoutX="45.0" layoutY="171.0" prefHeight="17.0" prefWidth="220.0" text="Error!" textFill="#bf1313" />
       </AnchorPane>
    </Tab>
    <Tab text="Open Lobbies?">

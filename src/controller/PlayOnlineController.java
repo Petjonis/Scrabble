@@ -12,11 +12,14 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import messages.ConnectMessage;
 import model.GameSession;
 
 public class PlayOnlineController implements Initializable {
 
+  private String ipAddress;
   private int port;
   private GameSession gameSession;
 
@@ -163,9 +166,16 @@ public class PlayOnlineController implements Initializable {
    */
 
   private boolean joinGameSession() throws IOException {
-    this.port = Integer.parseInt(portField.getText());
-    if (this.port > 49151 && this.port < 50001) {
-      MainController.mainController.connectToServer("localhost", this.port);
+    ipAddress = ipField.getText();
+    if (!ipAddress.isEmpty()) {
+      port = Integer.parseInt(portField.getText());
+    }else {
+      errorLabel.setText("ip is not available.");
+      errorLabel.setVisible(true);
+      return false;
+    }
+    if (port > 49151 && port < 50001) {
+      MainController.mainController.connectToServer(ipAddress, port);
       if (MainController.mainController.getConnection().isOk()) {
         MainController.mainController.getConnection()
             .sendToServer(
@@ -182,9 +192,27 @@ public class PlayOnlineController implements Initializable {
         return false;
       }
     } else {
-      this.errorLabel.setText("Port is not ideal.");
+      this.errorLabel.setText("Port is not available.");
       this.errorLabel.setVisible(true);
       return false;
+    }
+  }
+
+  public void ipFieldKeyPressed(KeyEvent keyEvent) {
+    if (keyEvent.getCode() == KeyCode.TAB) {
+      portField.requestFocus();
+    }
+  }
+
+  public void hostPortKeyPressed(KeyEvent keyEvent) {
+    if (keyEvent.getCode() == KeyCode.TAB) {
+      joinButton.requestFocus();
+    }
+  }
+
+  public void joinKeyPressed(KeyEvent keyEvent) throws IOException {
+    if (keyEvent.getCode() == KeyCode.ENTER) {
+      join(new ActionEvent());
     }
   }
 }

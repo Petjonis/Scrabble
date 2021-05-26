@@ -42,7 +42,7 @@ public class Client extends Thread {
 
     } catch (IOException e) {
       System.out.println(e.getMessage());
-      System.out.println("Could not establish connection to " + ip + ":" + port);
+      System.out.println(MainController.mainController.getUser().getUserName() + " could not establish connection to " + ip + ":" + port);
     }
   }
 
