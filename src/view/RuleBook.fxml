@@ -8,7 +8,7 @@
    <content>
       <ImageView fitHeight="1500.0" fitWidth="551.0" pickOnBounds="true">
          <image>
-            <Image url="@../img/rules.png" />
+            <Image url="@../img/Rules.png" />
          </image>
       </ImageView>
    </content>
