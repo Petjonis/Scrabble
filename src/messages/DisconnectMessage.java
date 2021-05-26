@@ -11,11 +11,11 @@ import model.Player;
 public class DisconnectMessage extends Message {
 
   private static final long serialVersionUID = 1L;
-  private int id;
+  private String name;
 
-  public DisconnectMessage(Player player, int idNumber) {
+  public DisconnectMessage(Player player, String playerName) {
     super(MessageType.DISCONNECT, player);
-    this.id = idNumber;
+    this.name = playerName;
   }
 
   @Override
@@ -23,7 +23,7 @@ public class DisconnectMessage extends Message {
     return super.clone();
   }
 
-  public int getId() {
-    return this.id;
+  public String getName() {
+    return this.name;
   }
 }

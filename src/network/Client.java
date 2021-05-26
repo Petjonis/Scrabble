@@ -125,11 +125,12 @@ public class Client extends Thread {
             break;
           case REMOVE_PLAYERLIST:
             RemovingPlayerListMessage rplMsg = (RemovingPlayerListMessage) m;
+            String user = rplMsg.getName();
             Platform.runLater(new Runnable() {
               @Override
               public void run() {
                 GameInfoController.gameInfoController
-                    .removePlayerFromPlayerList(rplMsg.getName());
+                    .removePlayerFromPlayerList(user);
               }
             });
             break;
@@ -160,12 +161,13 @@ public class Client extends Thread {
             break;
           case DISCONNECT:
             DisconnectMessage dcMsg = (DisconnectMessage) m;
+            String user1 = dcMsg.getName();
             Platform.runLater(new Runnable() {
               @Override
               public void run() {
                 GameInfoController.gameInfoController
                     .updateChat(new ComputerPlayer("[Server]"),
-                        dcMsg.getPlayer().getUserName() + " left the game.",
+                        user1 + " left the game.",
                         false);
               }
             });
@@ -235,7 +237,7 @@ public class Client extends Thread {
     try {
       if (!clientSocket.isClosed()) {
         this.out.writeObject(new DisconnectMessage(MainController.mainController.getUser(),
-            MainController.mainController.getUser().getPlayerID()));
+            MainController.mainController.getUser().getUserName()));
         clientSocket.close();
       }
     } catch (IOException e) {

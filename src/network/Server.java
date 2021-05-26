@@ -100,7 +100,6 @@ public class Server {
       }
     }
     for (Player c : clientFails) {
-      System.out.println("Client " + c.getUserName() + " removed (because of send failure).");
       removeClient(c);
     }
   }

@@ -131,14 +131,13 @@ public class ServerProtocol extends Thread {
               server
                   .sendToAll(new RemovingPlayerListMessage(user,
                       user.getUserName(), lgMsg.getId()));
-              server.removeClient(user);
-              server.getGameSession().setPlayers(server.getClients());
             break;
           case DISCONNECT:
             DisconnectMessage dcMsg = (DisconnectMessage) m;
             user = dcMsg.getPlayer();
-            server.sendToAll(new DisconnectMessage(user, dcMsg.getId()));
             server.removeClient(user);
+            server.getGameSession().setPlayers(server.getClients());
+            server.sendToAll(new DisconnectMessage(user, dcMsg.getName()));
             System.out.println(user.getUserName() + " left the Lobby.");
             break;
           case SERVERSHUTDOWN:
