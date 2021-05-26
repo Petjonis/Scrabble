@@ -73,11 +73,11 @@ public class ServerProtocol extends Thread {
    */
   public void run() {
     Message m;
-    Tile tile;
     Tile[] tiles;
-    Square[][] position;
-    int index;
-    ArrayList<String> list;
+    Player nextPlayer;
+    TileRack playerTiles;
+    int currentPlayerIndex;
+
     ArrayList<Pair<String, Integer>> words;
 
     try {
@@ -111,11 +111,11 @@ public class ServerProtocol extends Thread {
             for(Pair<String, Integer> p : words){
               gameSession.getPlayerByID(pMsg.getPlayer().getPlayerID()).addScore(p.getValue());
             }
-            int currentPlayerIndex = pMsg.getPlayer().getPlayerID();
-            Player nextPlayer =  gameSession.getPlayers().get((currentPlayerIndex+1 >= gameSession.getPlayers().size()) ? 0 : currentPlayerIndex+1);
+            currentPlayerIndex = pMsg.getPlayer().getPlayerID();
+            nextPlayer =  gameSession.getPlayers().get((currentPlayerIndex+1 >= gameSession.getPlayers().size()) ? 0 : currentPlayerIndex+1);
             server.sendToAll(new PlayMessage(pMsg.getPlayer(), pMsg.getPlayedWords(), pMsg.getTilesPlayed(),
                               pMsg.getTileRack()));
-            TileRack playerTiles = new TileRack(pMsg.getTileRack());
+            playerTiles = new TileRack(pMsg.getTileRack());
             playerTiles.refillFromBag(MainController.mainController.getGameSession().getTilebag());
             Tile[] newTileRack = new Tile[7];
             playerTiles.getTileRack().toArray(newTileRack);
@@ -154,33 +154,34 @@ public class ServerProtocol extends Thread {
             break;
           case PASS_MESSAGE:
             PassMessage passMessage = (PassMessage) m;
-            int currentP = passMessage.getPlayer().getPlayerID();
-            Player nextP =  gameSession.getPlayers().get((currentP+1 >= gameSession.getPlayers().size()) ? 0 : currentP+1);
+            currentPlayerIndex = passMessage.getPlayer().getPlayerID();
+            nextPlayer =  gameSession.getPlayers().get((currentPlayerIndex+1 >= gameSession.getPlayers().size()) ? 0 : currentPlayerIndex+1);
             incrementPass();
             if (passCount == 6) {
               System.out.println("pass count is six. GAME OVER! ");
               server.sendToAll(new EndGameMessage(server.getServerHost(), server.getGameSession().getPlayers()));
             }
-            server.sendToAll(new PassMessage(nextP));
-            break;
-          case SEND_TILE:
-            SendTileMessage stMsg = (SendTileMessage) m;
-            tile = stMsg.getTile();
-            position = stMsg.getPosition();
-            user = stMsg.getPlayer();
-            server.sendToAll(stMsg);
+            server.sendToAll(new PassMessage(nextPlayer));
             break;
           case SEND_CHAT_MESSAGE:
             SendChatMessage scMsg = (SendChatMessage) m;
             server.sendToAll(scMsg);
             break;
           case SWAP_TILES:
+            incrementPass();
+            if (passCount == 6) {
+              System.out.println("pass count is six. GAME OVER! ");
+              server.sendToAll(new EndGameMessage(server.getServerHost(), server.getGameSession().getPlayers()));
+            }
             SwapTilesMessage swtMsg = (SwapTilesMessage) m;
-            user = swtMsg.getPlayer();
-            tiles = swtMsg.getTiles();
-            /** put them into bag and then draw? or draw and put back after?
-             drawable if rack already full? */
-            gameSession.getTilebag().addTiles(tiles);
+            currentPlayerIndex = swtMsg.getPlayer().getPlayerID();
+            nextPlayer =  gameSession.getPlayers().get((currentPlayerIndex+1 >= gameSession.getPlayers().size()) ? 0 : currentPlayerIndex+1);
+            playerTiles = new TileRack(MainController.mainController.getGameSession().getTilebag());
+            Tile[] newTilesRack = new Tile[7];
+            playerTiles.getTileRack().toArray(newTilesRack);
+            MainController.mainController.getGameSession().getTilebag().addTiles(swtMsg.getTiles());
+            sendToClient(new EndPlayMessage(swtMsg.getPlayer(), newTilesRack));
+            server.sendToAll(new StartPlayMessage(nextPlayer));
             break;
           default:
             break;

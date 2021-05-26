@@ -22,6 +22,7 @@ import javafx.util.Duration;
 import javafx.util.Pair;
 import messages.PassMessage;
 import messages.PlayMessage;
+import messages.SwapTilesMessage;
 import model.*;
 import settings.GlobalSettings;
 import java.net.URL;
@@ -53,19 +54,14 @@ public class GameBoardController implements Initializable {
   @FXML
   void pass(ActionEvent event) throws IOException {
     /* TODO */
+    undoMove();
     MainController.mainController.getConnection().sendToServer(
         new PassMessage(MainController.mainController.getUser()));
   }
 
   @FXML
   void undo(ActionEvent event) {
-    for (Tile t : board.getTilesPendingConfirmation()) {
-      removeStackPaneFromBoardGrid(t.getRow(), t.getCol());
-      addStackPaneToBoardGrid(t.getRow(), t.getCol());
-      tr.add(new Tile(t.getLetter(), t.getValue(), null));
-    }
-    board.clearTilesPending();
-    System.out.println(board.getTilesPendingConfirmation());
+    undoMove();
   }
 
   @FXML
@@ -89,8 +85,12 @@ public class GameBoardController implements Initializable {
   }
 
   @FXML
-  void swap(ActionEvent event) {
-    /* TODO */
+  void swap(ActionEvent event) throws IOException {
+    undoMove();
+    Tile [] tileRack = new Tile[tr.getTileRack().size()];
+    tr.getTileRack().toArray(tileRack);
+    MainController.mainController.getConnection().sendToServer(
+            new SwapTilesMessage(tileRack, MainController.mainController.getUser()));
   }
 
   @Override
@@ -99,12 +99,6 @@ public class GameBoardController implements Initializable {
 
     board = new Board();
     board.initializeDictionary();
-    //for test, should get tilebag from GameSession
-    //tb = new TileBag();
-    //for test, should get tilerack from player
-//    tr = new TileRack(tb);
-//    renderTileRack();
-//    tr.registerChangeListener(c -> renderTileRack());
 
     //Adding StackPane to every Cell in the GridPane and Adding the Target Events to each StackPane.
     for (int row = 0; row < GlobalSettings.ROWS; row++) {
@@ -114,9 +108,6 @@ public class GameBoardController implements Initializable {
     }
 
     deactivate();
-    //start demo progress bar
-    //startProgressBar();
-
   }
 
   //target event handlers
@@ -332,6 +323,15 @@ public class GameBoardController implements Initializable {
     passButton.setDisable(false);
     swapButton.setDisable(false);
     undoButton.setDisable(false);
+  }
+
+  private void undoMove(){
+    for (Tile t : board.getTilesPendingConfirmation()) {
+      removeStackPaneFromBoardGrid(t.getRow(), t.getCol());
+      addStackPaneToBoardGrid(t.getRow(), t.getCol());
+      tr.add(new Tile(t.getLetter(), t.getValue(), null));
+    }
+    board.clearTilesPending();
   }
 
   public void initializeGame(Tile[] tileRack, boolean isActivePlayer){
