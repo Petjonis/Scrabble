@@ -19,7 +19,7 @@ public class EndGameMessage extends Message {
     players = playerList;
   }
 
-  public ArrayList<Player> getPlayers(){
-        return players;
+  public ArrayList<Player> getPlayers() {
+    return players;
   }
 }

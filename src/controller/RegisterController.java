@@ -2,9 +2,6 @@ package controller;
 
 import com.jfoenix.controls.JFXButton;
 import db.Database;
-import java.net.URL;
-import java.util.Locale;
-import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,38 +14,30 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
+import java.net.URL;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class RegisterController implements Initializable {
 
-  @FXML
-  private Label userError;
-  @FXML
-  private Label passwordError;
-  @FXML
-  private JFXButton createButton;
+  @FXML private Label userError;
+  @FXML private Label passwordError;
+  @FXML private JFXButton createButton;
+
+  @FXML private TextField usernameField;
+
+  @FXML private PasswordField passwordField;
+
+  @FXML private PasswordField confirmField;
+
+  @FXML private Button uploadButton;
+
+  @FXML private ImageView previewImage;
+
+  @FXML private Button closeButton;
 
   @FXML
-  private TextField usernameField;
-
-  @FXML
-  private PasswordField passwordField;
-
-  @FXML
-  private PasswordField confirmField;
-
-  @FXML
-  private Button uploadButton;
-
-  @FXML
-  private ImageView previewImage;
-
-  @FXML
-  private Button closeButton;
-
-  @FXML
-  void chooseFile(ActionEvent event) {
-
-  }
+  void chooseFile(ActionEvent event) {}
 
   @FXML
   void close(ActionEvent event) {
@@ -61,7 +50,6 @@ public class RegisterController implements Initializable {
     this.userError.setVisible(false);
     this.passwordError.setVisible(false);
   }
-
 
   /**
    * after pressing the "create Account" button, three scenarios can occur: first, registration is
@@ -79,21 +67,24 @@ public class RegisterController implements Initializable {
     this.userError.setVisible(false);
     this.passwordError.setVisible(false);
 
-    /** when registration was successful, user will be added to the database and system shows login page. */
-    if (!db.userExists(usernameField.getText()) && confirmField.getText()
-        .equals(passwordField.getText())) {
+    /**
+     * when registration was successful, user will be added to the database and system shows login
+     * page.
+     */
+    if (!db.userExists(usernameField.getText())
+        && confirmField.getText().equals(passwordField.getText())) {
       db.addUser(usernameField.getText(), passwordField.getText());
 
       MainController.mainController.openNewWindow("/view/Login.fxml", "Login");
       Stage stage = (Stage) createButton.getScene().getWindow();
       stage.close();
 
-      /** when registration failed / password does not match.*/
-    } else if (!db.userExists(usernameField.getText()) && !confirmField.getText()
-        .equals(passwordField.getText())) {
+      /** when registration failed / password does not match. */
+    } else if (!db.userExists(usernameField.getText())
+        && !confirmField.getText().equals(passwordField.getText())) {
       this.passwordError.setVisible(true);
       this.confirmField.clear();
-      /** when registration failed / userName already exists in the database.*/
+      /** when registration failed / userName already exists in the database. */
     } else {
       this.userError.setVisible(true);
       this.usernameField.clear();
@@ -104,9 +95,7 @@ public class RegisterController implements Initializable {
     db.disconnect();
   }
 
-  /**
-   * Sign up can be pressed with the "ENTER" key.
-   */
+  /** Sign up can be pressed with the "ENTER" key. */
   public void signUpKeyPressed(KeyEvent keyEvent) {
     if (keyEvent.getCode() == KeyCode.ENTER) {
       createAccount(new ActionEvent());

@@ -6,10 +6,10 @@ package messages;
  * @author socho
  * @version 1.0
  */
-
-import java.io.Serializable;
 import model.HumanPlayer;
 import model.Player;
+
+import java.io.Serializable;
 
 public abstract class Message implements Serializable, Cloneable {
 
@@ -18,9 +18,7 @@ public abstract class Message implements Serializable, Cloneable {
   private MessageType meType;
   private Player playerUser;
 
-  /**
-   * constructor for message.
-   */
+  /** constructor for message. */
   public Message(MessageType type, Player player) {
     this.meType = type;
     this.playerUser = player;
@@ -35,12 +33,10 @@ public abstract class Message implements Serializable, Cloneable {
   }
 
   public void setPlayer(Player playerClient) {
-    this.playerUser =  playerClient;
+    this.playerUser = playerClient;
   }
 
-  /**
-   * method to copy a message.
-   */
+  /** method to copy a message. */
   public Object clone() {
     Message clone = null;
     try {

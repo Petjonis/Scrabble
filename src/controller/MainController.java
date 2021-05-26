@@ -11,10 +11,6 @@ package controller;
 import com.jfoenix.controls.JFXButton;
 import db.Database;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import java.io.IOException;
-import java.net.URL;
-import java.util.Locale;
-import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -34,6 +30,11 @@ import model.GameSession;
 import model.Player;
 import network.Client;
 import network.Server;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
 
@@ -214,7 +215,8 @@ public class MainController implements Initializable {
       scene.setFill(Color.TRANSPARENT);
       stage.setScene(scene);
       stage.show();
-      Stage parentStage = (Stage) MainController.mainController.getCenterPane().getScene().getWindow();
+      Stage parentStage =
+          (Stage) MainController.mainController.getCenterPane().getScene().getWindow();
       stage.setX(parentStage.getX() + parentStage.getWidth() / 2 - stage.getWidth() / 2);
       stage.setY(parentStage.getY() + parentStage.getHeight() / 2 - stage.getHeight() / 2);
       stage.hide();
@@ -276,6 +278,11 @@ public class MainController implements Initializable {
     }
   }
 
+  /**
+   * Method to reload player stats on main view.
+   *
+   * @author fpetek
+   */
   public void reloadStats() {
     db.connect();
     this.gameCount.setText(Integer.toString(db.getGames(user.getUserName())));

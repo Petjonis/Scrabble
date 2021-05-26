@@ -1,6 +1,5 @@
 package messages;
 
-import model.ComputerPlayer;
 import model.Player;
 
 /**

@@ -3,13 +3,13 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-
-<ScrollPane prefHeight="768.0" prefWidth="551.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
-   <content>
-      <ImageView fitHeight="1500.0" fitWidth="551.0" pickOnBounds="true">
-         <image>
-            <Image url="@../img/rules.png" />
-         </image>
-      </ImageView>
-   </content>
+<ScrollPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="768.0" prefWidth="551.0"
+            xmlns="http://javafx.com/javafx/16">
+    <content>
+        <ImageView fitHeight="1500.0" fitWidth="551.0" pickOnBounds="true">
+            <image>
+                <Image url="@../img/rules.png"/>
+            </image>
+        </ImageView>
+    </content>
 </ScrollPane>

@@ -1,14 +1,14 @@
 package messages;
 
-import java.util.ArrayList;
 import model.Player;
+
+import java.util.ArrayList;
 
 /**
  * this message will be sent when the player list has to be updated.
  *
  * @author socho
  */
-
 public class UpdatePlayerListMessage extends Message {
 
   private static final long serialVersionUID = 1L;

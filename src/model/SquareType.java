@@ -6,5 +6,10 @@ package model;
  * @author socho
  */
 public enum SquareType {
-  DOUBLE_LETTER, TRIPLE_LETTER, DOUBLE_WORD, TRIPLE_WORD, NO_BONUS, START;
+  DOUBLE_LETTER,
+  TRIPLE_LETTER,
+  DOUBLE_WORD,
+  TRIPLE_WORD,
+  NO_BONUS,
+  START;
 }

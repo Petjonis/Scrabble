@@ -7,12 +7,14 @@
  */
 package controller;
 
+import com.jfoenix.controls.JFXButton;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import model.Player;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,6 +33,8 @@ public class ResultController implements Initializable {
   @FXML private FontAwesomeIconView bronzeStar;
 
   @FXML private FontAwesomeIconView trash;
+
+  @FXML private JFXButton playAgainButton;
 
   @FXML private Label firstPlace;
 
@@ -103,17 +107,16 @@ public class ResultController implements Initializable {
     int index = getIndex(MainController.mainController.getUser());
 
     MainController.mainController.db.updateScore(
-            user,
-            (MainController.mainController.db.getScore(user)
+        user,
+        (MainController.mainController.db.getScore(user)
                     * MainController.mainController.db.getGames(user)
-                    + players.get(index).getScore())
-                    / (MainController.mainController.db.getGames(user)+1));
+                + players.get(index).getScore())
+            / (MainController.mainController.db.getGames(user) + 1));
     if (index == 0) {
       MainController.mainController.db.incrementWins(user);
     } else {
       MainController.mainController.db.incrementLoses(user);
     }
-
 
     MainController.mainController.db.disconnect();
   }
@@ -129,5 +132,13 @@ public class ResultController implements Initializable {
       }
     }
     return -1;
+  }
+
+  public void playAgain() throws IOException {
+    /*TODO: open up playerboard and host stuff*/
+    MainController.mainController.changePane(
+        MainController.mainController.getCenterPane(), "/view/Ganeboard.fxml");
+    MainController.mainController.changePane(
+        MainController.mainController.getRightPane(), "/view/GameInfo.fxml");
   }
 }

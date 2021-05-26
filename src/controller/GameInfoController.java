@@ -3,11 +3,6 @@ package controller;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextArea;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -19,48 +14,40 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Pair;
-import messages.LeaveGameMessage;
-import messages.RequestPlayerListMessage;
-import messages.SendChatMessage;
-import messages.ShutDownMessage;
-import messages.StartGameFirstMessage;
+import messages.*;
 import model.Player;
 import model.Tile;
 import model.TileRack;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Optional;
+import java.util.ResourceBundle;
 
 public class GameInfoController implements Initializable {
 
   public static GameInfoController gameInfoController;
 
-  @FXML
-  private AnchorPane gameInfoPane;
+  @FXML private AnchorPane gameInfoPane;
 
-  @FXML
-  private JFXListView<String> playerList;
+  @FXML private JFXListView<String> playerList;
 
-  @FXML
-  private JFXListView<Integer> scoreList;
+  @FXML private JFXListView<Integer> scoreList;
 
-  @FXML
-  private Label lastPlayedWordsLabel;
+  @FXML private Label lastPlayedWordsLabel;
 
-  @FXML
-  private JFXListView<String> lastWordList;
+  @FXML private JFXListView<String> lastWordList;
 
-  @FXML
-  private JFXButton startGameButton;
+  @FXML private JFXButton startGameButton;
 
-  @FXML
-  private JFXListView<String> chatList;
+  @FXML private JFXListView<String> chatList;
 
-  @FXML
-  private JFXTextArea sendText;
+  @FXML private JFXTextArea sendText;
 
-  @FXML
-  private JFXButton sendButton;
+  @FXML private JFXButton sendButton;
 
-  @FXML
-  private JFXButton leaveGameButton;
+  @FXML private JFXButton leaveGameButton;
 
   /**
    * Listview "chatList" adds the text, which was written from the textfield "sendText" and the
@@ -72,35 +59,39 @@ public class GameInfoController implements Initializable {
   @FXML
   void send(ActionEvent event) throws IOException {
     if (MainController.mainController.getHosting()) {
-      MainController.mainController.getConnection().sendToServer(
-          new SendChatMessage(MainController.mainController.getUser(),
-              sendText.getText(), true));
+      MainController.mainController
+          .getConnection()
+          .sendToServer(
+              new SendChatMessage(
+                  MainController.mainController.getUser(), sendText.getText(), true));
     } else {
-      MainController.mainController.getConnection()
-          .sendToServer(new SendChatMessage(MainController.mainController.getUser(),
-              sendText.getText(), false));
+      MainController.mainController
+          .getConnection()
+          .sendToServer(
+              new SendChatMessage(
+                  MainController.mainController.getUser(), sendText.getText(), false));
     }
     sendText.clear();
-
   }
 
-  /**
-   * chatList adds a welcome message to the user who joined to the game session.
-   */
+  /** chatList adds a welcome message to the user who joined to the game session. */
   public void initialize(URL url, ResourceBundle resourceBundle) {
     gameInfoController = this;
 
     if (MainController.mainController.getHosting()) {
       lastPlayedWordsLabel.setVisible(false);
       lastWordList.setVisible(false);
-      chatList.getItems()
-          .add("[System]: " + MainController.mainController.getUser().getUserName()
-              + ", you are the host!");
+      chatList
+          .getItems()
+          .add(
+              "[System]: "
+                  + MainController.mainController.getUser().getUserName()
+                  + ", you are the host!");
     } else {
       startGameButton.setVisible(false);
-      chatList.getItems()
+      chatList
+          .getItems()
           .add("[System]: Hello " + MainController.mainController.getUser().getUserName() + "!");
-
     }
 
     try {
@@ -111,8 +102,9 @@ public class GameInfoController implements Initializable {
   }
 
   public void sendRequestMessage() throws IOException {
-    MainController.mainController.getConnection().sendToServer(
-        new RequestPlayerListMessage(MainController.mainController.getUser()));
+    MainController.mainController
+        .getConnection()
+        .sendToServer(new RequestPlayerListMessage(MainController.mainController.getUser()));
   }
 
   /**
@@ -120,20 +112,18 @@ public class GameInfoController implements Initializable {
    *
    * @author socho
    */
-
   public void updatePlayerList(ArrayList<Player> players) {
     for (Player player : players) {
       if (playerList.getItems().isEmpty()) {
         playerList.getItems().add(player.getUserName());
         scoreList.getItems().add(player.getScore());
-      } else if (!playerList.getItems().isEmpty() && !playerList.getItems()
-          .contains(player.getUserName())) {
+      } else if (!playerList.getItems().isEmpty()
+          && !playerList.getItems().contains(player.getUserName())) {
         playerList.getItems().add(player.getUserName());
         scoreList.getItems().add(player.getScore());
       }
     }
   }
-
 
   /**
    * removing player from player list and removing score from score list.
@@ -144,27 +134,30 @@ public class GameInfoController implements Initializable {
     if (playerList.getItems().contains(from)) {
       int index = playerList.getItems().indexOf(from);
       playerList.getItems().remove(from);
-      scoreList.getItems().remove(index-1);
+      scoreList.getItems().remove(index - 1);
     }
   }
 
   public void updateLastWordList(ArrayList<Pair<String, Integer>> playedWords) {
-    for(Pair<String,Integer> p : playedWords){
+    for (Pair<String, Integer> p : playedWords) {
       lastWordList.getItems().add("Word: " + p.getKey() + ", Score: " + p.getValue());
     }
-    lastWordList.scrollTo(lastWordList.getItems().size()-1);
+    lastWordList.scrollTo(lastWordList.getItems().size() - 1);
   }
 
-  public void updateScoreBoard(int index, ArrayList<Pair<String, Integer>> playedWords, boolean isBonus){
+  public void updateScoreBoard(
+      int index, ArrayList<Pair<String, Integer>> playedWords, boolean isBonus) {
     int score = 0;
-    for(Pair<String,Integer> p : playedWords){
+    for (Pair<String, Integer> p : playedWords) {
       score += p.getValue();
     }
-    scoreList.getItems().set(index,score+scoreList.getItems().get(index));
-    if(isBonus){ scoreList.getItems().set(index,50 + scoreList.getItems().get(index));}
+    scoreList.getItems().set(index, score + scoreList.getItems().get(index));
+    if (isBonus) {
+      scoreList.getItems().set(index, 50 + scoreList.getItems().get(index));
+    }
   }
 
-  public void setActivePlayer(int nextPlayer){
+  public void setActivePlayer(int nextPlayer) {
     scoreList.getSelectionModel().select(nextPlayer);
     playerList.getSelectionModel().select(nextPlayer);
   }
@@ -180,7 +173,7 @@ public class GameInfoController implements Initializable {
     } else {
       chatList.getItems().add(from.getUserName() + ": " + text);
     }
-    chatList.scrollTo(chatList.getItems().size()-1);
+    chatList.scrollTo(chatList.getItems().size() - 1);
   }
 
   /**
@@ -210,24 +203,30 @@ public class GameInfoController implements Initializable {
     if (result.get() == ButtonType.OK) {
       switch (String.valueOf(MainController.mainController.getHosting())) {
         case "true":
-          MainController.mainController.getConnection().sendToServer(
-              new ShutDownMessage(MainController.mainController.getUser(),
-                  MainController.mainController.getUser().getPlayerID()));
-
           MainController.mainController
-              .changePane(MainController.mainController.getCenterPane(), "/view/Start.fxml");
+              .getConnection()
+              .sendToServer(
+                  new ShutDownMessage(
+                      MainController.mainController.getUser(),
+                      MainController.mainController.getUser().getPlayerID()));
+
+          MainController.mainController.changePane(
+              MainController.mainController.getCenterPane(), "/view/Start.fxml");
           MainController.mainController.getRightPane().getChildren().clear();
 
           MainController.mainController.getPlayButton().setDisable(false);
           break;
         case "false":
-          MainController.mainController.getConnection().sendToServer(
-              new LeaveGameMessage(MainController.mainController.getUser(),
-                  MainController.mainController.getUser().getPlayerID()));
+          MainController.mainController
+              .getConnection()
+              .sendToServer(
+                  new LeaveGameMessage(
+                      MainController.mainController.getUser(),
+                      MainController.mainController.getUser().getPlayerID()));
           MainController.mainController.disconnect();
 
-          MainController.mainController
-              .changePane(MainController.mainController.getCenterPane(), "/view/Start.fxml");
+          MainController.mainController.changePane(
+              MainController.mainController.getCenterPane(), "/view/Start.fxml");
           MainController.mainController.getRightPane().getChildren().clear();
           MainController.mainController.getPlayButton().setDisable(false);
           break;
@@ -238,19 +237,23 @@ public class GameInfoController implements Initializable {
   }
 
   public void startGame(ActionEvent actionEvent) throws IOException {
-    if (MainController.mainController.getHosting()){
+    if (MainController.mainController.getHosting()) {
       lastPlayedWordsLabel.setVisible(true);
       lastWordList.setVisible(true);
       startGameButton.setVisible(false);
-
     }
-    for (Player player : MainController.mainController.getGameSession().getPlayers()){
-      TileRack playerTiles = new TileRack(MainController.mainController.getGameSession().getTilebag());
-      Tile [] tileRack = new Tile[7];
+    for (Player player : MainController.mainController.getGameSession().getPlayers()) {
+      TileRack playerTiles =
+          new TileRack(MainController.mainController.getGameSession().getTilebag());
+      Tile[] tileRack = new Tile[7];
       playerTiles.getTileRack().toArray(tileRack);
-      boolean isActive = MainController.mainController.getGameSession().getPlayers().indexOf(player) == 1;
-      MainController.mainController.getServer().getClientsHashMap().get(player).sendToClient(new StartGameFirstMessage(player, tileRack, isActive));
+      boolean isActive =
+          MainController.mainController.getGameSession().getPlayers().indexOf(player) == 1;
+      MainController.mainController
+          .getServer()
+          .getClientsHashMap()
+          .get(player)
+          .sendToClient(new StartGameFirstMessage(player, tileRack, isActive));
     }
-
   }
 }

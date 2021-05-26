@@ -2,64 +2,75 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import de.jensd.fx.glyphs.materialicons.MaterialIconView?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
-
-<TabPane fx:id="playTabPane" prefHeight="768.0" prefWidth="308.0" style="-fx-background-color: #272522;" stylesheets="@Style.css" tabClosingPolicy="UNAVAILABLE" tabMinHeight="45.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PlayOnlineController">
-   <Tab text="Host Game">
-      <graphic>
-         <MaterialIconView fill="#ababab" glyphName="ADD_BOX" size="20" />
-      </graphic>
-      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-         <Label alignment="CENTER" layoutX="44.0" layoutY="14.0" prefHeight="46.0" prefWidth="221.0" text="Host a Game Session" textFill="#ababab">
-            <font>
-               <Font name="System Bold" size="22.0" />
-            </font>
-         </Label>
-         <TextField fx:id="portNumberTextField" layoutX="44.0" layoutY="116.0" prefHeight="35.0" prefWidth="220.0" promptText="Enter a Port number" />
-         <Label fx:id="descriptionLabel" alignment="CENTER" layoutY="80.0" prefHeight="35.0" prefWidth="308.0" text="Enter a port number between 49152 - 50000" textFill="#dbd9d7">
-            <font>
-               <Font name="System Bold Italic" size="13.0" />
-            </font></Label>
-         <JFXButton fx:id="hostButton" buttonType="RAISED" focusTraversable="false" layoutX="44.0" layoutY="200.0" onAction="#host" prefHeight="45.0" prefWidth="220.0" style="-fx-background-radius: 10; -fx-background-color: #7FA650;" text="Host" textFill="WHITE">
-            <font>
-               <Font name="System Bold" size="23.0" />
-            </font>
-         </JFXButton>
-         <Separator layoutX="54.0" layoutY="53.0" prefWidth="200.0" style="-fx-background-color: #312E2B;" />
-         <Label fx:id="portErrorLabel" layoutX="44.0" layoutY="159.0" prefHeight="17.0" prefWidth="220.0" text="Error!" textFill="#bf1313" />
-      </AnchorPane>
-   </Tab>
-   <Tab text="Join Game">
-      <graphic>
-         <MaterialIconView fill="#ababab" glyphName="PLAY_CIRCLE_OUTLINE" size="20" />
-      </graphic>
-      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-         <TextField fx:id="portField" layoutX="44.0" layoutY="124.0" onKeyPressed="#hostPortKeyPressed" prefHeight="35.0" prefWidth="220.0" promptText="Enter Host Port" />
-         <TextField fx:id="ipField" layoutX="44.0" layoutY="82.0" onKeyPressed="#ipFieldKeyPressed" prefHeight="35.0" prefWidth="220.0" promptText="Enter Host Ip" />
-         <Label alignment="CENTER" layoutX="44.0" layoutY="14.0" prefHeight="46.0" prefWidth="221.0" text="Join a Game Session" textFill="#ababab">
-            <font>
-               <Font name="System Bold" size="22.0" />
-            </font>
-         </Label>
-         <JFXButton fx:id="joinButton" buttonType="RAISED" focusTraversable="false" layoutX="44.0" layoutY="211.0" onAction="#join" onKeyPressed="#joinKeyPressed" prefHeight="45.0" prefWidth="220.0" style="-fx-background-radius: 10; -fx-background-color: #7FA650;" text="Join" textFill="WHITE">
-            <font>
-               <Font name="System Bold" size="23.0" />
-            </font>
-         </JFXButton>
-         <Separator layoutX="54.0" layoutY="53.0" prefWidth="200.0" style="-fx-background-color: #312E2B;" />
-         <Label fx:id="errorLabel" layoutX="45.0" layoutY="171.0" prefHeight="17.0" prefWidth="220.0" text="Error!" textFill="#bf1313" />
-      </AnchorPane>
-   </Tab>
-   <Tab text="Open Lobbies?">
-      <graphic>
-         <MaterialIconView fill="#ababab" glyphName="SEARCH" size="20" />
-      </graphic>
-      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-   </Tab>
+<?import javafx.scene.text.*?>
+<TabPane xmlns:fx="http://javafx.com/fxml/1" fx:id="playTabPane" prefHeight="768.0" prefWidth="308.0"
+         style="-fx-background-color: #272522;" stylesheets="@Style.css" tabClosingPolicy="UNAVAILABLE"
+         tabMinHeight="45.0"
+         xmlns="http://javafx.com/javafx/16" fx:controller="controller.PlayOnlineController">
+    <Tab text="Host Game">
+        <graphic>
+            <MaterialIconView fill="#ababab" glyphName="ADD_BOX" size="20"/>
+        </graphic>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+            <Label alignment="CENTER" layoutX="44.0" layoutY="14.0" prefHeight="46.0" prefWidth="221.0"
+                   text="Host a Game Session" textFill="#ababab">
+                <font>
+                    <Font name="System Bold" size="22.0"/>
+                </font>
+            </Label>
+            <TextField fx:id="portNumberTextField" layoutX="44.0" layoutY="116.0" prefHeight="35.0" prefWidth="220.0"
+                       promptText="Enter a Port number"/>
+            <Label fx:id="descriptionLabel" alignment="CENTER" layoutY="80.0" prefHeight="35.0" prefWidth="308.0"
+                   text="Enter a port number between 49152 - 50000" textFill="#dbd9d7">
+                <font>
+                    <Font name="System Bold Italic" size="13.0"/>
+                </font>
+            </Label>
+            <JFXButton fx:id="hostButton" buttonType="RAISED" focusTraversable="false" layoutX="44.0" layoutY="200.0"
+                       onAction="#host" prefHeight="45.0" prefWidth="220.0"
+                       style="-fx-background-radius: 10; -fx-background-color: #7FA650;" text="Host" textFill="WHITE">
+                <font>
+                    <Font name="System Bold" size="23.0"/>
+                </font>
+            </JFXButton>
+            <Separator layoutX="54.0" layoutY="53.0" prefWidth="200.0" style="-fx-background-color: #312E2B;"/>
+            <Label fx:id="portErrorLabel" layoutX="44.0" layoutY="159.0" prefHeight="17.0" prefWidth="220.0"
+                   text="Error!" textFill="#bf1313"/>
+        </AnchorPane>
+    </Tab>
+    <Tab text="Join Game">
+        <graphic>
+            <MaterialIconView fill="#ababab" glyphName="PLAY_CIRCLE_OUTLINE" size="20"/>
+        </graphic>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+            <TextField fx:id="portField" layoutX="44.0" layoutY="124.0" onKeyPressed="#hostPortKeyPressed"
+                       prefHeight="35.0" prefWidth="220.0" promptText="Enter Host Port"/>
+            <TextField fx:id="ipField" layoutX="44.0" layoutY="82.0" onKeyPressed="#ipFieldKeyPressed" prefHeight="35.0"
+                       prefWidth="220.0" promptText="Enter Host Ip"/>
+            <Label alignment="CENTER" layoutX="44.0" layoutY="14.0" prefHeight="46.0" prefWidth="221.0"
+                   text="Join a Game Session" textFill="#ababab">
+                <font>
+                    <Font name="System Bold" size="22.0"/>
+                </font>
+            </Label>
+            <JFXButton fx:id="joinButton" buttonType="RAISED" focusTraversable="false" layoutX="44.0" layoutY="211.0"
+                       onAction="#join" onKeyPressed="#joinKeyPressed" prefHeight="45.0" prefWidth="220.0"
+                       style="-fx-background-radius: 10; -fx-background-color: #7FA650;" text="Join" textFill="WHITE">
+                <font>
+                    <Font name="System Bold" size="23.0"/>
+                </font>
+            </JFXButton>
+            <Separator layoutX="54.0" layoutY="53.0" prefWidth="200.0" style="-fx-background-color: #312E2B;"/>
+            <Label fx:id="errorLabel" layoutX="45.0" layoutY="171.0" prefHeight="17.0" prefWidth="220.0" text="Error!"
+                   textFill="#bf1313"/>
+        </AnchorPane>
+    </Tab>
+    <Tab text="Open Lobbies?">
+        <graphic>
+            <MaterialIconView fill="#ababab" glyphName="SEARCH" size="20"/>
+        </graphic>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"/>
+    </Tab>
 </TabPane>

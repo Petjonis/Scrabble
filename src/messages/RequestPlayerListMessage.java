@@ -13,7 +13,6 @@ public class RequestPlayerListMessage extends Message {
    * @param player
    * @author socho
    */
-
   public RequestPlayerListMessage(Player player) {
     super(MessageType.REQUEST_PLAYERLIST, player);
   }

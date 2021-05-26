@@ -4,32 +4,35 @@ package network;
  * This class contains all functions which is connected with the client(s).
  *
  * @author socho
+ * @author fpetek
  * @version 1.0
  */
 
 import controller.MainController;
+import javafx.util.Pair;
+import messages.*;
+import model.GameSession;
+import model.Player;
+import model.Tile;
+import model.TileRack;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
-
-import javafx.util.Pair;
-import messages.*;
-import model.*;
-
 public class ServerProtocol extends Thread {
 
-  //public int id = 0;
+  private static int passCount = 0;
+  public Player user;
+  // public int id = 0;
   private Socket socket;
   private ObjectInputStream in;
   private ObjectOutputStream out;
   private Server server;
   private GameSession gameSession;
   private boolean running = true;
-  private static int passCount = 0 ;
-  public Player user;
 
   ServerProtocol(Socket client, Server server, GameSession session) throws IOException {
     this.socket = client;
@@ -43,19 +46,14 @@ public class ServerProtocol extends Thread {
     }
   }
 
-
-  /**
-   * sends to this client.
-   */
+  /** sends to this client. */
   public void sendToClient(Message m) throws IOException {
     this.out.writeObject(m);
     out.flush();
     out.reset();
   }
 
-  /**
-   * close streams and socket.
-   */
+  /** close streams and socket. */
   public void disconnect() {
     running = false;
     try {
@@ -64,7 +62,6 @@ public class ServerProtocol extends Thread {
       e.printStackTrace();
     }
   }
-
 
   /**
    * Clients will be connected to the server only when they send the Connect-Message. and Clients
@@ -94,7 +91,7 @@ public class ServerProtocol extends Thread {
         disconnect();
       }
 
-      /** while the server runs many different messages will reach the server.*/
+      /** while the server runs many different messages will reach the server. */
       while (running) {
         m = (Message) in.readObject();
 
@@ -103,17 +100,27 @@ public class ServerProtocol extends Thread {
             passCount = 0;
             PlayMessage pMsg = (PlayMessage) m;
             words = pMsg.getPlayedWords();
-            //Adding played points to player score
-            if(pMsg.getTilesPlayed().size() == 7){
+            // Adding played points to player score
+            if (pMsg.getTilesPlayed().size() == 7) {
               gameSession.getPlayerByID(pMsg.getPlayer().getPlayerID()).addScore(50);
             }
-            for(Pair<String, Integer> p : words){
+            for (Pair<String, Integer> p : words) {
               gameSession.getPlayerByID(pMsg.getPlayer().getPlayerID()).addScore(p.getValue());
             }
             currentPlayerIndex = pMsg.getPlayer().getPlayerID();
-            nextPlayer =  gameSession.getPlayers().get((currentPlayerIndex+1 >= gameSession.getPlayers().size()) ? 0 : currentPlayerIndex+1);
-            server.sendToAll(new PlayMessage(pMsg.getPlayer(), pMsg.getPlayedWords(), pMsg.getTilesPlayed(),
-                              pMsg.getTileRack()));
+            nextPlayer =
+                gameSession
+                    .getPlayers()
+                    .get(
+                        (currentPlayerIndex + 1 >= gameSession.getPlayers().size())
+                            ? 0
+                            : currentPlayerIndex + 1);
+            server.sendToAll(
+                new PlayMessage(
+                    pMsg.getPlayer(),
+                    pMsg.getPlayedWords(),
+                    pMsg.getTilesPlayed(),
+                    pMsg.getTileRack()));
             playerTiles = new TileRack(pMsg.getTileRack());
             playerTiles.refillFromBag(MainController.mainController.getGameSession().getTilebag());
             Tile[] newTileRack = new Tile[playerTiles.getTileRack().size()];
@@ -122,19 +129,20 @@ public class ServerProtocol extends Thread {
             server.sendToAll(new StartPlayMessage(nextPlayer));
             break;
           case REQUEST_PLAYERLIST:
-            server.sendToAll(new UpdatePlayerListMessage(server.getServerHost(),
-                server.getGameSession().getPlayers()));
+            server.sendToAll(
+                new UpdatePlayerListMessage(
+                    server.getServerHost(), server.getGameSession().getPlayers()));
             break;
           case LEAVE_GAME:
             LeaveGameMessage lgMsg = (LeaveGameMessage) m;
             user = lgMsg.getPlayer();
-              server
-                  .sendToAll(new RemovingPlayerListMessage(user,
-                      user.getUserName(), lgMsg.getId()));
+            server.sendToAll(
+                new RemovingPlayerListMessage(user, user.getUserName(), lgMsg.getId()));
             break;
           case DISCONNECT:
             DisconnectMessage dcMsg = (DisconnectMessage) m;
             user = dcMsg.getPlayer();
+            server.sendToAll(new DisconnectMessage(user, dcMsg.getName()));
             server.removeClient(user);
             server.getGameSession().setPlayers(server.getClients());
             server.sendToAll(new DisconnectMessage(user, dcMsg.getName()));
@@ -142,19 +150,25 @@ public class ServerProtocol extends Thread {
             break;
           case SERVERSHUTDOWN:
             ShutDownMessage sdMsg = (ShutDownMessage) m;
-            server.sendToAll(new ShutDownMessage(sdMsg.getPlayer(),
-                sdMsg.getId()));
+            server.sendToAll(new ShutDownMessage(sdMsg.getPlayer(), sdMsg.getId()));
             server.stopServer();
             MainController.mainController.setHosting(false);
             break;
           case PASS_MESSAGE:
             PassMessage passMessage = (PassMessage) m;
             currentPlayerIndex = passMessage.getPlayer().getPlayerID();
-            nextPlayer =  gameSession.getPlayers().get((currentPlayerIndex+1 >= gameSession.getPlayers().size()) ? 0 : currentPlayerIndex+1);
+            nextPlayer =
+                gameSession
+                    .getPlayers()
+                    .get(
+                        (currentPlayerIndex + 1 >= gameSession.getPlayers().size())
+                            ? 0
+                            : currentPlayerIndex + 1);
             incrementPass();
             if (passCount == 6) {
               System.out.println("pass count is six. GAME OVER! ");
-              server.sendToAll(new EndGameMessage(server.getServerHost(), server.getGameSession().getPlayers()));
+              server.sendToAll(
+                  new EndGameMessage(server.getServerHost(), server.getGameSession().getPlayers()));
             }
             server.sendToAll(new PassMessage(nextPlayer));
             break;
@@ -166,11 +180,18 @@ public class ServerProtocol extends Thread {
             incrementPass();
             if (passCount == 6) {
               System.out.println("pass count is six. GAME OVER! ");
-              server.sendToAll(new EndGameMessage(server.getServerHost(), server.getGameSession().getPlayers()));
+              server.sendToAll(
+                  new EndGameMessage(server.getServerHost(), server.getGameSession().getPlayers()));
             }
             SwapTilesMessage swtMsg = (SwapTilesMessage) m;
             currentPlayerIndex = swtMsg.getPlayer().getPlayerID();
-            nextPlayer =  gameSession.getPlayers().get((currentPlayerIndex+1 >= gameSession.getPlayers().size()) ? 0 : currentPlayerIndex+1);
+            nextPlayer =
+                gameSession
+                    .getPlayers()
+                    .get(
+                        (currentPlayerIndex + 1 >= gameSession.getPlayers().size())
+                            ? 0
+                            : currentPlayerIndex + 1);
             playerTiles = new TileRack(MainController.mainController.getGameSession().getTilebag());
             Tile[] newTilesRack = new Tile[playerTiles.getTileRack().size()];
             playerTiles.getTileRack().toArray(newTilesRack);
@@ -200,9 +221,7 @@ public class ServerProtocol extends Thread {
     }
   }
 
-  public void incrementPass(){
+  public void incrementPass() {
     this.passCount++;
   }
 }
-
-

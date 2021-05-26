@@ -1,9 +1,9 @@
-/** Class for reusable stuff needed across the project
+/**
+ * Class for reusable stuff needed across the project
  *
  * @author fpetek
  * @version 1.0
  */
-
 package settings;
 
 public class GlobalSettings {

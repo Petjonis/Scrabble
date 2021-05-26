@@ -1,17 +1,18 @@
-/** Class to load, play and change volume of 16 byte .wav audio files
+/**
+ * Class to load, play and change volume of 16 byte .wav audio files
  *
  * @author fpetek
  * @version 1.0
  */
-
 package utility;
 
-import java.io.File;
+import settings.GlobalSettings;
+
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
-import settings.GlobalSettings;
+import java.io.File;
 
 public class AudioPlayer implements Runnable {
   public Clip audio;

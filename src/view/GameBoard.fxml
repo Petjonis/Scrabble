@@ -3,103 +3,116 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ProgressBar?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-
-<VBox fx:id="gameBoard" alignment="CENTER" spacing="10.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GameBoardController">
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="gameBoard" alignment="CENTER" spacing="10.0"
+      style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/16"
+      fx:controller="controller.GameBoardController">
     <children>
-      <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
-         <children>
-              <GridPane fx:id="boardGrid" alignment="CENTER" gridLinesVisible="true" hgap="1.0" maxWidth="1363.0" prefHeight="600.0" prefWidth="600.0" style="-fx-background-color: transparent;" vgap="1.0" HBox.hgrow="ALWAYS">
-                  <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  </columnConstraints>
-                  <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  </rowConstraints>
-              </GridPane>
-         </children>
-      </HBox>
-        <GridPane fx:id="tileRack" alignment="CENTER" gridLinesVisible="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="600.0" style="-fx-background-color: #878787;">
+        <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
+            <children>
+                <GridPane fx:id="boardGrid" alignment="CENTER" gridLinesVisible="true" hgap="1.0" maxWidth="1363.0"
+                          prefHeight="600.0" prefWidth="600.0" style="-fx-background-color: transparent;" vgap="1.0"
+                          HBox.hgrow="ALWAYS">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    </rowConstraints>
+                </GridPane>
+            </children>
+        </HBox>
+        <GridPane fx:id="tileRack" alignment="CENTER" gridLinesVisible="true" maxHeight="-Infinity" maxWidth="-Infinity"
+                  prefHeight="80.0" prefWidth="600.0" style="-fx-background-color: #878787;">
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
             </rowConstraints>
         </GridPane>
-      <HBox alignment="CENTER" fillHeight="false" spacing="20.0" VBox.vgrow="NEVER">
-         <children>
-            <JFXButton fx:id="playButton" buttonType="RAISED" focusTraversable="false" onAction="#play" prefHeight="55.0" prefWidth="130.0" style="-fx-background-radius: 10; -fx-background-color: #7FA650;" text="Play" textFill="WHITE" HBox.hgrow="ALWAYS">
-               <font>
-                  <Font name="System Bold" size="23.0" />
-               </font>
-            </JFXButton>
-            <VBox alignment="CENTER" fillWidth="false" spacing="5.0" HBox.hgrow="NEVER">
-               <children>
-                  <JFXButton fx:id="swapButton" buttonType="RAISED" focusTraversable="false" layoutX="10.0" layoutY="10.0" onAction="#swap" prefHeight="27.0" prefWidth="130.0" style="-fx-background-radius: 10; -fx-background-color: #7FA650;" text="Swap" textFill="WHITE" VBox.vgrow="ALWAYS">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                  </JFXButton>
-                  <JFXButton fx:id="undoButton" buttonType="RAISED" focusTraversable="false" onAction="#undo" prefHeight="27.0" prefWidth="130.0" style="-fx-background-radius: 10; -fx-background-color: #7FA650;" text="Undo" textFill="WHITE" VBox.vgrow="ALWAYS">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                  </JFXButton>
-               </children>
-            </VBox>
-            <JFXButton fx:id="passButton" buttonType="RAISED" focusTraversable="false" onAction="#pass" prefHeight="53.0" prefWidth="130.0" style="-fx-background-radius: 10; -fx-background-color: #7FA650;" text="Pass" textFill="WHITE" HBox.hgrow="ALWAYS">
-               <font>
-                  <Font name="System Bold" size="23.0" />
-               </font>
-            </JFXButton>
-            <ProgressBar fx:id="progressBar" prefHeight="18.0" prefWidth="123.0" progress="0.0" style="-fx-accent: #7FA650;" HBox.hgrow="ALWAYS" />
-         </children>
-         <padding>
-            <Insets left="10.0" right="10.0" />
-         </padding>
-      </HBox>
+        <HBox alignment="CENTER" fillHeight="false" spacing="20.0" VBox.vgrow="NEVER">
+            <children>
+                <JFXButton fx:id="playButton" buttonType="RAISED" focusTraversable="false" onAction="#play"
+                           prefHeight="55.0" prefWidth="130.0"
+                           style="-fx-background-radius: 10; -fx-background-color: #7FA650;" text="Play"
+                           textFill="WHITE" HBox.hgrow="ALWAYS">
+                    <font>
+                        <Font name="System Bold" size="23.0"/>
+                    </font>
+                </JFXButton>
+                <VBox alignment="CENTER" fillWidth="false" spacing="5.0" HBox.hgrow="NEVER">
+                    <children>
+                        <JFXButton fx:id="swapButton" buttonType="RAISED" focusTraversable="false" layoutX="10.0"
+                                   layoutY="10.0" onAction="#swap" prefHeight="27.0" prefWidth="130.0"
+                                   style="-fx-background-radius: 10; -fx-background-color: #7FA650;" text="Swap"
+                                   textFill="WHITE" VBox.vgrow="ALWAYS">
+                            <font>
+                                <Font name="System Bold" size="12.0"/>
+                            </font>
+                        </JFXButton>
+                        <JFXButton fx:id="undoButton" buttonType="RAISED" focusTraversable="false" onAction="#undo"
+                                   prefHeight="27.0" prefWidth="130.0"
+                                   style="-fx-background-radius: 10; -fx-background-color: #7FA650;" text="Undo"
+                                   textFill="WHITE" VBox.vgrow="ALWAYS">
+                            <font>
+                                <Font name="System Bold" size="12.0"/>
+                            </font>
+                        </JFXButton>
+                    </children>
+                </VBox>
+                <JFXButton fx:id="passButton" buttonType="RAISED" focusTraversable="false" onAction="#pass"
+                           prefHeight="53.0" prefWidth="130.0"
+                           style="-fx-background-radius: 10; -fx-background-color: #7FA650;" text="Pass"
+                           textFill="WHITE" HBox.hgrow="ALWAYS">
+                    <font>
+                        <Font name="System Bold" size="23.0"/>
+                    </font>
+                </JFXButton>
+                <ProgressBar fx:id="progressBar" prefHeight="18.0" prefWidth="123.0" progress="0.0"
+                             style="-fx-accent: #7FA650;" HBox.hgrow="ALWAYS"/>
+            </children>
+            <padding>
+                <Insets left="10.0" right="10.0"/>
+            </padding>
+        </HBox>
     </children>
-   <padding>
-      <Insets bottom="10.0" />
-   </padding>
+    <padding>
+        <Insets bottom="10.0"/>
+    </padding>
 </VBox>

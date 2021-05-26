@@ -6,21 +6,14 @@ package network;
  * @author socho
  * @version 1.0
  */
-
-import java.io.IOException;
-import java.io.Serializable;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import messages.Message;
 import model.GameSession;
-import model.HumanPlayer;
 import model.Player;
+
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.*;
 
 public class Server {
 
@@ -29,15 +22,12 @@ public class Server {
   private int port;
   private GameSession gameSession;
   private Player serverHost;
+  /** collects all connected clients' user names in a HashMap. */
+  private HashMap<Player, ServerProtocol> clients = new HashMap<>();
 
   public Server(int portNumber) {
     this.port = portNumber;
   }
-
-  /**
-   * collects all connected clients' user names in a HashMap.
-   */
-  private HashMap<Player, ServerProtocol> clients = new HashMap<>();
 
   public synchronized void removeClient(Player client) {
     this.clients.remove(client);
@@ -56,9 +46,7 @@ public class Server {
     return new HashSet<Player>(clientNames);
   }
 
-  /**
-   * setup server + listen to connection requests from clients.
-   */
+  /** setup server + listen to connection requests from clients. */
   public void listen() throws IOException {
     running = true;
     try {
@@ -69,8 +57,8 @@ public class Server {
         if (clients.size() < 4) {
           Socket clientSocket = hostSocket.accept();
 
-          ServerProtocol clientConnectionThread = new ServerProtocol(clientSocket, this,
-              this.gameSession);
+          ServerProtocol clientConnectionThread =
+              new ServerProtocol(clientSocket, this, this.gameSession);
           clientConnectionThread.start();
         } else {
           System.out.println("This game session is full.");
@@ -85,9 +73,7 @@ public class Server {
     }
   }
 
-  /**
-   * method for sending messages.
-   */
+  /** method for sending messages. */
   private synchronized void sendTo(List<Player> clientNames, Message m) {
     List<Player> clientFails = new ArrayList<Player>();
     for (Player clName : clientNames) {
@@ -104,24 +90,17 @@ public class Server {
     }
   }
 
-  /**
-   * send to all clients.
-   */
+  /** send to all clients. */
   public void sendToAll(Message m) {
     sendTo(new ArrayList<Player>(getClients()), (Message) (m.clone()));
   }
 
-  /**
-   * sending to specific client/s.
-   */
+  /** sending to specific client/s. */
   public void sendToAll(ArrayList<Player> list, Message m) {
     sendTo(list, (Message) (m.clone()));
   }
 
-
-  /**
-   * stops the server.
-   */
+  /** stops the server. */
   public void stopServer() {
     running = false;
     if (!hostSocket.isClosed()) {
@@ -134,9 +113,7 @@ public class Server {
     }
   }
 
-  /**
-   * getter and setter methods for attributes.
-   */
+  /** getter and setter methods for attributes. */
   public int getPort() {
     return this.port;
   }
@@ -153,15 +130,15 @@ public class Server {
     this.gameSession = session;
   }
 
-  public void setServerHost(Player user) {
-    this.serverHost = user;
-  }
-
   public Player getServerHost() {
     return this.serverHost;
   }
 
-  public HashMap<Player, ServerProtocol> getClientsHashMap(){
+  public void setServerHost(Player user) {
+    this.serverHost = user;
+  }
+
+  public HashMap<Player, ServerProtocol> getClientsHashMap() {
     return this.clients;
   }
 }

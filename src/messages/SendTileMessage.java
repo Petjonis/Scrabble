@@ -10,7 +10,6 @@ import model.Tile;
  * @author socho
  * @version 1.0
  */
-
 public class SendTileMessage extends Message {
 
   private static final long serialVersionUID = 1L;
@@ -21,11 +20,10 @@ public class SendTileMessage extends Message {
    * constructor for "sending a tile" message.
    *
    * @param tile is for what kind of tile will be moved.
-   * @param pos  is for the position of the tile on the board
+   * @param pos is for the position of the tile on the board
    * @param player is for the user who moved this tile.
    * @author socho
    */
-
   public SendTileMessage(Tile tile, Square[][] pos, Player player) {
     super(MessageType.SEND_TILE, player);
     this.sendingTile = tile;
@@ -39,5 +37,4 @@ public class SendTileMessage extends Message {
   public Square[][] getPosition() {
     return this.position;
   }
-
 }

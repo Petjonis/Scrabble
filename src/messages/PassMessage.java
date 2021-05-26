@@ -13,7 +13,5 @@ public class PassMessage extends Message {
    */
   public PassMessage(Player player) {
     super(MessageType.PASS_MESSAGE, player);
-
   }
-
 }

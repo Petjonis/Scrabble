@@ -1,13 +1,12 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.Set;
 import network.Server;
 
-/**
- * class represents the game session which is essential for the network game.
- */
-public class GameSession{
+import java.util.ArrayList;
+import java.util.Set;
+
+/** class represents the game session which is essential for the network game. */
+public class GameSession {
 
   private static int gameLobbyId = 0;
   private static ArrayList<GameSession> sessions = new ArrayList<GameSession>();
@@ -27,13 +26,11 @@ public class GameSession{
     this.sessions.add(this);
   }
 
-  /**
-   * getter and setter methods for all attributes.
-   */
-
+  /** getter and setter methods for all attributes. */
   public GameState getState() {
     return this.state;
   }
+
   public void setState(GameState gs) {
     this.state = gs;
   }
@@ -46,17 +43,17 @@ public class GameSession{
     return players;
   }
 
-  public Player getPlayerByID(int ID){
-    for(Player p: players){
-      if(p.getPlayerID() == ID) {
+  public void setPlayers(Set<Player> list) {
+    this.players = new ArrayList<Player>(list);
+  }
+
+  public Player getPlayerByID(int ID) {
+    for (Player p : players) {
+      if (p.getPlayerID() == ID) {
         return p;
       }
     }
     return null;
-  }
-
-  public void setPlayers(Set<Player> list) {
-    this.players = new ArrayList<Player>(list);
   }
 
   public Player getHost() {

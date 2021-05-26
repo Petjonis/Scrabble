@@ -4,13 +4,13 @@ import java.io.Serializable;
 
 public class Position implements Serializable {
 
-	private int xCoordinate;
-	private int yCoordinate;
+  private int xCoordinate;
+  private int yCoordinate;
 
-	public Position(int row, int col) {
-		this.xCoordinate = row;
-		this.yCoordinate = col;
-	}
+  public Position(int row, int col) {
+    this.xCoordinate = row;
+    this.yCoordinate = col;
+  }
 
   public int getCol() {
     return yCoordinate;
@@ -19,6 +19,4 @@ public class Position implements Serializable {
   public int getRow() {
     return xCoordinate;
   }
-
-
 }

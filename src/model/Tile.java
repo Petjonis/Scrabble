@@ -4,7 +4,6 @@
  * @author fpetek
  * @version 1.0
  */
-
 package model;
 
 import java.io.Serializable;
@@ -20,16 +19,14 @@ public class Tile implements Serializable {
    * @param letter Is the letter
    * @param value Is value of tile
    */
-
   public Tile(char letter, int value, Position position) {
     this.letter = letter;
     this.value = value;
     this.pos = position;
   }
 
-
-  public String toString(){
-    return letter+","+value;
+  public String toString() {
+    return letter + "," + value;
   }
 
   public char getLetter() {
@@ -48,11 +45,11 @@ public class Tile implements Serializable {
     this.value = value;
   }
 
-  public int getRow(){
+  public int getRow() {
     return pos.getRow();
   }
 
-  public int getCol(){
+  public int getCol() {
     return pos.getCol();
   }
 }

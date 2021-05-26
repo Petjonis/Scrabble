@@ -4,17 +4,14 @@
  * @author fpetek, fjaehrli
  * @version 2.0
  */
-
 package model;
 
 import settings.GlobalSettings;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class TileBag {
@@ -22,8 +19,9 @@ public class TileBag {
   private final ArrayList<Tile> tileBag = new ArrayList<Tile>();
 
   public TileBag() {
-    try (FileReader fileReader = new FileReader(GlobalSettings.filepath +"letterValueDistribution.csv");
-         BufferedReader bufferedReader = new BufferedReader(fileReader)) {
+    try (FileReader fileReader =
+            new FileReader(GlobalSettings.filepath + "letterValueDistribution.csv");
+        BufferedReader bufferedReader = new BufferedReader(fileReader)) {
       String line;
       while ((line = bufferedReader.readLine()) != null) {
         String[] csvLine = line.split(",");
@@ -48,13 +46,13 @@ public class TileBag {
     return tileBag.remove(randomIndex);
   }
 
-  public void addTiles(Tile[] tiles){
-    for(Tile t : tiles){
+  public void addTiles(Tile[] tiles) {
+    for (Tile t : tiles) {
       this.tileBag.add(t);
     }
   }
 
-  public boolean isEmpty(){
+  public boolean isEmpty() {
     return tileBag.isEmpty();
   }
 

@@ -1,6 +1,5 @@
 package messages;
 
-
 import model.Player;
 
 public class RemovingPlayerListMessage extends Message {
@@ -22,5 +21,8 @@ public class RemovingPlayerListMessage extends Message {
   public int getId() {
     return this.id;
   }
-  public String getName(){ return this.name; }
+
+  public String getName() {
+    return this.name;
+  }
 }

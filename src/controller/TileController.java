@@ -1,22 +1,19 @@
 package controller;
 
-import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 
+import java.io.IOException;
 
 public class TileController extends StackPane {
 
-  @FXML
-  private StackPane tile;
+  @FXML private StackPane tile;
 
-  @FXML
-  private Label letter;
+  @FXML private Label letter;
 
-  @FXML
-  private Label value;
+  @FXML private Label value;
 
   public TileController() {
     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/Tile.fxml"));
@@ -29,7 +26,6 @@ public class TileController extends StackPane {
       throw new RuntimeException(exception);
     }
   }
-
 
   public String getLetter() {
     return letter.getText();
@@ -52,5 +48,4 @@ public class TileController extends StackPane {
     this.setLetter(split[0]);
     this.setValue(split[1]);
   }
-
 }

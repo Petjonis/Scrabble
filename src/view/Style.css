@@ -1,36 +1,30 @@
-.tab-pane .tab-header-area .tab-header-background
-{
-    -fx-background-color:  #312E2B;
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-background-color: #312E2B;
 }
 
-.tab-pane
-{
+.tab-pane {
     -fx-tab-min-height: 45;
     -fx-tab-max-height: 45;
-    -fx-tab-min-width:140px;
+    -fx-tab-min-width: 140px;
 
 }
 
-.tab
-{
-    -fx-background-insets: 0 1 0 1,0,0;
+.tab {
+    -fx-background-insets: 0 1 0 1, 0, 0;
 }
 
-.tab-pane .tab
-{
-    -fx-background-color:  #312E2B;
-    -fx-tab-min-height:45px;
+.tab-pane .tab {
+    -fx-background-color: #312E2B;
+    -fx-tab-min-height: 45px;
 }
 
-.tab-pane .tab:selected
-{
-    -fx-background-color:  #272522;
+.tab-pane .tab:selected {
+    -fx-background-color: #272522;
     -fx-focus-color: #7FA650;
     -fx-faint-focus-color: transparent;
 }
 
-.tab .tab-label
-{
+.tab .tab-label {
     -fx-content-display: top;
     -fx-alignment: CENTER;
     -fx-text-fill: #ababab;
@@ -39,11 +33,10 @@
 
 }
 
-.tab:selected .tab-label
-{
+.tab:selected .tab-label {
     -fx-content-display: top;
     -fx-alignment: CENTER;
-    -fx-text-fill:  #7FA650;
+    -fx-text-fill: #7FA650;
 }
 
 .list-cell:filled:selected:focused, .list-cell:filled:selected {

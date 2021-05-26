@@ -6,14 +6,13 @@ package model;
  * @author socho
  * @version 1.0
  */
-
 public class Square {
 
   private SquareType type;
   private Tile tile;
   private boolean occupied;
 
-  public Square(){
+  public Square() {
     this.type = SquareType.NO_BONUS;
     this.tile = null;
     this.occupied = false;
@@ -23,12 +22,16 @@ public class Square {
     return this.occupied;
   }
 
+  public void setOccupied(boolean b) {
+    this.occupied = b;
+  }
+
   public SquareType getType() {
     return type;
   }
 
   public void setType(String type) {
-    switch (type){
+    switch (type) {
       case "dl":
         this.type = SquareType.DOUBLE_LETTER;
         break;
@@ -53,9 +56,5 @@ public class Square {
 
   public void setTile(Tile tile) {
     this.tile = tile;
-  }
-
-  public void setOccupied(boolean b) {
-    this.occupied = b;
   }
 }

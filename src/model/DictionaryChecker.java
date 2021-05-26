@@ -1,11 +1,12 @@
 package model;
 
-import java.io.*;
-import java.util.*;
 import settings.GlobalSettings;
 
-public class DictionaryChecker {
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
+public class DictionaryChecker {
 
   /*
    * this dictionary has the size 26 for 26 letters. at each index we have different length due to
@@ -15,10 +16,12 @@ public class DictionaryChecker {
 
   public DictionaryChecker() {
     dictionary = new TrieSET();
-    try (FileReader fileReader = new FileReader(GlobalSettings.filepath + "Collins Scrabble Words (2019) with definitions.txt");
-         BufferedReader bufferedReader = new BufferedReader(fileReader)) {
+    try (FileReader fileReader =
+            new FileReader(
+                GlobalSettings.filepath + "Collins Scrabble Words (2019) with definitions.txt");
+        BufferedReader bufferedReader = new BufferedReader(fileReader)) {
       String line;
-      //Skip first 2 lines
+      // Skip first 2 lines
       bufferedReader.readLine();
       bufferedReader.readLine();
       while ((line = bufferedReader.readLine()) != null) {
@@ -31,7 +34,7 @@ public class DictionaryChecker {
     }
   }
 
-  public boolean contains(String key){
+  public boolean contains(String key) {
     return dictionary.contains(key);
   }
 
@@ -52,7 +55,7 @@ public class DictionaryChecker {
     return true;
   }
 
- /* public static void main(String [] args) {
+  /* public static void main(String [] args) {
     DictionaryChecker d = new DictionaryChecker();
 
     char[] keys = new char[15];

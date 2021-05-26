@@ -6,5 +6,7 @@ package model;
  * @author socho
  */
 public enum GameState {
-  WAITING_LOBBY, INGAME, CLOSED;
+  WAITING_LOBBY,
+  INGAME,
+  CLOSED;
 }

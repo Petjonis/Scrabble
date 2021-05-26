@@ -10,7 +10,7 @@ public class LeaveGameMessage extends Message {
   /**
    * constructor for message to leave the game.
    *
-   * @param player   is for the player
+   * @param player is for the player
    * @param idNumber is for player's id.
    */
   public LeaveGameMessage(Player player, int idNumber) {

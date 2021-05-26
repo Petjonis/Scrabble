@@ -12,7 +12,6 @@ public class ConnectMessage extends Message {
 
   private static final long serialVersionUID = 1L;
 
-
   public ConnectMessage(Player player) {
     super(MessageType.CONNECT, player);
   }
@@ -21,6 +20,4 @@ public class ConnectMessage extends Message {
   public Object clone() {
     return super.clone();
   }
-
-
 }

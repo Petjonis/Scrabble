@@ -2,22 +2,19 @@ package controller;
 
 import com.jfoenix.controls.JFXButton;
 import db.Database;
-import java.io.IOException;
-import java.net.URL;
-import java.util.Locale;
-import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import model.HumanPlayer;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
 
@@ -103,7 +100,9 @@ public class LoginController implements Initializable {
                 MainController.mainController.getUser().getUserName())
             != 0) {
           MainController.mainController.setWinRate(
-              String.format(Locale.ENGLISH,"%3.1f",
+              String.format(
+                      Locale.ENGLISH,
+                      "%3.1f",
                       ((double)
                                   (MainController.mainController.db.getWins(
                                       MainController.mainController.getUser().getUserName()))

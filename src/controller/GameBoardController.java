@@ -3,7 +3,6 @@ package controller;
 import com.jfoenix.controls.JFXButton;
 import de.jensd.fx.glyphs.materialicons.MaterialIcon;
 import de.jensd.fx.glyphs.materialicons.MaterialIconView;
-import java.io.IOException;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -23,39 +22,38 @@ import javafx.util.Pair;
 import messages.PassMessage;
 import messages.PlayMessage;
 import messages.SwapTilesMessage;
-import model.*;
+import model.Board;
+import model.SquareType;
+import model.Tile;
+import model.TileRack;
 import settings.GlobalSettings;
+
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class GameBoardController implements Initializable {
-  public static GameBoardController gameBoardController;
   private static final Integer STARTTIME = 120;
+  public static GameBoardController gameBoardController;
   private final IntegerProperty timeSeconds = new SimpleIntegerProperty(STARTTIME * 100);
   private Board board;
   private TileRack tr;
 
-  @FXML
-  private GridPane boardGrid;
-  @FXML
-  private GridPane tileRack;
-  @FXML
-  private JFXButton playButton;
-  @FXML
-  private JFXButton passButton;
-  @FXML
-  private JFXButton swapButton;
-  @FXML
-  private JFXButton undoButton;
-  @FXML
-  private ProgressBar progressBar;
+  @FXML private GridPane boardGrid;
+  @FXML private GridPane tileRack;
+  @FXML private JFXButton playButton;
+  @FXML private JFXButton passButton;
+  @FXML private JFXButton swapButton;
+  @FXML private JFXButton undoButton;
+  @FXML private ProgressBar progressBar;
 
   @FXML
   void pass(ActionEvent event) throws IOException {
     undoMove();
-    MainController.mainController.getConnection().sendToServer(
-        new PassMessage(MainController.mainController.getUser()));
+    MainController.mainController
+        .getConnection()
+        .sendToServer(new PassMessage(MainController.mainController.getUser()));
   }
 
   @FXML
@@ -67,14 +65,16 @@ public class GameBoardController implements Initializable {
   void play(ActionEvent event) throws IOException {
     ArrayList<Pair<String, Integer>> playedWords = board.playedWords();
     if (playedWords != null) {
-      Tile [] tileRack = new Tile[tr.getTileRack().size()];
+      Tile[] tileRack = new Tile[tr.getTileRack().size()];
       tr.getTileRack().toArray(tileRack);
       MainController.mainController
           .getConnection()
           .sendToServer(
               new PlayMessage(
                   MainController.mainController.getUser(),
-                  playedWords, board.getTilesPendingConfirmation(), tileRack));
+                  playedWords,
+                  board.getTilesPendingConfirmation(),
+                  tileRack));
       board.clearTilesPending();
       for (Pair<String, Integer> p : playedWords) {
         System.out.println("Word: " + p.getKey() + ", Score: " + p.getValue());
@@ -86,10 +86,11 @@ public class GameBoardController implements Initializable {
   @FXML
   void swap(ActionEvent event) throws IOException {
     undoMove();
-    Tile [] tileRack = new Tile[tr.getTileRack().size()];
+    Tile[] tileRack = new Tile[tr.getTileRack().size()];
     tr.getTileRack().toArray(tileRack);
-    MainController.mainController.getConnection().sendToServer(
-            new SwapTilesMessage(tileRack, MainController.mainController.getUser()));
+    MainController.mainController
+        .getConnection()
+        .sendToServer(new SwapTilesMessage(tileRack, MainController.mainController.getUser()));
   }
 
   @Override
@@ -99,7 +100,8 @@ public class GameBoardController implements Initializable {
     board = new Board();
     board.initializeDictionary();
 
-    //Adding StackPane to every Cell in the GridPane and Adding the Target Events to each StackPane.
+    // Adding StackPane to every Cell in the GridPane and Adding the Target Events to each
+    // StackPane.
     for (int row = 0; row < GlobalSettings.ROWS; row++) {
       for (int col = 0; col < GlobalSettings.COLUMNS; col++) {
         addStackPaneToBoardGrid(row, col);
@@ -109,80 +111,85 @@ public class GameBoardController implements Initializable {
     deactivate();
   }
 
-  //target event handlers
+  // target event handlers
   public void setOnDragOver(StackPane target) {
-    target.setOnDragOver((DragEvent event) -> {
-      /* data is dragged over the target */
-      //System.out.println("onDragOver");
+    target.setOnDragOver(
+        (DragEvent event) -> {
+          /* data is dragged over the target */
+          // System.out.println("onDragOver");
 
-      /* accept it only if it is  not dragged from the same node
-       * and if it has a string data */
-      if (event.getGestureSource() != target) {
-        /* allow for both copying and moving, whatever user chooses */
-        event.acceptTransferModes(TransferMode.MOVE);
-      }
+          /* accept it only if it is  not dragged from the same node
+           * and if it has a string data */
+          if (event.getGestureSource() != target) {
+            /* allow for both copying and moving, whatever user chooses */
+            event.acceptTransferModes(TransferMode.MOVE);
+          }
 
-      event.consume();
-    });
+          event.consume();
+        });
   }
 
   public void setOnDragEntered(StackPane target) {
-    target.setOnDragEntered((DragEvent event) -> {
-      /* the drag-and-drop gesture entered the target */
-      //System.out.println("onDragEntered");
-      /* show to the user that it is an actual gesture target */
-      if (event.getGestureSource() != target) {
-        target.setStyle("-fx-background-color: green");
-      }
+    target.setOnDragEntered(
+        (DragEvent event) -> {
+          /* the drag-and-drop gesture entered the target */
+          // System.out.println("onDragEntered");
+          /* show to the user that it is an actual gesture target */
+          if (event.getGestureSource() != target) {
+            target.setStyle("-fx-background-color: green");
+          }
 
-      event.consume();
-    });
+          event.consume();
+        });
   }
 
   public void setOnDragExited(StackPane target) {
-    target.setOnDragExited((DragEvent event) -> {
-      /* mouse moved away, remove the graphical cues */
-      int row = GridPane.getRowIndex(target);
-      int col = GridPane.getColumnIndex(target);
-      target.setStyle(getStyle(row, col));
-      event.consume();
-    });
+    target.setOnDragExited(
+        (DragEvent event) -> {
+          /* mouse moved away, remove the graphical cues */
+          int row = GridPane.getRowIndex(target);
+          int col = GridPane.getColumnIndex(target);
+          target.setStyle(getStyle(row, col));
+          event.consume();
+        });
   }
 
   public void setOnDragDropped(StackPane target) {
-    target.setOnDragDropped((DragEvent event) -> {
-      /* data dropped */
-      //System.out.println("onDragDropped");
-      /* if there is a string data on dragboard, read it and use it */
-      Dragboard db = event.getDragboard();
-      boolean success = false;
-      if (db.hasString()) {
-        //target.setText(db.getString());
-        TileController tmp = new TileController();
-        tmp.setString(db.getString());
-        int row = GridPane.getRowIndex(target);
-        int col = GridPane.getColumnIndex(target);
-        setOnDragDetected(tmp);
-        setOnDragDone(tmp);
-        boardGrid.getChildren().remove(target);
-        boardGrid.add(tmp, col, row);
-        board.addTilePending(tmp.getLetter().charAt(0), Integer.parseInt(tmp.getValue()), row, col);
-        success = true;
-      }
-      /* let the source know whether the string was successfully
-       * transferred and used */
-      event.setDropCompleted(success);
+    target.setOnDragDropped(
+        (DragEvent event) -> {
+          /* data dropped */
+          // System.out.println("onDragDropped");
+          /* if there is a string data on dragboard, read it and use it */
+          Dragboard db = event.getDragboard();
+          boolean success = false;
+          if (db.hasString()) {
+            // target.setText(db.getString());
+            TileController tmp = new TileController();
+            tmp.setString(db.getString());
+            int row = GridPane.getRowIndex(target);
+            int col = GridPane.getColumnIndex(target);
+            setOnDragDetected(tmp);
+            setOnDragDone(tmp);
+            boardGrid.getChildren().remove(target);
+            boardGrid.add(tmp, col, row);
+            board.addTilePending(
+                tmp.getLetter().charAt(0), Integer.parseInt(tmp.getValue()), row, col);
+            success = true;
+          }
+          /* let the source know whether the string was successfully
+           * transferred and used */
+          event.setDropCompleted(success);
 
-      event.consume();
-    });
+          event.consume();
+        });
   }
 
-  //source events handlers
+  // source events handlers
   public void setOnDragDetected(TileController tile) {
     tile.setOnDragDetected(
         (MouseEvent event) -> {
           /* drag was detected, start drag-and-drop gesture*/
-          //System.out.println("onDragDetected");
+          // System.out.println("onDragDetected");
 
           /* allow transfer mode move*/
           Dragboard db = tile.startDragAndDrop(TransferMode.MOVE);
@@ -198,33 +205,36 @@ public class GameBoardController implements Initializable {
   }
 
   public void setOnDragDone(TileController tile) {
-    tile.setOnDragDone((DragEvent event) -> {
-      /* the drag-and-drop gesture ended */
-      //System.out.println("onDragDone");
-      /* if the data was successfully moved, clear it */
-      if (event.getTransferMode() == TransferMode.MOVE) {
-        if (tileRack.getChildren().contains(tile)) {
-          int col = GridPane.getColumnIndex(tile);
-          tr.remove(col);
-        } else if (boardGrid.getChildren().contains(tile)) {
-          int row = GridPane.getRowIndex(tile);
-          int col = GridPane.getColumnIndex(tile);
-          board.removeTilePending(row, col);
-          boardGrid.getChildren().remove(tile);
-          addStackPaneToBoardGrid(row, col);
-        }
-      }
+    tile.setOnDragDone(
+        (DragEvent event) -> {
+          /* the drag-and-drop gesture ended */
+          // System.out.println("onDragDone");
+          /* if the data was successfully moved, clear it */
+          if (event.getTransferMode() == TransferMode.MOVE) {
+            if (tileRack.getChildren().contains(tile)) {
+              int col = GridPane.getColumnIndex(tile);
+              tr.remove(col);
+            } else if (boardGrid.getChildren().contains(tile)) {
+              int row = GridPane.getRowIndex(tile);
+              int col = GridPane.getColumnIndex(tile);
+              board.removeTilePending(row, col);
+              boardGrid.getChildren().remove(tile);
+              addStackPaneToBoardGrid(row, col);
+            }
+          }
 
-      event.consume();
-    });
+          event.consume();
+        });
   }
 
   public void startProgressBar() {
-    progressBar.progressProperty()
+    progressBar
+        .progressProperty()
         .bind(timeSeconds.divide(STARTTIME * 100.0).subtract(1).multiply(-1));
     timeSeconds.set((STARTTIME + 1) * 100);
     Timeline timeline = new Timeline();
-    timeline.getKeyFrames()
+    timeline
+        .getKeyFrames()
         .add(new KeyFrame(Duration.seconds(STARTTIME + 1), new KeyValue(timeSeconds, 0)));
     timeline.playFromStart();
   }
@@ -244,7 +254,6 @@ public class GameBoardController implements Initializable {
     boardGrid.add(stackPane, col, row);
   }
 
-
   public void addFinalTilesToBoardGrid(ArrayList<Tile> tiles) {
     for (Tile t : tiles) {
       removeStackPaneFromBoardGrid(t.getRow(), t.getCol());
@@ -258,7 +267,8 @@ public class GameBoardController implements Initializable {
 
   private void removeStackPaneFromBoardGrid(int row, int col) {
     for (Node node : boardGrid.getChildren()) {
-      if (node instanceof StackPane && GridPane.getRowIndex(node) == row
+      if (node instanceof StackPane
+          && GridPane.getRowIndex(node) == row
           && GridPane.getColumnIndex(node) == col) {
         StackPane s = new StackPane(node);
         boardGrid.getChildren().remove(s);
@@ -306,7 +316,7 @@ public class GameBoardController implements Initializable {
     }
   }
 
-  public void deactivate(){
+  public void deactivate() {
     tileRack.setDisable(true);
     boardGrid.setDisable(true);
     playButton.setDisable(true);
@@ -315,7 +325,7 @@ public class GameBoardController implements Initializable {
     undoButton.setDisable(true);
   }
 
-  public void activate(){
+  public void activate() {
     tileRack.setDisable(false);
     boardGrid.setDisable(false);
     playButton.setDisable(false);
@@ -324,7 +334,7 @@ public class GameBoardController implements Initializable {
     undoButton.setDisable(false);
   }
 
-  private void undoMove(){
+  private void undoMove() {
     for (Tile t : board.getTilesPendingConfirmation()) {
       removeStackPaneFromBoardGrid(t.getRow(), t.getCol());
       addStackPaneToBoardGrid(t.getRow(), t.getCol());
@@ -333,18 +343,20 @@ public class GameBoardController implements Initializable {
     board.clearTilesPending();
   }
 
-  public void initializeGame(Tile[] tileRack, boolean isActivePlayer){
+  public void initializeGame(Tile[] tileRack, boolean isActivePlayer) {
     tr = new TileRack(tileRack);
     renderTileRack();
     tr.registerChangeListener(c -> renderTileRack());
-    if(isActivePlayer) {
+    if (isActivePlayer) {
       activate();
-    }else {
+    } else {
       deactivate();
     }
   }
 
-  public GridPane getTileRack() { return tileRack; }
+  public GridPane getTileRack() {
+    return tileRack;
+  }
 
   public JFXButton getPlayButton() {
     return playButton;
