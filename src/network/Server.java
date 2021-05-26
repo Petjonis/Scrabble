@@ -145,6 +145,7 @@ public class Server {
   /**
    * send to all clients except for one.
    */
+  /* TODO: Methode funktioniert so nicht richtig aber wird auch bis jetzt nicht benötigt, erstmal nicht löschen aber auch nicht nutzen bitte, DANKE!*/
   public void sendToAllBut(int idNumber, Message m) {
     synchronized (this.clients) {
       Set<Player> senderList = getClients();
@@ -155,6 +156,7 @@ public class Server {
       sendTo(new ArrayList<Player>(senderList), m);
     }
   }
+
 
   /**
    * stops the server.

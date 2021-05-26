@@ -16,10 +16,7 @@ import java.util.ArrayList;
 
 
 import messages.*;
-import model.GameSession;
-import model.Player;
-import model.Square;
-import model.Tile;
+import model.*;
 
 public class ServerProtocol extends Thread {
 
@@ -102,10 +99,18 @@ public class ServerProtocol extends Thread {
 
         switch (m.getMessageType()) {
           case PLAY_MESSAGE:
+            passCount = 0;
             PlayMessage pMsg = (PlayMessage) m;
-            server.sendToAllBut(
-                pMsg.getPlayer().getPlayerID(),
-                new PlayMessage(pMsg.getPlayer(), pMsg.getPlayedWords(), pMsg.getTiles()));
+            int currentPlayerIndex = pMsg.getPlayer().getPlayerID();
+            Player nextPlayer =  gameSession.getPlayers().get((currentPlayerIndex+1 >= gameSession.getPlayers().size()) ? 0 : currentPlayerIndex+1);
+            server.sendToAll(new PlayMessage(pMsg.getPlayer(), pMsg.getPlayedWords(),
+                            pMsg.getTiles(), pMsg.getTileRack()));
+            TileRack playerTiles = new TileRack(pMsg.getTileRack());
+            playerTiles.refillFromBag(MainController.mainController.getGameSession().getTilebag());
+            Tile[] newTileRack = new Tile[7];
+            playerTiles.getTileRack().toArray(newTileRack);
+            sendToClient(new EndPlayMessage(pMsg.getPlayer(), newTileRack));
+            server.sendToAll(new StartPlayMessage(nextPlayer));
             break;
           case RESULT_MESSAGE:
             server.sendToAll(new ResultPlayerListMessage(server.getServerHost(),
@@ -167,8 +172,7 @@ public class ServerProtocol extends Thread {
             break;
           case SEND_CHAT_MESSAGE:
             SendChatMessage scMsg = (SendChatMessage) m;
-            user = scMsg.getPlayer();
-            server.sendToAllBut(user.getPlayerID(), scMsg);
+            server.sendToAll(scMsg);
             break;
           case SWAP_TILES:
             SwapTilesMessage swtMsg = (SwapTilesMessage) m;

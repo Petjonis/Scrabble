@@ -74,7 +74,8 @@ public class GameBoardController implements Initializable {
   void play(ActionEvent event) throws IOException {
     ArrayList<Pair<String, Integer>> playedWords = board.playedWords();
     if (playedWords != null) {
-      addFinalTilesToBoardGrid(board.getTilesPendingConfirmation());
+      Tile [] tileRack = new Tile[tr.getTileRack().size()];
+      tr.getTileRack().toArray(tileRack);
       /* TODO: Send playedWords to Server */
       MainController.mainController
           .getConnection()
@@ -82,10 +83,9 @@ public class GameBoardController implements Initializable {
               new PlayMessage(
                   MainController.mainController.getUser(),
                   playedWords,
-                  board.getTilesPendingConfirmation()));
-      board.clearTilesPending();
+                  board.getTilesPendingConfirmation(), tileRack));
 
-      //tr.refillFromBag(tb);
+      board.clearTilesPending();
       for (Pair<String, Integer> p : playedWords) {
         System.out.println("Word: " + p.getKey() + ", Score: " + p.getValue());
       }
@@ -345,6 +345,8 @@ public class GameBoardController implements Initializable {
     tr.registerChangeListener(c -> renderTileRack());
     if(isActivePlayer) {
       activate();
+    }else {
+      deactivate();
     }
   }
 

@@ -46,6 +46,15 @@ public class GameSession{
     return players;
   }
 
+  public Player getPlayerByID(int ID){
+    for(Player p: players){
+      if(p.getPlayerID() == ID) {
+        return p;
+      }
+    }
+    return null;
+  }
+
   public void setPlayers(Set<Player> list) {
     this.players = new ArrayList<Player>(list);
   }

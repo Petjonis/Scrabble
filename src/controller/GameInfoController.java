@@ -18,6 +18,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.Pair;
 import messages.LeaveGameMessage;
 import messages.RequestPlayerListMessage;
 import messages.SendChatMessage;
@@ -71,15 +72,10 @@ public class GameInfoController implements Initializable {
   @FXML
   void send(ActionEvent event) throws IOException {
     if (MainController.mainController.getHosting()) {
-      chatList.getItems()
-          .add(MainController.mainController.getUser().getUserName() + " [Host]: " + sendText
-              .getText());
       MainController.mainController.getConnection().sendToServer(
           new SendChatMessage(MainController.mainController.getUser(),
               sendText.getText(), true));
     } else {
-      chatList.getItems()
-          .add(MainController.mainController.getUser().getUserName() + ": " + sendText.getText());
       MainController.mainController.getConnection()
           .sendToServer(new SendChatMessage(MainController.mainController.getUser(),
               sendText.getText(), false));
@@ -152,8 +148,24 @@ public class GameInfoController implements Initializable {
     }
   }
 
-  public void updateLastWordList(String word) {
-    lastWordList.getItems().add(word);
+  public void updateLastWordList(ArrayList<Pair<String, Integer>> playedWords) {
+    for(Pair<String,Integer> p : playedWords){
+      lastWordList.getItems().add("Word: " + p.getKey() + ", Score: " + p.getValue());
+    }
+    lastWordList.scrollTo(lastWordList.getItems().size()-1);
+  }
+
+  public void updateScoreBoard(int index, ArrayList<Pair<String, Integer>> playedWords){
+    int score = 0;
+    for(Pair<String,Integer> p : playedWords){
+      score += p.getValue();
+    }
+    scoreList.getItems().set(index,score);
+  }
+
+  public void setActivePlayer(int nextPlayer){
+    scoreList.getSelectionModel().select(nextPlayer);
+    playerList.getSelectionModel().select(nextPlayer);
   }
 
   /**
@@ -167,6 +179,7 @@ public class GameInfoController implements Initializable {
     } else {
       chatList.getItems().add(from.getUserName() + ": " + text);
     }
+    chatList.scrollTo(chatList.getItems().size()-1);
   }
 
   /**
@@ -228,6 +241,7 @@ public class GameInfoController implements Initializable {
       lastPlayedWordsLabel.setVisible(true);
       lastWordList.setVisible(true);
       startGameButton.setVisible(false);
+
     }
 
     for (Player player : MainController.mainController.getGameSession().getPlayers()){

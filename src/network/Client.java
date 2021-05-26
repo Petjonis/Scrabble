@@ -18,13 +18,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import javafx.application.Platform;
 import messages.ConnectMessage;
-import messages.DisconnectMessage;
-import messages.Message;
-import messages.RemovingPlayerListMessage;
-import messages.ResultPlayerListMessage;
-import messages.SendChatMessage;
-import messages.StartGameFirstMessage;
-import messages.UpdatePlayerListMessage;
+import messages.*;
 import model.ComputerPlayer;
 import model.Player;
 import model.Tile;
@@ -79,6 +73,43 @@ public class Client extends Thread {
               @Override
               public void run() {
                 GameBoardController.gameBoardController.initializeGame(playerTiles, activePlayer);
+                GameInfoController.gameInfoController.setActivePlayer(1);
+              }
+            });
+            break;
+          case START_PLAY:
+            StartPlayMessage spMsg = (StartPlayMessage) m;
+            Player nextPlayer = spMsg.getPlayer();
+            Platform.runLater(new Runnable() {
+              @Override
+              public void run() {
+                if(nextPlayer.getPlayerID() == MainController.mainController.getUser().getPlayerID()){
+                  GameBoardController.gameBoardController.activate();
+                }
+                GameInfoController.gameInfoController.setActivePlayer(nextPlayer.getPlayerID());
+              }
+            });
+            break;
+          case END_PLAY:
+            EndPlayMessage epMsg = (EndPlayMessage) m;
+            Tile[] newTileRack = epMsg.getTiles();
+            Platform.runLater(new Runnable() {
+              @Override
+              public void run() {
+                GameBoardController.gameBoardController.initializeGame(newTileRack, false);
+              }
+            });
+            break;
+          case PLAY_MESSAGE:
+            PlayMessage pMsg = (PlayMessage) m;
+            Player nxtPlayer = pMsg.getPlayer();
+            Platform.runLater(new Runnable() {
+              @Override
+              public void run() {
+                GameBoardController.gameBoardController.addFinalTilesToBoardGrid(pMsg.getTiles());
+                GameInfoController.gameInfoController.updateLastWordList(pMsg.getPlayedWords());
+                GameInfoController.gameInfoController.updateScoreBoard(
+                        pMsg.getPlayer().getPlayerID(),pMsg.getPlayedWords());
               }
             });
             break;
