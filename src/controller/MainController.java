@@ -214,6 +214,11 @@ public class MainController implements Initializable {
       scene.setFill(Color.TRANSPARENT);
       stage.setScene(scene);
       stage.show();
+      Stage parentStage = (Stage) MainController.mainController.getCenterPane().getScene().getWindow();
+      stage.setX(parentStage.getX() + parentStage.getWidth() / 2 - stage.getWidth() / 2);
+      stage.setY(parentStage.getY() + parentStage.getHeight() / 2 - stage.getHeight() / 2);
+      stage.hide();
+      stage.show();
     } catch (IOException e) {
       e.printStackTrace();
     }
