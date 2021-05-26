@@ -15,6 +15,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 
+import javafx.util.Pair;
 import messages.*;
 import model.*;
 
@@ -77,6 +78,7 @@ public class ServerProtocol extends Thread {
     Square[][] position;
     int index;
     ArrayList<String> list;
+    ArrayList<Pair<String, Integer>> words;
 
     try {
       m = (Message) in.readObject();
@@ -101,6 +103,11 @@ public class ServerProtocol extends Thread {
           case PLAY_MESSAGE:
             passCount = 0;
             PlayMessage pMsg = (PlayMessage) m;
+            words = pMsg.getPlayedWords();
+            //Adding played points to player score
+            for(Pair<String, Integer> p : words){
+              gameSession.getPlayerByID(pMsg.getPlayer().getPlayerID()).addScore(p.getValue());
+            }
             int currentPlayerIndex = pMsg.getPlayer().getPlayerID();
             Player nextPlayer =  gameSession.getPlayers().get((currentPlayerIndex+1 >= gameSession.getPlayers().size()) ? 0 : currentPlayerIndex+1);
             server.sendToAll(new PlayMessage(pMsg.getPlayer(), pMsg.getPlayedWords(),
@@ -111,6 +118,7 @@ public class ServerProtocol extends Thread {
             playerTiles.getTileRack().toArray(newTileRack);
             sendToClient(new EndPlayMessage(pMsg.getPlayer(), newTileRack));
             server.sendToAll(new StartPlayMessage(nextPlayer));
+
             break;
           case REQUEST_PLAYERLIST:
             server.sendToAll(new UpdatePlayerListMessage(server.getServerHost(),
