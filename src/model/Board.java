@@ -78,7 +78,7 @@ public class Board {
 
   public ArrayList<Pair<String, Integer>> playedWords() {
     if (tilesPendingConfirmation.isEmpty()) {
-      System.out.println("no Word Played");
+      System.out.println("No word played");
       return null;
     } else if (!squares[7][7].isOccupied()) {
       Boolean orientation = tilesPendingVertical();
@@ -89,7 +89,7 @@ public class Board {
           hashSet.add(getWordAndScore(t.getRow(), t.getCol(), orientation).getKey());
         }
         if (hashSet.size() != 1) {
-          System.out.println("You need to Play a single Word");
+          System.out.println("You need to play a single word");
           return null;
         }
         Pair<String, Integer> word =
@@ -101,10 +101,10 @@ public class Board {
           newWords.add(word);
           return newWords;
         }
-        System.out.println(word.getKey() + " is not in the Dictionary");
+        System.out.println(word.getKey() + " is not in the dictionary");
         return null;
       }
-      System.out.println("First Word needs to be in the Center");
+      System.out.println("First word needs to be in the center");
       return null;
     } else if (tilesPendingHaveNeighbors()) {
       ArrayList<Pair<String, Integer>> newWords = new ArrayList<>();
@@ -135,7 +135,7 @@ public class Board {
 
       for (Pair<String, Integer> p : newWords) {
         if (!dictionary.contains(p.getKey())) {
-          System.out.println(p.getKey() + " is not in the Dictionary (After Start)");
+          System.out.println(p.getKey() + " is not in the dictionary (After Start)");
           return null;
         }
       }

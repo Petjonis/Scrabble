@@ -103,7 +103,7 @@
                                      wrappingWidth="11.0"/>
                 <JFXButton fx:id="deleteProfileButton" buttonType="RAISED" layoutX="14.0" layoutY="681.0"
                            onAction="#deleteAccount" prefHeight="40.0" prefWidth="140.0"
-                           style="-fx-background-color: #FF0000;" text="Delete Profile" textFill="WHITE"
+                           style="-fx-background-color: #f03434;" text="Delete Profile" textFill="WHITE"
                            underline="true" wrapText="true">
                     <font>
                         <Font name="System Bold" size="12.0"/>

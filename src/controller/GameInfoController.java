@@ -10,9 +10,12 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.util.Pair;
 import messages.*;
 import model.Player;
@@ -41,7 +44,7 @@ public class GameInfoController implements Initializable {
 
   @FXML private JFXButton startGameButton;
 
-  @FXML private JFXListView<String> chatList;
+  @FXML private ListView<Text> chatList;
 
   @FXML private JFXTextArea sendText;
 
@@ -81,17 +84,13 @@ public class GameInfoController implements Initializable {
     if (MainController.mainController.getHosting()) {
       lastPlayedWordsLabel.setVisible(false);
       lastWordList.setVisible(false);
-      chatList
-          .getItems()
-          .add(
+      addTextToChat(
               "[System]: "
                   + MainController.mainController.getUser().getUserName()
                   + ", you are the host!");
     } else {
       startGameButton.setVisible(false);
-      chatList
-          .getItems()
-          .add("[System]: Hello " + MainController.mainController.getUser().getUserName() + "!");
+      addTextToChat("[System]: Hello " + MainController.mainController.getUser().getUserName() + "!");
     }
 
     try {
@@ -169,11 +168,23 @@ public class GameInfoController implements Initializable {
    */
   public void updateChat(Player from, String text, boolean token) {
     if (token) {
-      chatList.getItems().add(from.getUserName() + " [Host]: " + text);
+      addTextToChat(from.getUserName() + " [Host]: " + text);
     } else {
-      chatList.getItems().add(from.getUserName() + ": " + text);
+      addTextToChat(from.getUserName() + ": " + text);
     }
     chatList.scrollTo(chatList.getItems().size() - 1);
+  }
+
+
+  public void addTextToChat(String s){
+    Text text = new Text(s);
+    text.setWrappingWidth(240);
+    if(s.startsWith("[System]")){
+      text.setFill(Color.web("#f03434"));
+    } else{
+      text.setFill(Color.web("#dbd9d7"));
+    }
+    chatList.getItems().add(text);
   }
 
   /**
