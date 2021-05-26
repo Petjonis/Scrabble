@@ -21,7 +21,7 @@ import model.*;
 
 public class ServerProtocol extends Thread {
 
-  public int id = 0;
+  //public int id = 0;
   private Socket socket;
   private ObjectInputStream in;
   private ObjectOutputStream out;
@@ -88,7 +88,6 @@ public class ServerProtocol extends Thread {
         user.setPlayerID(gameSession.getPlayers().size());
         server.addClient(user, this);
         gameSession.getPlayers().add(user);
-        server.addIdToClient(id, user);
         sendToClient(new ConnectMessage(user));
         System.out.println(user.getUserName() + " was added to the Lobby.");
       } else {
@@ -129,25 +128,22 @@ public class ServerProtocol extends Thread {
           case LEAVE_GAME:
             LeaveGameMessage lgMsg = (LeaveGameMessage) m;
             user = lgMsg.getPlayer();
-            if (server.getIds().contains(lgMsg.getId())) {
               server
-                  .sendToAllBut(lgMsg.getId(), new RemovingPlayerListMessage(user, lgMsg.getId()));
+                  .sendToAll(new RemovingPlayerListMessage(user,
+                      user.getUserName(), lgMsg.getId()));
               server.removeClient(user);
-              server.removeIdToClient(lgMsg.getId(), user);
               server.getGameSession().setPlayers(server.getClients());
-            }
             break;
           case DISCONNECT:
             DisconnectMessage dcMsg = (DisconnectMessage) m;
             user = dcMsg.getPlayer();
-            server.sendToAllBut(user.getPlayerID(), new DisconnectMessage(user, dcMsg.getId()));
+            server.sendToAll(new DisconnectMessage(user, dcMsg.getId()));
             server.removeClient(user);
-            server.removeIdToClient(dcMsg.getId(), user);
             System.out.println(user.getUserName() + " left the Lobby.");
             break;
           case SERVERSHUTDOWN:
             ShutDownMessage sdMsg = (ShutDownMessage) m;
-            server.sendToAllBut(sdMsg.getId(), new ShutDownMessage(sdMsg.getPlayer(),
+            server.sendToAll(new ShutDownMessage(sdMsg.getPlayer(),
                 sdMsg.getId()));
             server.stopServer();
             MainController.mainController.setHosting(false);

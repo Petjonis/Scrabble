@@ -129,7 +129,7 @@ public class Client extends Thread {
               @Override
               public void run() {
                 GameInfoController.gameInfoController
-                    .removePlayerFromPlayerList(rplMsg.getPlayer().getUserName());
+                    .removePlayerFromPlayerList(rplMsg.getName());
               }
             });
             break;

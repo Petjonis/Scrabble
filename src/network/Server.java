@@ -57,29 +57,6 @@ public class Server {
   }
 
   /**
-   * every client user has a unique id which is also held in a HashMap.
-   */
-
-  private HashMap<Integer, Player> clientsIdMap = new HashMap<>();
-
-  public synchronized void addIdToClient(Integer id, Player client) {
-    clientsIdMap.put(id, client);
-  }
-
-  public synchronized Player getUserFromId(Integer id) {
-    return clientsIdMap.get(id);
-  }
-
-  public synchronized void removeIdToClient(Integer id, Player client) {
-    clientsIdMap.remove(id, client);
-  }
-
-  public synchronized Set<Integer> getIds() {
-    Set<Integer> idNumbers = this.clientsIdMap.keySet();
-    return new HashSet<Integer>(idNumbers);
-  }
-
-  /**
    * setup server + listen to connection requests from clients.
    */
   public void listen() throws IOException {
@@ -140,21 +117,6 @@ public class Server {
    */
   public void sendToAll(ArrayList<Player> list, Message m) {
     sendTo(list, (Message) (m.clone()));
-  }
-
-  /**
-   * send to all clients except for one.
-   */
-  /* TODO: Methode funktioniert so nicht richtig aber wird auch bis jetzt nicht benötigt, erstmal nicht löschen aber auch nicht nutzen bitte, DANKE!*/
-  public void sendToAllBut(int idNumber, Message m) {
-    synchronized (this.clients) {
-      Set<Player> senderList = getClients();
-      Player removePlayer = getUserFromId(idNumber);
-      if (userExistsP(removePlayer)) {
-        senderList.remove(removePlayer);
-      }
-      sendTo(new ArrayList<Player>(senderList), m);
-    }
   }
 
 
