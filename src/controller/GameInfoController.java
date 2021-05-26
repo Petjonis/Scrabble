@@ -102,7 +102,7 @@ public class GameInfoController implements Initializable {
           .add("[System]: Hello " + MainController.mainController.getUser().getUserName() + "!");
 
     }
-    chatList.getItems().add("ID: " + MainController.mainController.getUser().getPlayerID());
+
     try {
       sendRequestMessage();
     } catch (IOException e) {
