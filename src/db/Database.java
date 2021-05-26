@@ -332,10 +332,10 @@ public class Database {
    * Method to get the amount points of user.
    *
    * @param username is name of user.
-   * @return Returns -1 if user doesn't exist.
+   * @return Returns 0 if user doesn't exist.
    */
   public int getScore(String username) {
-    int points = -1;
+    int points = 0;
     try {
       sql = "SELECT Score FROM Users WHERE Name = ?;";
       pstmt = connection.prepareStatement(sql);
@@ -359,7 +359,7 @@ public class Database {
    * @return Returns -1 if user doesn't exist.
    */
   public int getWins(String username) {
-    int wins = -1;
+    int wins = 0;
     try {
       sql = "SELECT Wins FROM Users WHERE Name = ?;";
       pstmt = connection.prepareStatement(sql);
@@ -380,10 +380,10 @@ public class Database {
    * Method to get amount of loses of a user.
    *
    * @param username is name of user.
-   * @return Returns -1 if user doesn't exist.
+   * @return Returns 0 if user doesn't exist.
    */
   public int getLoses(String username) {
-    int loses = -1;
+    int loses = 0;
     try {
       sql = "SELECT Loses FROM Users WHERE Name = ?;";
       pstmt = connection.prepareStatement(sql);
@@ -404,10 +404,10 @@ public class Database {
    * Method to get amount of games played of a user.
    *
    * @param username is name of user.
-   * @return Returns -1 if user doesn't exist.
+   * @return Returns 0 if user doesn't exist.
    */
   public int getGames(String username) {
-    int games = -1;
+    int games = 0;
     try {
       sql = "SELECT Games FROM Users WHERE Name = ?;";
       pstmt = connection.prepareStatement(sql);
@@ -428,13 +428,13 @@ public class Database {
    * Method to update current points of a game to database.
    *
    * @param username is name of user.
-   * @param currentScore which is old score plus additional gained points.
+   * @param newAvgScore is the new average Score already calculated.
    */
-  public void updateScore(String username, int currentScore) {
+  public void updateScore(String username, int newAvgScore) {
     try {
       sql = "UPDATE Users SET Score = ? WHERE Name = ?;";
       pstmt = connection.prepareStatement(sql);
-      pstmt.setInt(1, currentScore);
+      pstmt.setInt(1, newAvgScore);
       pstmt.setString(2, username);
       pstmt.executeUpdate();
       System.out.println("Score updated");
