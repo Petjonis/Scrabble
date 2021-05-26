@@ -5,20 +5,20 @@ import model.Player;
 public class LeaveGameMessage extends Message {
 
   private static final long serialVersionUID = 1L;
-  private int id;
+  private String name;
 
   /**
    * constructor for message to leave the game.
    *
    * @param player is for the player
-   * @param idNumber is for player's id.
+   * @param playerName is for player's name.
    */
-  public LeaveGameMessage(Player player, int idNumber) {
+  public LeaveGameMessage(Player player, String playerName) {
     super(MessageType.LEAVE_GAME, player);
-    this.id = idNumber;
+    this.name = playerName;
   }
 
-  public int getId() {
-    return this.id;
+  public String getName() {
+    return this.name;
   }
 }

@@ -26,7 +26,6 @@ public class ServerProtocol extends Thread {
 
   private static int passCount = 0;
   public Player user;
-  // public int id = 0;
   private Socket socket;
   private ObjectInputStream in;
   private ObjectOutputStream out;
@@ -70,6 +69,7 @@ public class ServerProtocol extends Thread {
    */
   public void run() {
     Message m;
+    String name;
     Tile[] tiles;
     Player nextPlayer;
     TileRack playerTiles;
@@ -136,16 +136,17 @@ public class ServerProtocol extends Thread {
           case LEAVE_GAME:
             LeaveGameMessage lgMsg = (LeaveGameMessage) m;
             user = lgMsg.getPlayer();
+            name = lgMsg.getName();
             server.sendToAll(
-                new RemovingPlayerListMessage(user, user.getUserName(), lgMsg.getId()));
+                new RemovingPlayerListMessage(user, name));
             break;
           case DISCONNECT:
             DisconnectMessage dcMsg = (DisconnectMessage) m;
             user = dcMsg.getPlayer();
-            server.sendToAll(new DisconnectMessage(user, dcMsg.getName()));
+            name = dcMsg.getName();
+            server.sendToAll(new DisconnectMessage(user, name));
             server.removeClient(user);
             server.getGameSession().setPlayers(server.getClients());
-            server.sendToAll(new DisconnectMessage(user, dcMsg.getName()));
             System.out.println(user.getUserName() + " left the Lobby.");
             break;
           case SERVERSHUTDOWN:

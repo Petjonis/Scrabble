@@ -54,6 +54,7 @@ public class PlayOnlineController implements Initializable {
     this.errorLabel.setVisible(false);
     this.portErrorLabel.setVisible(false);
     this.portNumberTextField.setText("49152");
+    this.ipField.setText("localhost");
     this.portField.setText("49152");
   }
 

@@ -222,7 +222,7 @@ public class GameInfoController implements Initializable {
               .sendToServer(
                   new LeaveGameMessage(
                       MainController.mainController.getUser(),
-                      MainController.mainController.getUser().getPlayerID()));
+                      MainController.mainController.getUser().getUserName()));
           MainController.mainController.disconnect();
 
           MainController.mainController.changePane(
