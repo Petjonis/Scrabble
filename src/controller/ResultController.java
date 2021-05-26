@@ -1,6 +1,6 @@
 /**
- * This controller class initializes the result view, depending on
- * how many players participated in the game, when a game is over.
+ * This controller class initializes the result view, depending on how many players participated in
+ * the game, when a game is over.
  *
  * @author fpetek
  * @version 1.0
@@ -15,7 +15,6 @@ import model.Player;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.ResourceBundle;
 
@@ -52,11 +51,10 @@ public class ResultController implements Initializable {
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     resultController = this;
-    this.setShizzl();
   }
 
-  public void setShizzl(){
-    Collections.sort(players, Player.PlayerScore);
+  public void setResults() {
+    Collections.sort(players, Player.Score);
     switch (this.players.size()) {
       case 2:
         bronzeStar.setVisible(false);
@@ -70,6 +68,7 @@ public class ResultController implements Initializable {
         firstScore.setText(Integer.toString(players.get(0).getScore()));
         secondPlace.setText(players.get(1).getUserName());
         secondScore.setText(Integer.toString(players.get(1).getScore()));
+
         break;
       case 3:
         trash.setVisible(false);
@@ -98,11 +97,37 @@ public class ResultController implements Initializable {
     }
   }
 
+  public void addResultsToDatabase() {
+    MainController.mainController.db.connect();
+    String user = MainController.mainController.getUser().getUserName();
+    int index = getIndex(MainController.mainController.getUser());
+
+    MainController.mainController.db.updateScore(
+            user,
+            (MainController.mainController.db.getScore(user)
+                    * MainController.mainController.db.getGames(user)
+                    + players.get(index).getScore())
+                    / (MainController.mainController.db.getGames(user)+1));
+    if (index == 0) {
+      MainController.mainController.db.incrementWins(user);
+    } else {
+      MainController.mainController.db.incrementLoses(user);
+    }
+
+
+    MainController.mainController.db.disconnect();
+  }
+
   public void setPlayers(ArrayList<Player> players) {
     this.players = players;
   }
-  public ArrayList<Player> getPlayers(){
-    return this.players;
+
+  private int getIndex(Player player) {
+    for (int i = 0; i < players.size(); i++) {
+      if (player.getPlayerID() == players.get(i).getPlayerID()) {
+        return i;
+      }
+    }
+    return -1;
   }
 }
-

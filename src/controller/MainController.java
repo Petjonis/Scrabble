@@ -13,6 +13,7 @@ import db.Database;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -161,8 +162,7 @@ public class MainController implements Initializable {
 
   @FXML
   void openLearn(ActionEvent event) throws IOException {
-    /** just for testing result screen */
-    changePane(centerPane, "/view/Result.fxml");
+    /* TODO: add screenshots how to play the game */
   }
 
   @FXML
@@ -269,6 +269,22 @@ public class MainController implements Initializable {
       this.changePasswordButton.setVisible(true);
       this.deleteProfileButton.setVisible(true);
     }
+  }
+
+  public void reloadStats() {
+    db.connect();
+    this.gameCount.setText(Integer.toString(db.getGames(user.getUserName())));
+    this.winCount.setText(Integer.toString(db.getWins(user.getUserName())));
+    this.loseCount.setText(Integer.toString(db.getLoses(user.getUserName())));
+    this.winRate.setText(
+        String.format(
+                Locale.ENGLISH,
+                "%3.1f",
+                ((double) db.getWins(user.getUserName()) / (double) db.getGames(user.getUserName()))
+                    * 100)
+            + " %");
+    this.avgPoints.setText(Integer.toString(db.getScore(user.getUserName())));
+    db.disconnect();
   }
 
   /** getter and setter methods for all private attributes. */
