@@ -1,11 +1,11 @@
-package network;
-
 /**
  * This class establish the connection to the server and operates the client-side.
  *
  * @author socho
+ * @author fpetek
  * @version 1.0
  */
+package network;
 
 import controller.GameBoardController;
 import controller.GameInfoController;
@@ -198,13 +198,16 @@ public class Client extends Thread {
                       MainController.mainController.changePane(
                           MainController.mainController.getCenterPane(), "/view/Result.fxml");
                       ResultController.resultController.setPlayers(egMsg.getPlayers());
-                      ResultController.resultController.setShizzl();
-                      MainController.mainController.getRightPane().getChildren().clear();
+                      ResultController.resultController.setResults();
+                      ResultController.resultController.addResultsToDatabase();
+                      MainController.mainController.reloadStats();
+
                     } catch (IOException e) {
                       e.printStackTrace();
                     }
                   }
                 });
+
             break;
           default:
             break;
