@@ -98,52 +98,52 @@
                   <Font name="System Bold" size="11.0" />
                </font>
             </JFXButton>
-            <Label fx:id="gameCountLabel" layoutX="8.0" layoutY="320.0" prefHeight="39.0" prefWidth="140.0" text="Games:" textFill="WHITE">
+            <Label fx:id="gameCountLabel" layoutX="8.0" layoutY="320.0" prefHeight="39.0" prefWidth="140.0" text="Games:" textFill="#ababab">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <Label fx:id="winCountLabel" layoutX="8.0" layoutY="345.0" prefHeight="39.0" prefWidth="60.0" text="Wins:" textFill="#10ee00">
+            <Label fx:id="winCountLabel" layoutX="8.0" layoutY="345.0" prefHeight="39.0" prefWidth="60.0" text="Wins:" textFill="#00b16a">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <Label fx:id="loseCountLabel" layoutX="8.0" layoutY="370.0" prefHeight="39.0" prefWidth="60.0" text="Loses:" textFill="#e43838">
+            <Label fx:id="loseCountLabel" layoutX="8.0" layoutY="370.0" prefHeight="39.0" prefWidth="60.0" text="Loses:" textFill="#f03434">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <Label fx:id="winRateLabel" layoutX="8.0" layoutY="395.0" prefHeight="39.0" prefWidth="80.0" text="Winrate:" textFill="WHITE">
+            <Label fx:id="winRateLabel" layoutX="8.0" layoutY="395.0" prefHeight="39.0" prefWidth="80.0" text="Winrate:" textFill="#ababab">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <Label fx:id="avgPointsLabel" layoutX="8.0" layoutY="420.0" prefHeight="39.0" prefWidth="140.0" text="Avg. Points:" textFill="WHITE">
+            <Label fx:id="avgPointsLabel" layoutX="8.0" layoutY="420.0" prefHeight="39.0" prefWidth="140.0" text="Avg. Points:" textFill="#ababab">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <Label fx:id="gameCount" alignment="CENTER" layoutX="78.0" layoutY="320.0" prefHeight="39.0" prefWidth="100.0" text="0" textFill="WHITE">
+            <Label fx:id="gameCount" alignment="CENTER" layoutX="78.0" layoutY="320.0" prefHeight="39.0" prefWidth="100.0" text="0" textFill="#ababab">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <Label fx:id="winCount" alignment="CENTER" layoutX="78.0" layoutY="345.0" prefHeight="39.0" prefWidth="100.0" text="0" textFill="#10ee00">
+            <Label fx:id="winCount" alignment="CENTER" layoutX="78.0" layoutY="345.0" prefHeight="39.0" prefWidth="100.0" text="0" textFill="#00b16a">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <Label fx:id="loseCount" alignment="CENTER" layoutX="78.0" layoutY="370.0" prefHeight="39.0" prefWidth="100.0" text="0" textFill="#e43838">
+            <Label fx:id="loseCount" alignment="CENTER" layoutX="78.0" layoutY="370.0" prefHeight="39.0" prefWidth="100.0" text="0" textFill="#f03434">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <Label fx:id="winRate" alignment="CENTER" layoutX="106.0" layoutY="395.0" prefHeight="39.0" prefWidth="58.0" text="0 %" textFill="WHITE">
+            <Label fx:id="winRate" alignment="CENTER" layoutX="106.0" layoutY="395.0" prefHeight="39.0" prefWidth="58.0" text="0 %" textFill="#ababab">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <Label fx:id="avgPoints" alignment="CENTER" layoutX="78.0" layoutY="420.0" prefHeight="39.0" prefWidth="100.0" text="0" textFill="WHITE">
+            <Label fx:id="avgPoints" alignment="CENTER" layoutX="78.0" layoutY="420.0" prefHeight="39.0" prefWidth="100.0" text="0" textFill="#ababab">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
