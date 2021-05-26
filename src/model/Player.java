@@ -62,7 +62,7 @@ public abstract class Player implements Serializable {
 
   public boolean getPlaying() { return this.isPlaying; }
 
-  public static Comparator<Player> PlayerScore = new Comparator<Player>() {
+  public static Comparator<Player> Score = new Comparator<Player>() {
     @Override
     public int compare(Player p1, Player p2) {
       int s1 = p1.getScore();
