@@ -3,6 +3,8 @@ package controller;
 import com.jfoenix.controls.JFXButton;
 import de.jensd.fx.glyphs.materialicons.MaterialIcon;
 import de.jensd.fx.glyphs.materialicons.MaterialIconView;
+import java.util.Timer;
+import java.util.TimerTask;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -34,23 +36,37 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class GameBoardController implements Initializable {
+
   private static final Integer STARTTIME = 120;
   public static GameBoardController gameBoardController;
   private final IntegerProperty timeSeconds = new SimpleIntegerProperty(STARTTIME * 100);
   private Board board;
   private TileRack tr;
+  private Timer gameTimer;
+  private int secondsPassed = 0;
+  private boolean timerOn = false;
 
-  @FXML private GridPane boardGrid;
-  @FXML private GridPane tileRack;
-  @FXML private JFXButton playButton;
-  @FXML private JFXButton passButton;
-  @FXML private JFXButton swapButton;
-  @FXML private JFXButton undoButton;
-  @FXML private ProgressBar progressBar;
+  @FXML
+  private GridPane boardGrid;
+  @FXML
+  private GridPane tileRack;
+  @FXML
+  private JFXButton playButton;
+  @FXML
+  private JFXButton passButton;
+  @FXML
+  private JFXButton swapButton;
+  @FXML
+  private JFXButton undoButton;
+  @FXML
+  private ProgressBar progressBar;
 
   @FXML
   void pass(ActionEvent event) throws IOException {
     undoMove();
+    secondsPassed = 0;
+    startTimer();
+    progressBar.setVisible(false);
     MainController.mainController
         .getConnection()
         .sendToServer(new PassMessage(MainController.mainController.getUser()));
@@ -76,6 +92,9 @@ public class GameBoardController implements Initializable {
                   board.getTilesPendingConfirmation(),
                   tileRack));
       board.clearTilesPending();
+      secondsPassed = 0;
+      startTimer();
+      progressBar.setVisible(false);
       for (Pair<String, Integer> p : playedWords) {
         System.out.println("Word: " + p.getKey() + ", Score: " + p.getValue());
       }
@@ -88,6 +107,8 @@ public class GameBoardController implements Initializable {
     undoMove();
     Tile[] tileRack = new Tile[tr.getTileRack().size()];
     tr.getTileRack().toArray(tileRack);
+    startTimer();
+    progressBar.setVisible(false);
     MainController.mainController
         .getConnection()
         .sendToServer(new SwapTilesMessage(tileRack, MainController.mainController.getUser()));
@@ -239,6 +260,42 @@ public class GameBoardController implements Initializable {
     timeline.playFromStart();
   }
 
+  /**
+   * Timer will be started or stopped by checking "timerOn" boolean. timer counts until 120 seconds
+   * and after that it will send a pass message, stop the timer and the run method
+   * (with purge() method).
+   *
+   * @author socho
+   */
+  public void startTimer() {
+    if (timerOn) {
+      gameTimer.cancel();
+      timerOn = false;
+    } else {
+      gameTimer = new Timer();
+      TimerTask activationTask = new TimerTask() {
+        @Override
+        public void run() {
+          secondsPassed++;
+          if (secondsPassed == 120) {
+            try {
+              MainController.mainController.getConnection()
+                  .sendToServer(new PassMessage(MainController.mainController
+                      .getUser()));
+              gameTimer.cancel();
+              secondsPassed = 0;
+              gameTimer.purge();
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+          }
+        }
+      };
+      gameTimer.scheduleAtFixedRate(activationTask, 1000, 1000);
+      timerOn = true;
+    }
+  }
+
   private void addStackPaneToBoardGrid(int row, int col) {
     StackPane stackPane = new StackPane();
     stackPane.setStyle(getStyle(row, col));
@@ -323,6 +380,7 @@ public class GameBoardController implements Initializable {
     passButton.setDisable(true);
     swapButton.setDisable(true);
     undoButton.setDisable(true);
+    progressBar.setVisible(false);
   }
 
   public void activate() {
@@ -332,6 +390,9 @@ public class GameBoardController implements Initializable {
     passButton.setDisable(false);
     swapButton.setDisable(false);
     undoButton.setDisable(false);
+    progressBar.setVisible(true);
+    startProgressBar();
+    startTimer();
   }
 
   private void undoMove() {
