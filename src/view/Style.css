@@ -58,3 +58,17 @@
     -fx-background-color: #9c9a9a;
     -fx-text-fill: #dbd9d7;
 }
+
+.scroll-pane {
+    -fx-background-insets: 0;
+    -fx-background: #312E2B;
+    -fx-padding: 0;
+}
+
+.scroll-pane:focused {
+    -fx-background-insets: 0;
+}
+
+.scroll-pane .corner {
+    -fx-background-insets: 0;
+}

@@ -7,6 +7,7 @@
  */
 package network;
 
+import com.sun.tools.javac.Main;
 import controller.GameBoardController;
 import controller.GameInfoController;
 import controller.MainController;
@@ -151,8 +152,13 @@ public class Client extends Thread {
                 new Runnable() {
                   @Override
                   public void run() {
-                    GameInfoController.gameInfoController.updateChat(
-                        scMsg.getPlayer(), scMsg.getText(), scMsg.getHosting());
+                    if(scMsg.getPlayer().getPlayerID() == MainController.mainController.getUser().getPlayerID()){
+                        GameInfoController.gameInfoController.updateChatSent(
+                                scMsg.getPlayer(), scMsg.getText(), scMsg.getHosting());
+                    }else {
+                        GameInfoController.gameInfoController.updateChatReceived(
+                                scMsg.getPlayer(), scMsg.getText(), scMsg.getHosting());
+                    }
                   }
                 });
             break;
@@ -180,7 +186,7 @@ public class Client extends Thread {
                 new Runnable() {
                   @Override
                   public void run() {
-                    GameInfoController.gameInfoController.updateChat(
+                    GameInfoController.gameInfoController.updateChatReceived(
                         new ComputerPlayer("[Server]"), user1 + " left the game.", false);
                   }
                 });

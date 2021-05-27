@@ -3,6 +3,9 @@ package controller;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextArea;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -11,13 +14,16 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 import javafx.util.Pair;
 import messages.*;
 import model.Player;
 import model.Tile;
 import model.TileRack;
+import view.ConversationView;
 
 import java.io.IOException;
 import java.net.URL;
@@ -41,13 +47,17 @@ public class GameInfoController implements Initializable {
 
   @FXML private JFXButton startGameButton;
 
-  @FXML private JFXListView<String> chatList;
+  @FXML private JFXListView<Label> chatList;
 
   @FXML private JFXTextArea sendText;
 
   @FXML private JFXButton sendButton;
 
   @FXML private JFXButton leaveGameButton;
+
+  @FXML private VBox chatVbox;
+
+  ConversationView conversationView;
 
   /**
    * Listview "chatList" adds the text, which was written from the textfield "sendText" and the
@@ -78,31 +88,19 @@ public class GameInfoController implements Initializable {
   public void initialize(URL url, ResourceBundle resourceBundle) {
     gameInfoController = this;
 
-    chatList.setCellFactory(chatList -> new ListCell<String>(){
-      @Override
-      protected void updateItem(String item, boolean empty) {
-        super.updateItem(item, empty);
-        if (empty || item==null) {
-          setGraphic(null);
-          setText(null);
-        }else{
-          prefWidthProperty().bind(chatList.widthProperty().subtract(12));
-          setWrapText(true);
-          setText(item);
-        }
-      }
-    });
+    conversationView = new ConversationView();
+    chatVbox.getChildren().add(conversationView);
 
     if (MainController.mainController.getHosting()) {
       lastPlayedWordsLabel.setVisible(false);
       lastWordList.setVisible(false);
-      chatList.getItems().add(
+      addSystemMessage(
               "[System]: "
                   + MainController.mainController.getUser().getUserName()
                   + ", you are the host!");
     } else {
       startGameButton.setVisible(false);
-      chatList.getItems().add("[System]: Hello " + MainController.mainController.getUser().getUserName() + "!");
+      addSystemMessage("[System]: Hello " + MainController.mainController.getUser().getUserName() + "!");
     }
 
     try {
@@ -178,13 +176,20 @@ public class GameInfoController implements Initializable {
    *
    * @author socho
    */
-  public void updateChat(Player from, String text, boolean token) {
-    if (token) {
-      chatList.getItems().add(from.getUserName() + " [Host]: " + text);
+  public void updateChatReceived(Player from, String text, boolean host) {
+    if (host) {
+      conversationView.receiveMessage(from.getUserName()+" [Host]",text);
     } else {
-      chatList.getItems().add(from.getUserName() + ": " + text);
+      conversationView.receiveMessage(from.getUserName(), text);
     }
-    chatList.scrollTo(chatList.getItems().size() - 1);
+  }
+
+  public void updateChatSent(Player from,String text, boolean host){
+    if (host) {
+      conversationView.sendMessage(from.getUserName()+" [Host]", text);
+    } else {
+      conversationView.sendMessage(from.getUserName(), text);
+    }
   }
 
   /**
@@ -245,6 +250,21 @@ public class GameInfoController implements Initializable {
           break;
       }
     }
+  }
+
+  public void addSystemMessage(String message){
+    Color fromColor = Color.RED;
+    Color toColor = Color.web("#dbd9d7");
+
+    Label label = new Label(message);
+    chatList.getItems().add(label);
+    chatList.scrollTo(chatList.getItems().size() - 1);
+
+    Timeline timeline = new Timeline(
+            new KeyFrame(Duration.ZERO, new KeyValue(label.textFillProperty(), fromColor)),
+            new KeyFrame(Duration.seconds(3), new KeyValue(label.textFillProperty(), toColor))
+    );
+    timeline.play();
   }
 
   public void startGame(ActionEvent actionEvent) throws IOException {

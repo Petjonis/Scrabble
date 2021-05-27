@@ -8,6 +8,7 @@ import java.util.TimerTask;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.ActionEvent;
@@ -95,9 +96,6 @@ public class GameBoardController implements Initializable {
       secondsPassed = 0;
       startTimer();
       progressBar.setVisible(false);
-      for (Pair<String, Integer> p : playedWords) {
-        System.out.println("Word: " + p.getKey() + ", Score: " + p.getValue());
-      }
       System.out.println();
     }
   }
@@ -279,6 +277,13 @@ public class GameBoardController implements Initializable {
           secondsPassed++;
           if (secondsPassed == 120) {
             try {
+              Platform.runLater(
+                      new Runnable() {
+                        @Override
+                        public void run() {
+                          undoMove();
+                        }
+                      });
               MainController.mainController.getConnection()
                   .sendToServer(new PassMessage(MainController.mainController
                       .getUser()));

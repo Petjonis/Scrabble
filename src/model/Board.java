@@ -1,5 +1,6 @@
 package model;
 
+import controller.GameInfoController;
 import javafx.util.Pair;
 import settings.GlobalSettings;
 
@@ -8,6 +9,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
+
 
 /**
  * This class represents the board of the game.
@@ -78,7 +80,7 @@ public class Board {
 
   public ArrayList<Pair<String, Integer>> playedWords() {
     if (tilesPendingConfirmation.isEmpty()) {
-      System.out.println("No word played");
+      printErrorToGaminController("No word played");
       return null;
     } else if (!squares[7][7].isOccupied()) {
       Boolean orientation = tilesPendingVertical();
@@ -89,7 +91,7 @@ public class Board {
           hashSet.add(getWordAndScore(t.getRow(), t.getCol(), orientation).getKey());
         }
         if (hashSet.size() != 1) {
-          System.out.println("You need to play a single word");
+          printErrorToGaminController("You need to play a single word");
           return null;
         }
         Pair<String, Integer> word =
@@ -101,16 +103,16 @@ public class Board {
           newWords.add(word);
           return newWords;
         }
-        System.out.println(word.getKey() + " is not in the dictionary");
+        printErrorToGaminController(word.getKey() + " is not in the dictionary");
         return null;
       }
-      System.out.println("First word needs to be in the center");
+      printErrorToGaminController("First word needs to be in the center");
       return null;
     } else if (tilesPendingHaveNeighbors()) {
       ArrayList<Pair<String, Integer>> newWords = new ArrayList<>();
       Boolean orientation = tilesPendingVertical();
       if (orientation == null) {
-        System.out.println("Word needs to be played vertical/horizontal");
+        printErrorToGaminController("Word needs to be played vertical/horizontal");
         return null;
       }
       HashSet<String> hashSet = new HashSet<>();
@@ -118,7 +120,7 @@ public class Board {
         hashSet.add(getWordAndScore(t.getRow(), t.getCol(), orientation).getKey());
       }
       if (hashSet.size() != 1) {
-        System.out.println("Words need to be connected");
+        printErrorToGaminController("Words need to be connected");
         return null;
       }
       Pair<String, Integer> word;
@@ -135,13 +137,13 @@ public class Board {
 
       for (Pair<String, Integer> p : newWords) {
         if (!dictionary.contains(p.getKey())) {
-          System.out.println(p.getKey() + " is not in the dictionary (After Start)");
+          printErrorToGaminController(p.getKey() + " is not in the dictionary (After Start)");
           return null;
         }
       }
       return newWords;
     } else {
-      System.out.println("Words need to connect to existing words");
+      printErrorToGaminController("Words need to connect to existing words");
       return null;
     }
   }
@@ -160,6 +162,10 @@ public class Board {
     } else {
       return null;
     }
+  }
+
+  public void printErrorToGaminController(String error){
+    GameInfoController.gameInfoController.addSystemMessage(error);
   }
 
   private void addTilesPendingToBoard() {
@@ -262,11 +268,6 @@ public class Board {
     }
     removeTilesPendingFromBoard();
     return new Pair<>(sb.toString(), score * wordMultiplier);
-  }
-
-  public Tile[] getRow(int row) {
-    /* TODO */
-    return null;
   }
 
   public void clearTilesPending() {
