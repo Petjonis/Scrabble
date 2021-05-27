@@ -14,7 +14,7 @@
                      style="-fx-background-color: #312E2B;" stylesheets="@Style.css"/>
         <JFXListView fx:id="lastWordList" layoutX="12.0" layoutY="215.0" prefHeight="111.0" prefWidth="284.0"
                      style="-fx-background-color: #312E2B;" stylesheets="@Style.css"/>
-        <ListView fx:id="chatList" layoutX="12.0" layoutY="362.0" prefHeight="332.0" prefWidth="284.0"
+        <JFXListView fx:id="chatList" layoutX="12.0" layoutY="362.0" prefHeight="332.0" prefWidth="284.0"
                   style="-fx-background-color: #312E2B;" stylesheets="@Style.css"/>
         <JFXTextArea fx:id="sendText" focusColor="#7fa650" layoutX="14.0" layoutY="706.0" onKeyPressed="#chatKeyPressed"
                      prefHeight="39.0" prefWidth="213.0" style="-fx-text-inner-color: #dbd9d7;"/>

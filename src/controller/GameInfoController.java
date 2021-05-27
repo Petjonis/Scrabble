@@ -6,11 +6,8 @@ import com.jfoenix.controls.JFXTextArea;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -44,7 +41,7 @@ public class GameInfoController implements Initializable {
 
   @FXML private JFXButton startGameButton;
 
-  @FXML private ListView<Text> chatList;
+  @FXML private JFXListView<String> chatList;
 
   @FXML private JFXTextArea sendText;
 
@@ -61,13 +58,13 @@ public class GameInfoController implements Initializable {
    */
   @FXML
   void send(ActionEvent event) throws IOException {
-    if (MainController.mainController.getHosting()) {
+    if (MainController.mainController.getHosting() && !sendText.getText().isEmpty()) {
       MainController.mainController
           .getConnection()
           .sendToServer(
               new SendChatMessage(
                   MainController.mainController.getUser(), sendText.getText(), true));
-    } else {
+    } else if(!sendText.getText().isEmpty()){
       MainController.mainController
           .getConnection()
           .sendToServer(
@@ -81,16 +78,31 @@ public class GameInfoController implements Initializable {
   public void initialize(URL url, ResourceBundle resourceBundle) {
     gameInfoController = this;
 
+    chatList.setCellFactory(chatList -> new ListCell<String>(){
+      @Override
+      protected void updateItem(String item, boolean empty) {
+        super.updateItem(item, empty);
+        if (empty || item==null) {
+          setGraphic(null);
+          setText(null);
+        }else{
+          prefWidthProperty().bind(chatList.widthProperty().subtract(12));
+          setWrapText(true);
+          setText(item);
+        }
+      }
+    });
+
     if (MainController.mainController.getHosting()) {
       lastPlayedWordsLabel.setVisible(false);
       lastWordList.setVisible(false);
-      addTextToChat(
+      chatList.getItems().add(
               "[System]: "
                   + MainController.mainController.getUser().getUserName()
                   + ", you are the host!");
     } else {
       startGameButton.setVisible(false);
-      addTextToChat("[System]: Hello " + MainController.mainController.getUser().getUserName() + "!");
+      chatList.getItems().add("[System]: Hello " + MainController.mainController.getUser().getUserName() + "!");
     }
 
     try {
@@ -168,23 +180,11 @@ public class GameInfoController implements Initializable {
    */
   public void updateChat(Player from, String text, boolean token) {
     if (token) {
-      addTextToChat(from.getUserName() + " [Host]: " + text);
+      chatList.getItems().add(from.getUserName() + " [Host]: " + text);
     } else {
-      addTextToChat(from.getUserName() + ": " + text);
+      chatList.getItems().add(from.getUserName() + ": " + text);
     }
     chatList.scrollTo(chatList.getItems().size() - 1);
-  }
-
-
-  public void addTextToChat(String s){
-    Text text = new Text(s);
-    text.setWrappingWidth(240);
-    if(s.startsWith("[System]")){
-      text.setFill(Color.web("#f03434"));
-    } else{
-      text.setFill(Color.web("#dbd9d7"));
-    }
-    chatList.getItems().add(text);
   }
 
   /**
