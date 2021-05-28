@@ -182,11 +182,11 @@ public class LoginController implements Initializable {
    * after entering password in the password-text field and pressing "TAB" or "ENTER" key, login
    * button will be selected.
    */
-  public void passwordKeyPressed(KeyEvent keyEvent) {
+  public void passwordKeyPressed(KeyEvent keyEvent) throws IOException {
     if (keyEvent.getCode() == KeyCode.TAB) {
       loginButton.requestFocus();
     } else if (keyEvent.getCode() == KeyCode.ENTER) {
-      loginButton.requestFocus();
+      login(new ActionEvent());
     }
   }
 }
