@@ -26,10 +26,6 @@ public class PlayOnlineController implements Initializable {
 
   @FXML private TabPane playTabPane;
 
-  @FXML private JFXButton fileChooserButton;
-
-  @FXML private Label filePathLabel;
-
   @FXML private Label descriptionLabel;
 
   @FXML private TextField portNumberTextField;
@@ -45,9 +41,6 @@ public class PlayOnlineController implements Initializable {
   @FXML private JFXButton joinButton;
 
   @FXML private Label errorLabel;
-
-  @FXML
-  void chooseFile(ActionEvent event) {}
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -97,9 +90,7 @@ public class PlayOnlineController implements Initializable {
         }
       }
     } else {
-      Alert errorAlert = new Alert(AlertType.ERROR);
-      errorAlert.setContentText("You cannot host, because you are not logged in.");
-      errorAlert.show();
+      MainController.mainController.openNewWindow("/view/Login.fxml","Login");
     }
   }
 
@@ -140,9 +131,7 @@ public class PlayOnlineController implements Initializable {
             MainController.mainController.getRightPane(), "/view/GameInfo.fxml");
       }
     } else {
-      Alert errorAlert = new Alert(AlertType.ERROR);
-      errorAlert.setContentText("You cannot join, because you are not logged in.");
-      errorAlert.show();
+      MainController.mainController.openNewWindow("/view/Login.fxml","Login");
     }
   }
 

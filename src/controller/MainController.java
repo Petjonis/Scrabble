@@ -110,23 +110,9 @@ public class MainController implements Initializable {
 
     /** Player not logged in, so "Logout"-button, Statistics and edit-button will not be visible. */
     if (!mainController.getLoggedIn()) {
-      this.playButton.setDisable(true);
       this.logoutButton.setVisible(false);
       this.welcomeLabel.setVisible(false);
-      this.changeUsernameButton.setVisible(false);
-      this.changePasswordButton.setVisible(false);
-      this.deleteProfileButton.setVisible(false);
-      this.editProfileIcon.setVisible(false);
-      this.gameCountLabel.setVisible(false);
-      this.winCountLabel.setVisible(false);
-      this.loseCountLabel.setVisible(false);
-      this.winRateLabel.setVisible(false);
-      this.avgPointsLabel.setVisible(false);
-      this.gameCount.setVisible(false);
-      this.winCount.setVisible(false);
-      this.loseCount.setVisible(false);
-      this.winRate.setVisible(false);
-      this.avgPoints.setVisible(false);
+      closeStatistics();
     }
   }
 
@@ -153,6 +139,14 @@ public class MainController implements Initializable {
     getSignupButton().setVisible(true);
     getLogoutButton().setVisible(false);
     getWelcomeLabel().setVisible(false);
+    closeStatistics();
+
+    changePane(centerPane, "/view/Start.fxml");
+    rightPane.getChildren().clear();
+    playButton.setDisable(false);
+  }
+
+  private void closeStatistics() {
     this.changeUsernameButton.setVisible(false);
     this.changePasswordButton.setVisible(false);
     this.deleteProfileButton.setVisible(false);
@@ -167,10 +161,6 @@ public class MainController implements Initializable {
     this.loseCount.setVisible(false);
     this.winRate.setVisible(false);
     this.avgPoints.setVisible(false);
-
-    changePane(centerPane, "/view/Start.fxml");
-    rightPane.getChildren().clear();
-    playButton.setDisable(true);
   }
 
   @FXML

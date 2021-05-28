@@ -34,8 +34,6 @@ public class ResultController implements Initializable {
 
   @FXML private FontAwesomeIconView trash;
 
-  @FXML private JFXButton playAgainButton;
-
   @FXML private Label firstPlace;
 
   @FXML private Label secondPlace;

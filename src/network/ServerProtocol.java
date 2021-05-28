@@ -8,6 +8,7 @@ package network;
  * @version 1.0
  */
 
+import controller.GameInfoController;
 import controller.MainController;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -141,8 +142,12 @@ public class ServerProtocol extends Thread {
             playerTiles.refillFromBag(MainController.mainController.getGameSession().getTilebag());
             Tile[] newTileRack = new Tile[playerTiles.getTileRack().size()];
             playerTiles.getTileRack().toArray(newTileRack);
-            sendToClient(new EndPlayMessage(pMsg.getPlayer(), newTileRack));
-            server.sendToAll(new StartPlayMessage(nextPlayer));
+            if(playerTiles.getTileRack().isEmpty()){
+              server.sendToAll(new EndGameMessage(pMsg.getPlayer(), server.getGameSession().getPlayers()));
+            } else{
+              sendToClient(new EndPlayMessage(pMsg.getPlayer(), newTileRack));
+              server.sendToAll(new StartPlayMessage(nextPlayer));
+            }
             break;
           case REQUEST_PLAYERLIST:
             server.sendToAll(
@@ -160,6 +165,8 @@ public class ServerProtocol extends Thread {
             user = dcMsg.getPlayer();
             name = dcMsg.getName();
             server.sendToAll(new DisconnectMessage(user, name));
+            server.sendToAll(
+                    new EndGameMessage(server.getServerHost(), server.getGameSession().getPlayers()));
             server.removeClient(user);
             gameSession.getPlayers().remove(user);
             System.out.println(user.getUserName() + " left the Lobby.");
@@ -185,7 +192,7 @@ public class ServerProtocol extends Thread {
                             : currentPlayerIndex + 1);
             incrementPass();
             if (passCount == 6) {
-              System.out.println("pass count is six. GAME OVER! ");
+              GameInfoController.gameInfoController.addSystemMessage("No Words played for six turns. GAME OVER!");
               server.sendToAll(
                   new EndGameMessage(server.getServerHost(), server.getGameSession().getPlayers()));
             }
@@ -198,7 +205,7 @@ public class ServerProtocol extends Thread {
           case SWAP_TILES:
             incrementPass();
             if (passCount == 6) {
-              System.out.println("pass count is six. GAME OVER! ");
+              GameInfoController.gameInfoController.addSystemMessage("No Words played for six turns. GAME OVER!");
               server.sendToAll(
                   new EndGameMessage(server.getServerHost(), server.getGameSession().getPlayers()));
             }

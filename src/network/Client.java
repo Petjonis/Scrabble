@@ -227,7 +227,11 @@ public class Client extends Thread {
                   @Override
                   public void run() {
                     try {
-                      MainController.mainController.changePane(
+                        if(!GameBoardController.gameBoardController.getPlayButton().isDisable()){
+                            GameBoardController.gameBoardController.startTimer();
+                            System.out.println("timer stopped.");
+                        }
+                        MainController.mainController.changePane(
                           MainController.mainController.getCenterPane(), "/view/Result.fxml");
                       ResultController.resultController.setPlayers(egMsg.getPlayers());
                       ResultController.resultController.setResults();
@@ -261,11 +265,12 @@ public class Client extends Thread {
     running = false;
     try {
       if (!clientSocket.isClosed()) {
-        this.out.writeObject(
+        sendToServer(
             new DisconnectMessage(
                 MainController.mainController.getUser(),
                 MainController.mainController.getUser().getUserName()));
         clientSocket.close();
+          System.out.println("client socket closed");
       }
     } catch (IOException e) {
       e.printStackTrace();

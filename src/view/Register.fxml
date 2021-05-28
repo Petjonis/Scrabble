@@ -2,84 +2,63 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import de.jensd.fx.glyphs.materialicons.MaterialIconView?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.text.*?>
-<StackPane xmlns:fx="http://javafx.com/fxml/1" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0"
-           prefWidth="450.0" style="-fx-background-color: transparent;"
-           xmlns="http://javafx.com/javafx/11.0.2" fx:controller="controller.RegisterController">
+<?import javafx.scene.text.Font?>
+
+<StackPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="444.0" prefWidth="450.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RegisterController">
     <children>
-        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-                    prefHeight="550.0" prefWidth="450.0"
-                    style="-fx-background-color: #FFFFFF; -fx-background-radius: 5;">
+        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="438.0" prefWidth="450.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 5;">
             <children>
-                <JFXButton fx:id="createButton" buttonType="RAISED" focusTraversable="false" layoutX="167.0"
-                           layoutY="458.0" onAction="#createAccount" onKeyPressed="#signUpKeyPressed" prefHeight="66.0"
-                           prefWidth="265.0" style="-fx-background-radius: 10; -fx-background-color: #7FA650;"
-                           text="Create Account" textFill="WHITE">
+                <JFXButton fx:id="createButton" buttonType="RAISED" focusTraversable="false" layoutX="167.0" layoutY="343.0" onAction="#createAccount" onKeyPressed="#signUpKeyPressed" prefHeight="66.0" prefWidth="265.0" style="-fx-background-radius: 10; -fx-background-color: #7FA650;" text="Create Account" textFill="WHITE">
                     <font>
-                        <Font name="System Bold" size="23.0"/>
+                        <Font name="System Bold" size="23.0" />
                     </font>
                 </JFXButton>
-                <TextField fx:id="usernameField" focusTraversable="false" layoutX="167.0" layoutY="98.0"
-                           onKeyPressed="#userNameKeyPressed" prefHeight="40.0" prefWidth="265.0">
+                <TextField fx:id="usernameField" focusTraversable="false" layoutX="167.0" layoutY="98.0" onKeyPressed="#userNameKeyPressed" prefHeight="40.0" prefWidth="265.0">
                     <font>
-                        <Font size="18.0"/>
+                        <Font size="18.0" />
                     </font>
                 </TextField>
-                <PasswordField fx:id="passwordField" focusTraversable="false" layoutX="167.0" layoutY="157.0"
-                               onKeyPressed="#passwordKeyPressed" prefHeight="40.0" prefWidth="265.0">
+                <PasswordField fx:id="passwordField" focusTraversable="false" layoutX="167.0" layoutY="157.0" onKeyPressed="#passwordKeyPressed" prefHeight="40.0" prefWidth="265.0">
                     <font>
-                        <Font size="18.0"/>
+                        <Font size="18.0" />
                     </font>
                 </PasswordField>
-                <Label fx:id="userError" layoutX="24.0" layoutY="130.0" text="Error!" textFill="#c3272b"/>
-                <Label fx:id="passwordError" layoutX="24.0" layoutY="256.0" text="Error!" textFill="#c3272b"/>
+                <Label fx:id="userError" layoutX="24.0" layoutY="130.0" text="Error!" textFill="#c3272b" />
+                <Label fx:id="passwordError" layoutX="24.0" layoutY="256.0" text="Error!" textFill="#c3272b" />
                 <Label layoutX="23.0" layoutY="108.0" text="Username" textFill="#666463">
                     <font>
-                        <Font name="System Bold" size="14.0"/>
+                        <Font name="System Bold" size="14.0" />
                     </font>
                 </Label>
                 <Label layoutX="24.0" layoutY="167.0" text="Password" textFill="#666463">
                     <font>
-                        <Font name="System Bold" size="14.0"/>
+                        <Font name="System Bold" size="14.0" />
                     </font>
                 </Label>
                 <Label layoutX="24.0" layoutY="232.0" text="Confirm Password" textFill="#666463">
                     <font>
-                        <Font name="System Bold" size="14.0"/>
+                        <Font name="System Bold" size="14.0" />
                     </font>
                 </Label>
-                <PasswordField fx:id="confirmField" focusTraversable="false" layoutX="167.0" layoutY="222.0"
-                               onKeyPressed="#confirmKeyPassword" prefHeight="40.0" prefWidth="265.0">
+                <PasswordField fx:id="confirmField" focusTraversable="false" layoutX="167.0" layoutY="222.0" onKeyPressed="#confirmKeyPassword" prefHeight="40.0" prefWidth="265.0">
                     <font>
-                        <Font size="18.0"/>
+                        <Font size="18.0" />
                     </font>
                 </PasswordField>
-                <Label layoutX="24.0" layoutY="349.0" text="Upload Avatar" textFill="#666463">
-                    <font>
-                        <Font name="System Bold" size="14.0"/>
-                    </font>
-                </Label>
-                <Button fx:id="uploadButton" contentDisplay="CENTER" focusTraversable="false" layoutX="167.0"
-                        layoutY="295.0" mnemonicParsing="false" onAction="#chooseFile" prefHeight="120.0"
-                        prefWidth="120.0">
+                <Button fx:id="closeButton" cancelButton="true" focusTraversable="false" layoutX="413.0" mnemonicParsing="false" onAction="#close" style="-fx-background-color: transparent;">
                     <graphic>
-                        <ImageView fx:id="previewImage" fitHeight="120.0" fitWidth="120.0"
-                                   onKeyPressed="#avatarKeyPressed" pickOnBounds="true" preserveRatio="true"/>
-                    </graphic>
-                </Button>
-                <Button fx:id="closeButton" cancelButton="true" focusTraversable="false" layoutX="413.0"
-                        mnemonicParsing="false" onAction="#close" style="-fx-background-color: transparent;">
-                    <graphic>
-                        <MaterialIconView fill="#7fa650" glyphName="CLOSE" size="22"/>
+                        <MaterialIconView fill="#7fa650" glyphName="CLOSE" size="22" />
                     </graphic>
                 </Button>
                 <Label layoutX="57.0" layoutY="30.0" text="Register new Account">
                     <font>
-                        <Font name="System Bold" size="33.0"/>
+                        <Font name="System Bold" size="33.0" />
                     </font>
                 </Label>
             </children>

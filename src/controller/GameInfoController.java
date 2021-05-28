@@ -6,6 +6,7 @@ import com.jfoenix.controls.JFXTextArea;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -69,18 +70,19 @@ public class GameInfoController implements Initializable {
    */
   @FXML
   void send(ActionEvent event) throws IOException {
-    if (MainController.mainController.getHosting() && !sendText.getText().isEmpty()) {
+    String text = sendText.getText().replaceAll("([\\n\\r]+\\s*)*$", "");
+    if (MainController.mainController.getHosting() && !text.isEmpty()) {
       MainController.mainController
           .getConnection()
           .sendToServer(
               new SendChatMessage(
-                  MainController.mainController.getUser(), sendText.getText(), true));
-    } else if(!sendText.getText().isEmpty()){
+                  MainController.mainController.getUser(), text, true));
+    } else if(!text.isEmpty()){
       MainController.mainController
           .getConnection()
           .sendToServer(
               new SendChatMessage(
-                  MainController.mainController.getUser(), sendText.getText(), false));
+                  MainController.mainController.getUser(), text, false));
     }
     sendText.clear();
   }
@@ -276,31 +278,15 @@ public class GameInfoController implements Initializable {
           MainController.mainController.getPlayButton().setDisable(false);
           break;
         case "false":
-          MainController.mainController
-              .getConnection()
-              .sendToServer(
-                  new LeaveGameMessage(
-                      MainController.mainController.getUser(),
-                      MainController.mainController.getUser().getUserName()));
-          if(!GameBoardController.gameBoardController.getPlayButton().isDisable() && !(GameInfoController.gameInfoController.playerList.getItems().size() <= 2)){
-            MainController.mainController
-                    .getConnection()
-                    .sendToServer(new PassMessage(MainController.mainController.getUser()));
-            System.out.println("pass sent");
-          } else if(GameBoardController.gameBoardController.getPlayButton().isDisable() && !(GameInfoController.gameInfoController.playerList.getItems().size() <= 2)) {
-            MainController.mainController
-                    .getConnection()
-                    .sendToServer(new EndGameMessage(MainController.mainController.getUser(), null));
-          } else if(!GameBoardController.gameBoardController.getPlayButton().isDisable() && (GameInfoController.gameInfoController.playerList.getItems().size() <= 2)){
-            MainController.mainController
-                    .getConnection()
-                    .sendToServer(new EndGameMessage(MainController.mainController.getUser(), null));
+          if(!GameBoardController.gameBoardController.getPlayButton().isDisable()){
+            GameBoardController.gameBoardController.startTimer();
+            System.out.println("timer stopped.");
           }
-          MainController.mainController.disconnect();
           MainController.mainController.changePane(
               MainController.mainController.getCenterPane(), "/view/Start.fxml");
           MainController.mainController.getRightPane().getChildren().clear();
           MainController.mainController.getPlayButton().setDisable(false);
+          MainController.mainController.disconnect();
           break;
         default:
           break;
@@ -322,4 +308,20 @@ public class GameInfoController implements Initializable {
     );
     timeline.play();
   }
+
+  public Label getLastPlayedWordsLabel() {
+    return lastPlayedWordsLabel;
+  }
+
+  public JFXListView<String> getLastWordList() {
+    return lastWordList;
+  }
+
+  public JFXButton getStartGameButton() {
+    return startGameButton;
+  }
 }
+
+
+
+

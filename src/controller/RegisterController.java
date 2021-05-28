@@ -30,14 +30,7 @@ public class RegisterController implements Initializable {
 
   @FXML private PasswordField confirmField;
 
-  @FXML private Button uploadButton;
-
-  @FXML private ImageView previewImage;
-
   @FXML private Button closeButton;
-
-  @FXML
-  void chooseFile(ActionEvent event) {}
 
   @FXML
   void close(ActionEvent event) {
@@ -72,7 +65,8 @@ public class RegisterController implements Initializable {
      * page.
      */
     if (!db.userExists(usernameField.getText())
-        && confirmField.getText().equals(passwordField.getText())) {
+        && confirmField.getText().equals(passwordField.getText()) && !passwordField.getText().isEmpty()
+            && !usernameField.getText().isEmpty()) {
       db.addUser(usernameField.getText(), passwordField.getText());
 
       MainController.mainController.openNewWindow("/view/Login.fxml", "Login");
@@ -90,7 +84,6 @@ public class RegisterController implements Initializable {
       this.usernameField.clear();
       this.passwordField.clear();
       this.confirmField.clear();
-      this.previewImage.setImage(null);
     }
     db.disconnect();
   }
@@ -131,22 +124,8 @@ public class RegisterController implements Initializable {
    * key.
    */
   public void confirmKeyPassword(KeyEvent keyEvent) {
-    if (keyEvent.getCode() == KeyCode.TAB) {
-      previewImage.requestFocus();
-    } else if (keyEvent.getCode() == KeyCode.ENTER) {
-      previewImage.requestFocus();
-    }
-  }
-
-  /**
-   * when image viewer is on focus, image viewer can be used by pressing "ENTER" key and sign up
-   * button can be selected by pressing "TAB" key.
-   */
-  public void avatarKeyPressed(KeyEvent keyEvent) {
     if (keyEvent.getCode() == KeyCode.ENTER) {
-      chooseFile(new ActionEvent());
-    } else if (keyEvent.getCode() == KeyCode.TAB) {
-      createButton.requestFocus();
+      createAccount(new ActionEvent());
     }
   }
 }
