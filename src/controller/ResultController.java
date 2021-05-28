@@ -5,20 +5,20 @@
  * @author fpetek
  * @version 1.0
  */
+
 package controller;
 
 import com.jfoenix.controls.JFXButton;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import model.Player;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.ResourceBundle;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
+import model.Player;
 
 public class ResultController implements Initializable {
 
@@ -52,11 +52,21 @@ public class ResultController implements Initializable {
 
   @FXML private Label fourthScore;
 
+  /**
+   * Initializes "Result" view.
+   *
+   * @param url Gets called automatically.
+   * @param resourceBundle Gets called automatically.
+   */
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     resultController = this;
   }
 
+  /**
+   * Method to initialize the leaderboard labels and score value.
+   * Sets places invisible if not enough players participated.
+   */
   public void setResults() {
     Collections.sort(players, Player.Score);
     switch (this.players.size()) {
@@ -101,6 +111,9 @@ public class ResultController implements Initializable {
     }
   }
 
+  /**
+   * Method to update a users database entries of gameCount, winCount, loseCount and avgScore.
+   */
   public void addResultsToDatabase() {
     MainController.mainController.db.connect();
     String user = MainController.mainController.getUser().getUserName();
@@ -121,10 +134,12 @@ public class ResultController implements Initializable {
     MainController.mainController.db.disconnect();
   }
 
-  public void setPlayers(ArrayList<Player> players) {
-    this.players = players;
-  }
-
+  /**
+   * Method to get the users index out of the gameSessions playerlist.
+   *
+   * @param player The user who is playing the game.
+   * @return Returns the users index of the playerlist.
+   */
   private int getIndex(Player player) {
     for (int i = 0; i < players.size(); i++) {
       if (player.getPlayerID() == players.get(i).getPlayerID()) {
@@ -134,11 +149,19 @@ public class ResultController implements Initializable {
     return -1;
   }
 
+  /**
+   * Method to go back to lobby and initialize default values after a game.
+   * @throws IOException Nothing to worry about.
+   */
   public void playAgain() throws IOException {
     /*TODO: open up playerboard and host stuff*/
     MainController.mainController.changePane(
         MainController.mainController.getCenterPane(), "/view/Ganeboard.fxml");
     MainController.mainController.changePane(
         MainController.mainController.getRightPane(), "/view/GameInfo.fxml");
+  }
+
+  public void setPlayers(ArrayList<Player> players) {
+    this.players = players;
   }
 }

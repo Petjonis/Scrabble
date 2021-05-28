@@ -5,10 +5,14 @@
  * @author fpetek
  * @version 1.0
  */
+
 package controller;
 
 import com.jfoenix.controls.JFXButton;
 import db.Database;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -16,10 +20,6 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 public class DeleteAccountController implements Initializable {
 
@@ -33,12 +33,23 @@ public class DeleteAccountController implements Initializable {
 
   @FXML private Button closeButton;
 
+  /**
+   * Initializes "DeleteAccount" view.
+   *
+   * @param url Gets called automatically.
+   * @param resourceBundle Gets called automatically.
+   */
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     this.errorLabel.setVisible(false);
     this.usernameField.requestFocus();
   }
 
+  /**
+   * Method to delete database entry of a user account.
+   *
+   * @param event Listens on Delete-Button.
+   */
   @FXML
   void delete(ActionEvent event) throws IOException {
     MainController.mainController.db = new Database();
@@ -76,13 +87,18 @@ public class DeleteAccountController implements Initializable {
     MainController.mainController.db.disconnect();
   }
 
+  /**
+   * Method to close DeleteUser Window.
+   *
+   * @param event Listens on Close-Button.
+   */
   @FXML
   void close(ActionEvent event) {
     Stage stage = (Stage) closeButton.getScene().getWindow();
     stage.close();
   }
 
-  /** Methods that user can use tab or enter to navigate through textfields. */
+  /** Method that user can use tab or enter to navigate through textfields. */
   public void userNameKeyPressed(KeyEvent keyEvent) {
     if (keyEvent.getCode() == KeyCode.TAB) {
       passwordField.requestFocus();
@@ -91,6 +107,7 @@ public class DeleteAccountController implements Initializable {
     }
   }
 
+  /** Method that user can use tab or enter to navigate through textfields. */
   public void passwordKeyPressed(KeyEvent keyEvent) {
     if (keyEvent.getCode() == KeyCode.TAB) {
       deleteButton.requestFocus();
@@ -99,6 +116,7 @@ public class DeleteAccountController implements Initializable {
     }
   }
 
+  /** Method that user can use enter to activate deleteButton. */
   public void deleteKeyPressed(KeyEvent keyEvent) throws IOException {
     if (keyEvent.getCode() == KeyCode.ENTER) {
       delete(new ActionEvent());

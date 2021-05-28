@@ -5,6 +5,7 @@
  * @author fpetek
  * @version 1.0
  */
+
 package utility;
 
 import java.nio.charset.StandardCharsets;

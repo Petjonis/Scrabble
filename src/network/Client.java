@@ -7,22 +7,30 @@
  */
 package network;
 
-import com.sun.tools.javac.Main;
 import controller.GameBoardController;
 import controller.GameInfoController;
 import controller.MainController;
 import controller.ResultController;
-import javafx.application.Platform;
-import messages.*;
-import model.ComputerPlayer;
-import model.Player;
-import model.Tile;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import javafx.application.Platform;
+import messages.ConnectMessage;
+import messages.DisconnectMessage;
+import messages.EndGameMessage;
+import messages.EndPlayMessage;
+import messages.Message;
+import messages.PassMessage;
+import messages.PlayMessage;
+import messages.RemovingPlayerListMessage;
+import messages.SendChatMessage;
+import messages.StartGameFirstMessage;
+import messages.StartPlayMessage;
+import messages.UpdatePlayerListMessage;
+import model.Player;
+import model.Tile;
 
 public class Client extends Thread {
 
@@ -92,7 +100,8 @@ public class Client extends Thread {
                         == MainController.mainController.getUser().getPlayerID()) {
                       GameBoardController.gameBoardController.activate();
                     }
-                    GameInfoController.gameInfoController.setActivePlayerByName(nextPlayer.getUserName());
+                    GameInfoController.gameInfoController.setActivePlayerByName(
+                        nextPlayer.getUserName());
                   }
                 });
             break;
@@ -151,12 +160,13 @@ public class Client extends Thread {
                 new Runnable() {
                   @Override
                   public void run() {
-                    if(scMsg.getPlayer().getPlayerID() == MainController.mainController.getUser().getPlayerID()){
-                        GameInfoController.gameInfoController.updateChatSent(
-                                scMsg.getPlayer(), scMsg.getText(), scMsg.getHosting());
-                    }else {
-                        GameInfoController.gameInfoController.updateChatReceived(
-                                scMsg.getPlayer(), scMsg.getText(), scMsg.getHosting());
+                    if (scMsg.getPlayer().getPlayerID()
+                        == MainController.mainController.getUser().getPlayerID()) {
+                      GameInfoController.gameInfoController.updateChatSent(
+                          scMsg.getPlayer(), scMsg.getText(), scMsg.getHosting());
+                    } else {
+                      GameInfoController.gameInfoController.updateChatReceived(
+                          scMsg.getPlayer(), scMsg.getText(), scMsg.getHosting());
                     }
                   }
                 });
@@ -174,8 +184,9 @@ public class Client extends Thread {
                     } else {
                       GameBoardController.gameBoardController.deactivate();
                     }
-                    GameInfoController.gameInfoController.setActivePlayerByName(nextP.getUserName());
-                      System.out.println(nextP.getUserName()+" ist dran");
+                    GameInfoController.gameInfoController.setActivePlayerByName(
+                        nextP.getUserName());
+                    System.out.println(nextP.getUserName() + " ist dran");
                   }
                 });
             break;

@@ -4,12 +4,19 @@
  * @author fpetek
  * @version 1.1
  */
+
 package db;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import settings.GlobalSettings;
 import utility.Hashing;
 
-import java.sql.*;
+
 
 public class Database {
   private Connection connection;

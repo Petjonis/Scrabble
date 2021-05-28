@@ -1,16 +1,21 @@
 /**
- * Class to controll stuff.
+ * Class to control stuff.
  *
  * @author fjaehrli
  * @author fpetek
  * @author socho
  * @version 1.0
  */
+
 package controller;
 
 import com.jfoenix.controls.JFXButton;
 import db.Database;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,11 +35,6 @@ import model.GameSession;
 import model.Player;
 import network.Client;
 import network.Server;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
 
@@ -98,6 +98,12 @@ public class MainController implements Initializable {
 
   @FXML private StackPane rightPane;
 
+  /**
+   * Initializes "Main" view.
+   *
+   * @param url Gets called automatically.
+   * @param resourceBundle Gets called automatically.
+   */
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     mainController = this;
@@ -124,6 +130,12 @@ public class MainController implements Initializable {
     }
   }
 
+  /**
+   * Method to log a user out of the game and to set stuff visible/invisible.
+   *
+   * @param event Listens on logoutButton.
+   * @throws IOException Nothing to worry about.
+   */
   @FXML
   void logout(ActionEvent event) throws IOException {
     if (hosting) {

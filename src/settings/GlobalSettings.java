@@ -4,14 +4,13 @@
  * @author fpetek
  * @version 1.0
  */
+
 package settings;
 
 public class GlobalSettings {
   /* final int for board spaces */
   public static final int ROWS = 15;
   public static final int COLUMNS = 15;
-  /* final int for maximum tiles in a tilebag */
-  public static final int MAXTILES = 100;
 
   /* System independent filepath to resources folder */
   public static final String filepath =

@@ -5,10 +5,14 @@
  * @author fpetek
  * @version 1.0
  */
+
 package controller;
 
 import com.jfoenix.controls.JFXButton;
 import db.Database;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -19,10 +23,6 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 public class ChangePasswordController implements Initializable {
 
@@ -38,12 +38,23 @@ public class ChangePasswordController implements Initializable {
 
   @FXML private Button closeButton;
 
+  /**
+   * Initializes "ChangePassword" view.
+   *
+   * @param url Gets called automatically.
+   * @param resourceBundle Gets called automatically.
+   */
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     this.errorLabel.setVisible(false);
     this.currentPasswordField.requestFocus();
   }
 
+  /**
+   * Method to change database entry of a users password.
+   *
+   * @param event Listens on Change-Button.
+   */
   @FXML
   void change(ActionEvent event) {
     MainController.mainController.db = new Database();
@@ -84,13 +95,18 @@ public class ChangePasswordController implements Initializable {
     MainController.mainController.db.disconnect();
   }
 
-  /** Methods that user can use tab or enter to navigate through textfields. */
+  /**
+   * Method to close ChangePassword Window.
+   *
+   * @param event Listens on Close-Button.
+   */
   @FXML
   void close(ActionEvent event) {
     Stage stage = (Stage) closeButton.getScene().getWindow();
     stage.close();
   }
 
+  /** Method that user can use tab or enter to navigate through textfields. */
   public void currentPasswordKeyPressed(KeyEvent keyEvent) {
     if (keyEvent.getCode() == KeyCode.TAB) {
       newPasswordField.requestFocus();
@@ -99,6 +115,7 @@ public class ChangePasswordController implements Initializable {
     }
   }
 
+  /** Method that user can use tab or enter to navigate through textfields. */
   public void newPasswordKeyPressed(KeyEvent keyEvent) {
     if (keyEvent.getCode() == KeyCode.TAB) {
       confirmPasswordField.requestFocus();
@@ -106,7 +123,7 @@ public class ChangePasswordController implements Initializable {
       confirmPasswordField.requestFocus();
     }
   }
-
+  /** Method that user can use tab or enter to navigate through textfields. */
   public void confirmPasswordKeyPressed(KeyEvent keyEvent) {
     if (keyEvent.getCode() == KeyCode.TAB) {
       changeButton.requestFocus();
@@ -114,7 +131,7 @@ public class ChangePasswordController implements Initializable {
       changeButton.requestFocus();
     }
   }
-
+  /** Method that user can use enter to activate changeButton. */
   public void changeKeyPressed(KeyEvent keyEvent) throws IOException {
     if (keyEvent.getCode() == KeyCode.ENTER) {
       change(new ActionEvent());

@@ -4,15 +4,15 @@
  * @author fpetek
  * @version 1.0
  */
+
 package utility;
 
-import settings.GlobalSettings;
-
+import java.io.File;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
-import java.io.File;
+import settings.GlobalSettings;
 
 public class AudioPlayer implements Runnable {
   public Clip audio;

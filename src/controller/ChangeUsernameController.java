@@ -5,10 +5,14 @@
  * @author fpetek
  * @version 1.0
  */
+
 package controller;
 
 import com.jfoenix.controls.JFXButton;
 import db.Database;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -18,10 +22,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 public class ChangeUsernameController implements Initializable {
 
@@ -33,12 +33,23 @@ public class ChangeUsernameController implements Initializable {
 
   @FXML private Button closeButton;
 
+  /**
+   * Initializes "ChangeUsername" view.
+   *
+   * @param url Gets called automatically.
+   * @param resourceBundle Gets called automatically.
+   */
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     this.errorLabel.setVisible(false);
     this.newUsernameField.requestFocus();
   }
 
+  /**
+   * Method to change database entry of a users username.
+   *
+   * @param event Listens on Change-Button.
+   */
   @FXML
   void change(ActionEvent event) {
     MainController.mainController.db = new Database();
@@ -63,13 +74,18 @@ public class ChangeUsernameController implements Initializable {
     MainController.mainController.db.disconnect();
   }
 
+  /**
+   * Method to close ChangeUsername Window.
+   *
+   * @param event Listens on Close-Button.
+   */
   @FXML
   void close(ActionEvent event) {
     Stage stage = (Stage) closeButton.getScene().getWindow();
     stage.close();
   }
 
-  /** Methods that user can use tab or enter to navigate through textfields. */
+  /** Method that user can use tab or enter to navigate through textfields. */
   public void userNameKeyPressed(KeyEvent keyEvent) {
     if (keyEvent.getCode() == KeyCode.TAB) {
       changeButton.requestFocus();
@@ -78,6 +94,7 @@ public class ChangeUsernameController implements Initializable {
     }
   }
 
+  /** Method that user can use enter to activate changeButton. */
   public void changeKeyPressed(KeyEvent keyEvent) throws IOException {
     if (keyEvent.getCode() == KeyCode.ENTER) {
       change(new ActionEvent());

@@ -9,18 +9,31 @@ package network;
  */
 
 import controller.MainController;
-import javafx.util.Pair;
-import messages.*;
-import model.GameSession;
-import model.Player;
-import model.Tile;
-import model.TileRack;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import javafx.util.Pair;
+import messages.ConnectMessage;
+import messages.DisconnectMessage;
+import messages.EndGameMessage;
+import messages.EndPlayMessage;
+import messages.LeaveGameMessage;
+import messages.Message;
+import messages.MessageType;
+import messages.PassMessage;
+import messages.PlayMessage;
+import messages.RemovingPlayerListMessage;
+import messages.SendChatMessage;
+import messages.ShutDownMessage;
+import messages.StartPlayMessage;
+import messages.SwapTilesMessage;
+import messages.UpdatePlayerListMessage;
+import model.GameSession;
+import model.Player;
+import model.Tile;
+import model.TileRack;
 
 public class ServerProtocol extends Thread {
 
@@ -107,7 +120,10 @@ public class ServerProtocol extends Thread {
             for (Pair<String, Integer> p : words) {
               gameSession.getPlayerByID(pMsg.getPlayer().getPlayerID()).addScore(p.getValue());
             }
-            currentPlayerIndex = gameSession.getPlayers().indexOf(gameSession.getPlayerByID(pMsg.getPlayer().getPlayerID()));
+            currentPlayerIndex =
+                gameSession
+                    .getPlayers()
+                    .indexOf(gameSession.getPlayerByID(pMsg.getPlayer().getPlayerID()));
             nextPlayer =
                 gameSession
                     .getPlayers()
@@ -137,8 +153,7 @@ public class ServerProtocol extends Thread {
             LeaveGameMessage lgMsg = (LeaveGameMessage) m;
             user = lgMsg.getPlayer();
             name = lgMsg.getName();
-            server.sendToAll(
-                new RemovingPlayerListMessage(user, name));
+            server.sendToAll(new RemovingPlayerListMessage(user, name));
             break;
           case DISCONNECT:
             DisconnectMessage dcMsg = (DisconnectMessage) m;
@@ -157,7 +172,10 @@ public class ServerProtocol extends Thread {
             break;
           case PASS_MESSAGE:
             PassMessage passMessage = (PassMessage) m;
-            currentPlayerIndex = gameSession.getPlayers().indexOf(gameSession.getPlayerByID(passMessage.getPlayer().getPlayerID()));
+            currentPlayerIndex =
+                gameSession
+                    .getPlayers()
+                    .indexOf(gameSession.getPlayerByID(passMessage.getPlayer().getPlayerID()));
             nextPlayer =
                 gameSession
                     .getPlayers()
@@ -185,7 +203,10 @@ public class ServerProtocol extends Thread {
                   new EndGameMessage(server.getServerHost(), server.getGameSession().getPlayers()));
             }
             SwapTilesMessage swtMsg = (SwapTilesMessage) m;
-            currentPlayerIndex = gameSession.getPlayers().indexOf(gameSession.getPlayerByID(swtMsg.getPlayer().getPlayerID()));
+            currentPlayerIndex =
+                gameSession
+                    .getPlayers()
+                    .indexOf(gameSession.getPlayerByID(swtMsg.getPlayer().getPlayerID()));
             nextPlayer =
                 gameSession
                     .getPlayers()
@@ -202,7 +223,7 @@ public class ServerProtocol extends Thread {
             break;
           case END_GAME:
             server.sendToAll(
-                    new EndGameMessage(server.getServerHost(), server.getGameSession().getPlayers()));
+                new EndGameMessage(server.getServerHost(), server.getGameSession().getPlayers()));
           default:
             break;
         }
