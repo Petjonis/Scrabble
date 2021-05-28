@@ -51,7 +51,7 @@ public class ChangeUsernameController implements Initializable {
    * @param event Listens on Change-Button.
    */
   @FXML
-  void change(ActionEvent event) {
+  void changeUsername(ActionEvent event) {
     MainController.mainController.db = new Database();
     MainController.mainController.db.connect();
     if (!MainController.mainController.db.userExists(this.newUsernameField.getText())) {
@@ -97,7 +97,7 @@ public class ChangeUsernameController implements Initializable {
   /** Method that user can use enter to activate changeButton. */
   public void changeKeyPressed(KeyEvent keyEvent) throws IOException {
     if (keyEvent.getCode() == KeyCode.ENTER) {
-      change(new ActionEvent());
+      changeUsername(new ActionEvent());
     }
   }
 }

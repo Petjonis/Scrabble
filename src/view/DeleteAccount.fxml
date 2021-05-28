@@ -19,7 +19,7 @@
                     style="-fx-background-color: #FFFFFF; -fx-background-radius: 5;">
             <children>
                 <JFXButton fx:id="deleteButton" buttonType="RAISED" focusTraversable="false" layoutX="26.0"
-                           layoutY="235.0" onAction="#delete" onKeyPressed="#deleteKeyPressed" prefHeight="66.0"
+                           layoutY="235.0" onAction="#deleteAccount" onKeyPressed="#deleteKeyPressed" prefHeight="66.0"
                            prefWidth="265.0" style="-fx-background-radius: 10; -fx-background-color: #FF0000;"
                            text="Delete" textFill="WHITE">
                     <font>

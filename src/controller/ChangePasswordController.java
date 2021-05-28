@@ -56,7 +56,7 @@ public class ChangePasswordController implements Initializable {
    * @param event Listens on Change-Button.
    */
   @FXML
-  void change(ActionEvent event) {
+  void changePassword(ActionEvent event) {
     MainController.mainController.db = new Database();
     MainController.mainController.db.connect();
 
@@ -134,7 +134,7 @@ public class ChangePasswordController implements Initializable {
   /** Method that user can use enter to activate changeButton. */
   public void changeKeyPressed(KeyEvent keyEvent) throws IOException {
     if (keyEvent.getCode() == KeyCode.ENTER) {
-      change(new ActionEvent());
+      changePassword(new ActionEvent());
     }
   }
 }

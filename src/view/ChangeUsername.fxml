@@ -18,7 +18,7 @@
                     style="-fx-background-color: #FFFFFF; -fx-background-radius: 5;">
             <children>
                 <JFXButton fx:id="changeButton" buttonType="RAISED" focusTraversable="false" layoutX="24.0"
-                           layoutY="205.0" onAction="#change" onKeyPressed="#changeKeyPressed" prefHeight="66.0"
+                           layoutY="205.0" onAction="#changeUsername" onKeyPressed="#changeKeyPressed" prefHeight="66.0"
                            prefWidth="265.0" style="-fx-background-radius: 10; -fx-background-color: #7FA650;"
                            text="Change" textFill="WHITE">
                     <font>

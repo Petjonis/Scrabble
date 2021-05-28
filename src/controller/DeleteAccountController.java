@@ -51,7 +51,7 @@ public class DeleteAccountController implements Initializable {
    * @param event Listens on Delete-Button.
    */
   @FXML
-  void delete(ActionEvent event) throws IOException {
+  void deleteAccount(ActionEvent event) throws IOException {
     MainController.mainController.db = new Database();
     MainController.mainController.db.connect();
 
@@ -119,7 +119,7 @@ public class DeleteAccountController implements Initializable {
   /** Method that user can use enter to activate deleteButton. */
   public void deleteKeyPressed(KeyEvent keyEvent) throws IOException {
     if (keyEvent.getCode() == KeyCode.ENTER) {
-      delete(new ActionEvent());
+      deleteAccount(new ActionEvent());
     }
   }
 }
