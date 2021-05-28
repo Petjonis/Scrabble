@@ -9,8 +9,6 @@ import java.util.Set;
 public class GameSession {
 
   private static int gameLobbyId = 0;
-  private static ArrayList<GameSession> sessions = new ArrayList<GameSession>();
-  private GameState state;
   private ArrayList<Player> players;
   private Server server;
   private Player host;
@@ -21,19 +19,10 @@ public class GameSession {
     this.server.setGameSession(this);
     this.players = new ArrayList<>();
     gameLobbyId++;
-    this.state = GameState.WAITING_LOBBY;
     this.tilebag = new TileBag();
-    this.sessions.add(this);
   }
 
   /** getter and setter methods for all attributes. */
-  public GameState getState() {
-    return this.state;
-  }
-
-  public void setState(GameState gs) {
-    this.state = gs;
-  }
 
   public int getGameLobbyId() {
     return this.gameLobbyId;
@@ -66,10 +55,6 @@ public class GameSession {
 
   public Server getServer() {
     return this.server;
-  }
-
-  public ArrayList<GameSession> getSessions() {
-    return this.sessions;
   }
 
   public TileBag getTilebag() {

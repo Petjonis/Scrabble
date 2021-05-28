@@ -20,23 +20,4 @@ public class ComputerPlayer extends Player {
     this.setScore(0);
   }
 
-  @Override
-  public void startTurn() {}
-
-  @Override
-  public void endTurn() {}
-
-  @Override
-  public void pass() {
-    this.endTurn();
-  }
-
-  @Override
-  public void draw() {}
-
-  @Override
-  public void swap() {}
-
-  @Override
-  public void put() {}
 }

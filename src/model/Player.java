@@ -25,18 +25,6 @@ public abstract class Player implements Serializable {
   private int score;
   private boolean isPlaying = false;
 
-  public abstract void startTurn();
-
-  public abstract void endTurn();
-
-  public abstract void pass();
-
-  public abstract void draw();
-
-  public abstract void swap();
-
-  public abstract void put();
-
   public void addScore(int addition) {
     this.score += addition;
   }
