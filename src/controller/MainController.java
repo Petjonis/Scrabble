@@ -39,7 +39,7 @@ import network.Server;
 public class MainController implements Initializable {
 
   public static MainController mainController;
-  public Database db;
+  public Database db = new Database();
   private Player user;
   private boolean loggedIn = false;
   private boolean hosting = false;

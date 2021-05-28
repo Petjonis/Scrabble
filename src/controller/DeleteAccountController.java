@@ -52,7 +52,6 @@ public class DeleteAccountController implements Initializable {
    */
   @FXML
   void deleteAccount(ActionEvent event) throws IOException {
-    MainController.mainController.db = new Database();
     MainController.mainController.db.connect();
 
     if (MainController.mainController.db.userExists(usernameField.getText())) {

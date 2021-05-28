@@ -57,7 +57,6 @@ public class ChangePasswordController implements Initializable {
    */
   @FXML
   void changePassword(ActionEvent event) {
-    MainController.mainController.db = new Database();
     MainController.mainController.db.connect();
 
     if (MainController.mainController.db.checkPassword(

@@ -1,7 +1,6 @@
 package controller;
 
 import com.jfoenix.controls.JFXButton;
-import db.Database;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -54,9 +53,9 @@ public class RegisterController implements Initializable {
   void createAccount(ActionEvent event) {
     Locale.setDefault(new Locale("en", "English"));
 
-    Database db = new Database();
-    db.connect();
-    db.createUserTable();
+
+    MainController.mainController.db.connect();
+    MainController.mainController.db.createUserTable();
     this.userError.setVisible(false);
     this.passwordError.setVisible(false);
 
@@ -64,17 +63,17 @@ public class RegisterController implements Initializable {
      * when registration was successful, user will be added to the database and system shows login
      * page.
      */
-    if (!db.userExists(usernameField.getText())
+    if (!MainController.mainController.db.userExists(usernameField.getText())
         && confirmField.getText().equals(passwordField.getText()) && !passwordField.getText().isEmpty()
             && !usernameField.getText().isEmpty()) {
-      db.addUser(usernameField.getText(), passwordField.getText());
+      MainController.mainController.db.addUser(usernameField.getText(), passwordField.getText());
 
       MainController.mainController.openNewWindow("/view/Login.fxml", "Login");
       Stage stage = (Stage) createButton.getScene().getWindow();
       stage.close();
 
       /** when registration failed / password does not match. */
-    } else if (!db.userExists(usernameField.getText())
+    } else if (!MainController.mainController.db.userExists(usernameField.getText())
         && !confirmField.getText().equals(passwordField.getText())) {
       this.passwordError.setVisible(true);
       this.confirmField.clear();
@@ -85,7 +84,7 @@ public class RegisterController implements Initializable {
       this.passwordField.clear();
       this.confirmField.clear();
     }
-    db.disconnect();
+    MainController.mainController.db.disconnect();
   }
 
   /** Sign up can be pressed with the "ENTER" key. */

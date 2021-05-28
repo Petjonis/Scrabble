@@ -52,7 +52,6 @@ public class ChangeUsernameController implements Initializable {
    */
   @FXML
   void changeUsername(ActionEvent event) {
-    MainController.mainController.db = new Database();
     MainController.mainController.db.connect();
     if (!MainController.mainController.db.userExists(this.newUsernameField.getText())) {
       MainController.mainController.db.changeUsername(
