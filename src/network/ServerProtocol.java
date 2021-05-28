@@ -15,6 +15,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+
+import javafx.application.Platform;
 import javafx.util.Pair;
 import messages.ConnectMessage;
 import messages.DisconnectMessage;
@@ -178,6 +180,19 @@ public class ServerProtocol extends Thread {
             MainController.mainController.setHosting(false);
             break;
           case PASS_MESSAGE:
+            incrementPass();
+            if (passCount == 6) {
+              server.sendToAll(
+                      new EndGameMessage(server.getServerHost(), server.getGameSession().getPlayers()));
+              Platform.runLater(
+                      new Runnable() {
+                        @Override
+                        public void run() {
+                          GameInfoController.gameInfoController.addSystemMessage("No Words played for six turns. GAME OVER!");
+                        }
+                      });
+              break;
+            }
             PassMessage passMessage = (PassMessage) m;
             currentPlayerIndex =
                 gameSession
@@ -190,12 +205,7 @@ public class ServerProtocol extends Thread {
                         (currentPlayerIndex + 1 >= gameSession.getPlayers().size())
                             ? 0
                             : currentPlayerIndex + 1);
-            incrementPass();
-            if (passCount == 6) {
-              GameInfoController.gameInfoController.addSystemMessage("No Words played for six turns. GAME OVER!");
-              server.sendToAll(
-                  new EndGameMessage(server.getServerHost(), server.getGameSession().getPlayers()));
-            }
+
             server.sendToAll(new PassMessage(nextPlayer));
             break;
           case SEND_CHAT_MESSAGE:
@@ -205,9 +215,16 @@ public class ServerProtocol extends Thread {
           case SWAP_TILES:
             incrementPass();
             if (passCount == 6) {
-              GameInfoController.gameInfoController.addSystemMessage("No Words played for six turns. GAME OVER!");
               server.sendToAll(
                   new EndGameMessage(server.getServerHost(), server.getGameSession().getPlayers()));
+              Platform.runLater(
+                      new Runnable() {
+                        @Override
+                        public void run() {
+                          GameInfoController.gameInfoController.addSystemMessage("No Words played for six turns. GAME OVER!");
+                        }
+                      });
+              break;
             }
             SwapTilesMessage swtMsg = (SwapTilesMessage) m;
             currentPlayerIndex =
@@ -221,10 +238,10 @@ public class ServerProtocol extends Thread {
                         (currentPlayerIndex + 1 >= gameSession.getPlayers().size())
                             ? 0
                             : currentPlayerIndex + 1);
+            MainController.mainController.getGameSession().getTilebag().addTiles(swtMsg.getTiles());
             playerTiles = new TileRack(MainController.mainController.getGameSession().getTilebag());
             Tile[] newTilesRack = new Tile[playerTiles.getTileRack().size()];
             playerTiles.getTileRack().toArray(newTilesRack);
-            MainController.mainController.getGameSession().getTilebag().addTiles(swtMsg.getTiles());
             sendToClient(new EndPlayMessage(swtMsg.getPlayer(), newTilesRack));
             server.sendToAll(new StartPlayMessage(nextPlayer));
             break;

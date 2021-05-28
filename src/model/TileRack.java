@@ -11,7 +11,9 @@ public class TileRack {
 
   public TileRack(TileBag tileBag) {
     for (int i = 0; i < 7; i++) {
-      tileRack.add(tileBag.drawLetter());
+      if(!tileBag.isEmpty()){
+        tileRack.add(tileBag.drawLetter());
+      }
     }
   }
 

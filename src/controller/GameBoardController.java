@@ -11,12 +11,17 @@ import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TextField;
 import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -105,6 +110,11 @@ public class GameBoardController implements Initializable {
     undoMove();
     Tile[] tileRack = new Tile[tr.getTileRack().size()];
     tr.getTileRack().toArray(tileRack);
+    for(Tile t : tileRack){
+      if(t.getValue() == 0){
+        t.setLetter(' ');
+      }
+    }
     startTimer();
     progressBar.setVisible(false);
     MainController.mainController
@@ -246,6 +256,35 @@ public class GameBoardController implements Initializable {
         });
   }
 
+  public void setOnMouseClicked (TileController tile){
+    tile.setOnMouseClicked(event ->  {
+      ChoiceBox cb = new ChoiceBox(FXCollections.observableArrayList("A", "B", "C", "D",
+              "E", "F", "G", "H", "I", "J", "K",
+              "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U",
+              "V", "W", "X", "Y", "Z")
+      );
+      String[] stringToSet = new String[]{
+              "A", "B", "C", "D",
+              "E", "F", "G", "H", "I", "J", "K",
+              "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U",
+              "V", "W", "X", "Y", "Z"
+      };
+
+      cb.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+        @Override
+        public void changed(ObservableValue observableValue, Number value, Number new_value) {
+          char letter = stringToSet[new_value.intValue()].charAt(0);
+          int v = 0;
+          Tile newTile = new Tile(letter,v,null);
+          int col = GridPane.getColumnIndex(tile);
+          tr.remove(col);
+          tr.add(newTile);
+        }
+      });
+      tile.getChildren().add(cb);
+    });
+  }
+
   public void startProgressBar() {
     progressBar
         .progressProperty()
@@ -369,8 +408,13 @@ public class GameBoardController implements Initializable {
     for (Tile t : tr.getTileRack()) {
       TileController tc = new TileController();
       tc.setString(t.toString());
-      setOnDragDetected(tc);
-      setOnDragDone(tc);
+      if(tc.getLetter().isBlank()){
+        setOnMouseClicked(tc);
+        System.out.println("set on mouse clicked");
+      }else{
+        setOnDragDetected(tc);
+        setOnDragDone(tc);
+      }
       tileRack.add(tc, tr.getTileRack().indexOf(t), 0);
     }
     for (int i = tr.getTileRack().size(); i < 7; i++) {
