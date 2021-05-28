@@ -77,7 +77,7 @@ public class Client extends Thread {
                   public void run() {
                     GameBoardController.gameBoardController.initializeGame(
                         playerTiles, activePlayer);
-                    GameInfoController.gameInfoController.setActivePlayer(1);
+                    GameInfoController.gameInfoController.setActivePlayerByIndex(1);
                   }
                 });
             break;
@@ -92,7 +92,7 @@ public class Client extends Thread {
                         == MainController.mainController.getUser().getPlayerID()) {
                       GameBoardController.gameBoardController.activate();
                     }
-                    GameInfoController.gameInfoController.setActivePlayer(nextPlayer.getPlayerID());
+                    GameInfoController.gameInfoController.setActivePlayerByName(nextPlayer.getUserName());
                   }
                 });
             break;
@@ -109,7 +109,6 @@ public class Client extends Thread {
             break;
           case PLAY_MESSAGE:
             PlayMessage pMsg = (PlayMessage) m;
-            Player nxtPlayer = pMsg.getPlayer();
             Platform.runLater(
                 new Runnable() {
                   @Override
@@ -175,7 +174,8 @@ public class Client extends Thread {
                     } else {
                       GameBoardController.gameBoardController.deactivate();
                     }
-                    GameInfoController.gameInfoController.setActivePlayer(nextP.getPlayerID());
+                    GameInfoController.gameInfoController.setActivePlayerByName(nextP.getUserName());
+                      System.out.println(nextP.getUserName()+" ist dran");
                   }
                 });
             break;
@@ -186,8 +186,8 @@ public class Client extends Thread {
                 new Runnable() {
                   @Override
                   public void run() {
-                    GameInfoController.gameInfoController.updateChatReceived(
-                        new ComputerPlayer("[Server]"), user1 + " left the game.", false);
+                    GameInfoController.gameInfoController.addSystemMessage(
+                        "[Server]: " + user1 + " left the game.");
                   }
                 });
             break;
@@ -222,7 +222,6 @@ public class Client extends Thread {
                       ResultController.resultController.setResults();
                       ResultController.resultController.addResultsToDatabase();
                       MainController.mainController.reloadStats();
-
                     } catch (IOException e) {
                       e.printStackTrace();
                     }

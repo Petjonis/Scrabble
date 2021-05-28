@@ -32,10 +32,8 @@ public class Main extends Application {
   }
 
   @Override
-  public void stop() throws IOException {
-    if (MainController.mainController.getHosting()) {
-      MainController.mainController.getServer().stopServer();
-    }
-    MainController.mainController.disconnect();
+  public void stop() throws Exception {
+    super.stop();
+    System.exit(0);
   }
 }

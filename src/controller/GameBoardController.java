@@ -358,6 +358,8 @@ public class GameBoardController implements Initializable {
       case NO_BONUS:
         style = "-fx-background-color:#eeeed2";
         break;
+      default:
+        break;
     }
     return style;
   }

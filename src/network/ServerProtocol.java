@@ -107,7 +107,7 @@ public class ServerProtocol extends Thread {
             for (Pair<String, Integer> p : words) {
               gameSession.getPlayerByID(pMsg.getPlayer().getPlayerID()).addScore(p.getValue());
             }
-            currentPlayerIndex = pMsg.getPlayer().getPlayerID();
+            currentPlayerIndex = gameSession.getPlayers().indexOf(gameSession.getPlayerByID(pMsg.getPlayer().getPlayerID()));
             nextPlayer =
                 gameSession
                     .getPlayers()
@@ -146,7 +146,7 @@ public class ServerProtocol extends Thread {
             name = dcMsg.getName();
             server.sendToAll(new DisconnectMessage(user, name));
             server.removeClient(user);
-            server.getGameSession().setPlayers(server.getClients());
+            gameSession.getPlayers().remove(user);
             System.out.println(user.getUserName() + " left the Lobby.");
             break;
           case SERVERSHUTDOWN:
@@ -157,7 +157,7 @@ public class ServerProtocol extends Thread {
             break;
           case PASS_MESSAGE:
             PassMessage passMessage = (PassMessage) m;
-            currentPlayerIndex = passMessage.getPlayer().getPlayerID();
+            currentPlayerIndex = gameSession.getPlayers().indexOf(gameSession.getPlayerByID(passMessage.getPlayer().getPlayerID()));
             nextPlayer =
                 gameSession
                     .getPlayers()
@@ -185,7 +185,7 @@ public class ServerProtocol extends Thread {
                   new EndGameMessage(server.getServerHost(), server.getGameSession().getPlayers()));
             }
             SwapTilesMessage swtMsg = (SwapTilesMessage) m;
-            currentPlayerIndex = swtMsg.getPlayer().getPlayerID();
+            currentPlayerIndex = gameSession.getPlayers().indexOf(gameSession.getPlayerByID(swtMsg.getPlayer().getPlayerID()));
             nextPlayer =
                 gameSession
                     .getPlayers()
@@ -200,6 +200,9 @@ public class ServerProtocol extends Thread {
             sendToClient(new EndPlayMessage(swtMsg.getPlayer(), newTilesRack));
             server.sendToAll(new StartPlayMessage(nextPlayer));
             break;
+          case END_GAME:
+            server.sendToAll(
+                    new EndGameMessage(server.getServerHost(), server.getGameSession().getPlayers()));
           default:
             break;
         }
