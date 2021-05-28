@@ -147,17 +147,6 @@ public class ResultController implements Initializable {
     return -1;
   }
 
-  /**
-   * Method to go back to lobby and initialize default values after a game.
-   * @throws IOException Nothing to worry about.
-   */
-  public void playAgain() throws IOException {
-    /*TODO: open up playerboard and host stuff*/
-    MainController.mainController.changePane(
-        MainController.mainController.getCenterPane(), "/view/Ganeboard.fxml");
-    MainController.mainController.changePane(
-        MainController.mainController.getRightPane(), "/view/GameInfo.fxml");
-  }
 
   public void setPlayers(ArrayList<Player> players) {
     this.players = players;
