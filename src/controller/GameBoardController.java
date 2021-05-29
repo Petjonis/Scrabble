@@ -489,4 +489,9 @@ public class GameBoardController implements Initializable {
   public ProgressBar getProgressBar() {
     return progressBar;
   }
+
+  public boolean isTimerOn() {
+    return timerOn;
+  }
+
 }

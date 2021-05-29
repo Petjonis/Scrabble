@@ -33,14 +33,6 @@
                                 <MaterialIconView fill="WHITE" glyphName="PUBLIC" />
                             </graphic>
                         </JFXButton>
-                        <JFXButton fx:id="playTutorialButton" buttonType="RAISED" focusTraversable="false" layoutY="248.0" onAction="#playTutorial" prefHeight="66.0" prefWidth="265.0" style="-fx-background-radius: 10; -fx-background-color: #413E3C;" text="Show Tutorial" textFill="#ababab">
-                            <font>
-                                <Font name="System Bold" size="23.0" />
-                            </font>
-                            <graphic>
-                                <MaterialIconView fill="#ababab" glyphName="SCHOOL" />
-                            </graphic>
-                        </JFXButton>
                     </children>
                 </AnchorPane>
             </children>

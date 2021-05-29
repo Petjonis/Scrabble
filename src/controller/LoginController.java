@@ -54,30 +54,14 @@ public class LoginController implements Initializable {
 
         MainController.mainController.setUser(new HumanPlayer(usernameField.getText()));
         MainController.mainController.setLoggedIn(true);
-
         MainController.mainController.getWelcomeLabel().setText(usernameField.getText());
-        MainController.mainController.getWelcomeLabel().setVisible(true);
-        MainController.mainController.getEditProfileIcon().setVisible(true);
-
         MainController.mainController.getLoginButton().setVisible(false);
+        MainController.mainController.getLoginButton().setFocusTraversable(false);
         MainController.mainController.getSignupButton().setVisible(false);
+        MainController.mainController.getSignupButton().setFocusTraversable(false);
         MainController.mainController.getLogoutButton().setVisible(true);
-        MainController.mainController.getPlayButton().setDisable(false);
-        MainController.mainController.getChangeUsernameButton().setVisible(false);
-        MainController.mainController.getChangePasswordButton().setVisible(false);
-        MainController.mainController.getDeleteProfileButton().setVisible(false);
-
-        MainController.mainController.getGameCountLabel().setVisible(true);
-        MainController.mainController.getWinCountLabel().setVisible(true);
-        MainController.mainController.getLoseCountLabel().setVisible(true);
-        MainController.mainController.getWinRateLabel().setVisible(true);
-        MainController.mainController.getAvgPointsLabel().setVisible(true);
-
-        MainController.mainController.getGameCount().setVisible(true);
-        MainController.mainController.getWinCount().setVisible(true);
-        MainController.mainController.getLoseCount().setVisible(true);
-        MainController.mainController.getWinRate().setVisible(true);
-        MainController.mainController.getAvgPoints().setVisible(true);
+        MainController.mainController.loggedInView.setVisible(true);
+        MainController.mainController.loggedInView.setFocusTraversable(true);
 
         /** Initializing account statistic values from database. */
         MainController.mainController.setGameCount(

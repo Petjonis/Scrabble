@@ -264,6 +264,10 @@ public class GameInfoController implements Initializable {
     if (result.get() == ButtonType.OK) {
       switch (String.valueOf(MainController.mainController.getHosting())) {
         case "true":
+          if(GameBoardController.gameBoardController.isTimerOn()){
+            GameBoardController.gameBoardController.startTimer();
+            System.out.println("timer stopped.");
+          }
           MainController.mainController
               .getConnection()
               .sendToServer(
@@ -276,9 +280,10 @@ public class GameInfoController implements Initializable {
           MainController.mainController.getRightPane().getChildren().clear();
 
           MainController.mainController.getPlayButton().setDisable(false);
+          MainController.mainController.getRulebookButton().setDisable(false);
           break;
         case "false":
-          if(!GameBoardController.gameBoardController.getPlayButton().isDisable()){
+          if(GameBoardController.gameBoardController.isTimerOn()){
             GameBoardController.gameBoardController.startTimer();
             System.out.println("timer stopped.");
           }
@@ -286,6 +291,7 @@ public class GameInfoController implements Initializable {
               MainController.mainController.getCenterPane(), "/view/Start.fxml");
           MainController.mainController.getRightPane().getChildren().clear();
           MainController.mainController.getPlayButton().setDisable(false);
+          MainController.mainController.getRulebookButton().setDisable(false);
           MainController.mainController.disconnect();
           break;
         default:

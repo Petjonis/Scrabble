@@ -32,7 +32,8 @@ public class ConversationView extends VBox {
         messageScroller = new ScrollPane(messageContainer);
         messageScroller.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         messageScroller.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        messageScroller.setPrefHeight(300);
+        //messageScroller.setPrefHeight(300);
+        messageScroller.prefHeightProperty().bind(messageContainer.prefWidthProperty());
         messageScroller.prefWidthProperty().bind(messageContainer.prefWidthProperty());
         messageScroller.setFitToWidth(true);
         //Make the scroller scroll to the bottom when a new message is added

@@ -228,7 +228,7 @@ public class Client extends Thread {
                   @Override
                   public void run() {
                     try {
-                        if(!GameBoardController.gameBoardController.getPlayButton().isDisable()){
+                        if(GameBoardController.gameBoardController.isTimerOn()){
                             GameBoardController.gameBoardController.startTimer();
                             System.out.println("timer stopped.");
                         }

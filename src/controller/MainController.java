@@ -27,6 +27,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -48,9 +49,14 @@ public class MainController implements Initializable {
   private Client connection;
   private GameSession gameSession;
 
-  @FXML private JFXButton playButton;
+  private Parent gameBoard;
+  private Parent ruleBook;
 
-  @FXML private JFXButton learnButton;
+  @FXML public VBox settingsView;
+
+  @FXML public VBox loggedInView;
+
+  @FXML private JFXButton playButton;
 
   @FXML private JFXButton rulebookButton;
 
@@ -111,8 +117,21 @@ public class MainController implements Initializable {
     /** Player not logged in, so "Logout"-button, Statistics and edit-button will not be visible. */
     if (!mainController.getLoggedIn()) {
       this.logoutButton.setVisible(false);
-      this.welcomeLabel.setVisible(false);
-      closeStatistics();
+      loggedInView.setVisible(false);
+      settingsView.setVisible(false);
+    }
+
+    try {
+      // getting loader and a pane for the GameBoard.
+      FXMLLoader gameBoardLoader = new FXMLLoader(getClass().getResource("/view/GameBoard.fxml"));
+      gameBoard = gameBoardLoader.load();
+
+      // getting loader and a pane for the Rule Book.
+      FXMLLoader secondPaneLoader = new FXMLLoader(getClass().getResource("/view/RuleBook.fxml"));
+      ruleBook = secondPaneLoader.load();
+
+    } catch (IOException e) {
+      e.printStackTrace();
     }
   }
 
@@ -135,48 +154,34 @@ public class MainController implements Initializable {
     setLoggedIn(false);
     setUser(null);
 
-    getLoginButton().setVisible(true);
-    getSignupButton().setVisible(true);
-    getLogoutButton().setVisible(false);
-    getWelcomeLabel().setVisible(false);
-    closeStatistics();
+    loginButton.setVisible(true);
+    loginButton.setFocusTraversable(true);
+    signupButton.setVisible(true);
+    signupButton.setFocusTraversable(true);
+    logoutButton.setVisible(false);
+    settingsView.setVisible(false);
+    loggedInView.setVisible(false);
+    loggedInView.setFocusTraversable(false);
 
     changePane(centerPane, "/view/Start.fxml");
     rightPane.getChildren().clear();
     playButton.setDisable(false);
-  }
-
-  private void closeStatistics() {
-    this.changeUsernameButton.setVisible(false);
-    this.changePasswordButton.setVisible(false);
-    this.deleteProfileButton.setVisible(false);
-    this.editProfileIcon.setVisible(false);
-    this.gameCountLabel.setVisible(false);
-    this.winCountLabel.setVisible(false);
-    this.loseCountLabel.setVisible(false);
-    this.winRateLabel.setVisible(false);
-    this.avgPointsLabel.setVisible(false);
-    this.gameCount.setVisible(false);
-    this.winCount.setVisible(false);
-    this.loseCount.setVisible(false);
-    this.winRate.setVisible(false);
-    this.avgPoints.setVisible(false);
-  }
-
-  @FXML
-  void openLearn(ActionEvent event) throws IOException {
-    /* TODO: add screenshots how to play the game */
+    rulebookButton.setDisable(false);
   }
 
   @FXML
   void openPlay(ActionEvent event) throws IOException {
-    changePane(centerPane, "/view/GameBoard.fxml");
-    changePane(rightPane, "/view/PlayOnline.fxml");
+    centerPane.getChildren().clear();
+    centerPane.getChildren().add(gameBoard);
+    if(rightPane.getChildren().isEmpty()){
+      changePane(rightPane, "/view/PlayOnline.fxml");
+    }
   }
 
   @FXML
   void openRulebook(ActionEvent event) throws IOException {
-    changePane(centerPane, "/view/RuleBook.fxml");
+    centerPane.getChildren().clear();
+    centerPane.getChildren().add(ruleBook);
   }
 
   @FXML
@@ -234,6 +239,19 @@ public class MainController implements Initializable {
     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlPath));
     Parent parent = fxmlLoader.load();
     pane.getChildren().add(parent);
+    if(fxmlPath.contains("RuleBook")){
+      ruleBook = parent;
+    }else if(fxmlPath.contains("GameBoard")){
+      gameBoard = parent;
+    } else if(fxmlPath.contains("Result")){
+      FXMLLoader fxmlLoader1 = new FXMLLoader(getClass().getResource("/view/GameBoard.fxml"));
+      gameBoard = fxmlLoader1.load();
+      playButton.setDisable(true);
+      rulebookButton.setDisable(true);
+    } else if(fxmlPath.contains("Start")) {
+      FXMLLoader fxmlLoader1 = new FXMLLoader(getClass().getResource("/view/GameBoard.fxml"));
+      gameBoard = fxmlLoader1.load();
+    }
   }
 
   /**
@@ -266,17 +284,13 @@ public class MainController implements Initializable {
    * @param event when user clicks on settings icon
    * @author fpetek
    */
-  public void editProfileClicked(MouseEvent event) {
+  public void editProfileClicked(ActionEvent event) {
     if (editSettings) {
       this.editSettings = false;
-      this.changeUsernameButton.setVisible(false);
-      this.changePasswordButton.setVisible(false);
-      this.deleteProfileButton.setVisible(false);
+      settingsView.setVisible(false);
     } else {
       this.editSettings = true;
-      this.changeUsernameButton.setVisible(true);
-      this.changePasswordButton.setVisible(true);
-      this.deleteProfileButton.setVisible(true);
+      settingsView.setVisible(true);
     }
   }
 
@@ -453,4 +467,9 @@ public class MainController implements Initializable {
   public void setAvgPoints(String avgScore) {
     this.avgPoints.setText(avgScore);
   }
+
+  public JFXButton getRulebookButton() {
+    return rulebookButton;
+  }
+
 }
