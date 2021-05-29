@@ -4,8 +4,6 @@ import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
@@ -25,21 +23,13 @@ public class PlayOnlineController implements Initializable {
   private GameSession gameSession;
 
   @FXML private TabPane playTabPane;
-
   @FXML private Label descriptionLabel;
-
   @FXML private TextField portNumberTextField;
-
   @FXML private Label portErrorLabel;
-
   @FXML private JFXButton hostButton;
-
   @FXML private TextField ipField;
-
   @FXML private TextField portField;
-
   @FXML private JFXButton joinButton;
-
   @FXML private Label errorLabel;
 
   @Override
@@ -84,13 +74,30 @@ public class PlayOnlineController implements Initializable {
           MainController.mainController
               .getConnection()
               .sendToServer(new ConnectMessage(MainController.mainController.getUser()));
-          //MainController.mainController.getPlayButton().setDisable(true);
+          // MainController.mainController.getPlayButton().setDisable(true);
           MainController.mainController.changePane(
               MainController.mainController.getRightPane(), "/view/GameInfo.fxml");
         }
       }
     } else {
-      MainController.mainController.openNewWindow("/view/Login.fxml","Login");
+      MainController.mainController.openNewWindow("/view/Login.fxml", "Login");
+    }
+  }
+
+  /**
+   * joinGameSession() will be called and a new pane will open up on the right panel.
+   *
+   * @author socho
+   */
+  @FXML
+  void join(ActionEvent event) throws IOException {
+    if (MainController.mainController.getLoggedIn() == true) {
+      if (joinGameSession()) {
+        MainController.mainController.changePane(
+            MainController.mainController.getRightPane(), "/view/GameInfo.fxml");
+      }
+    } else {
+      MainController.mainController.openNewWindow("/view/Login.fxml", "Login");
     }
   }
 
@@ -119,23 +126,6 @@ public class PlayOnlineController implements Initializable {
   }
 
   /**
-   * joinGameSession() will be called and a new pane will open up on the right side.
-   *
-   * @author socho
-   */
-  @FXML
-  void join(ActionEvent event) throws IOException {
-    if (MainController.mainController.getLoggedIn() == true) {
-      if (joinGameSession()) {
-        MainController.mainController.changePane(
-            MainController.mainController.getRightPane(), "/view/GameInfo.fxml");
-      }
-    } else {
-      MainController.mainController.openNewWindow("/view/Login.fxml","Login");
-    }
-  }
-
-  /**
    * client connects to the server with the server ip and port which the user entered before. if
    * connection is alright (see isOk() method in "Client.java"), a new Connect-Message will be sent
    * to the server. port field will be checked if it is empty and matches to specific regex. if not,
@@ -160,7 +150,7 @@ public class PlayOnlineController implements Initializable {
             .sendToServer(new ConnectMessage(MainController.mainController.getUser()));
         System.out.println(
             MainController.mainController.getUser().getUserName() + " is connected.");
-        //MainController.mainController.getPlayButton().setDisable(true);
+        // MainController.mainController.getPlayButton().setDisable(true);
         return true;
       } else {
         System.out.println(
@@ -176,15 +166,28 @@ public class PlayOnlineController implements Initializable {
     }
   }
 
+  /**
+   * when entering in the "ip" text field by pressing "TAB" key "port" text field will be focused.
+   *
+   * @author socho
+   */
   public void ipFieldKeyPressed(KeyEvent keyEvent) {
     if (keyEvent.getCode() == KeyCode.TAB) {
       portField.requestFocus();
     }
   }
 
-  public void hostPortKeyPressed(KeyEvent keyEvent) {
+  /**
+   * when entering in the "port" text field by pressing "TAB" key "Join" button will be highlighted
+   * By pressing "ENTER" key, you will join.
+   *
+   * @author socho
+   */
+  public void hostPortKeyPressed(KeyEvent keyEvent) throws IOException {
     if (keyEvent.getCode() == KeyCode.TAB) {
       joinButton.requestFocus();
+    } else if (keyEvent.getCode() == KeyCode.ENTER) {
+      join(new ActionEvent());
     }
   }
 

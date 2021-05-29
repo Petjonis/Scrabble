@@ -5,7 +5,6 @@
  * @author fpetek
  * @version 1.0
  */
-
 package controller;
 
 import com.jfoenix.controls.JFXButton;
@@ -25,11 +24,8 @@ import javafx.stage.Stage;
 public class ChangeUsernameController implements Initializable {
 
   @FXML private JFXButton changeButton;
-
   @FXML private TextField newUsernameField;
-
   @FXML private Label errorLabel;
-
   @FXML private Button closeButton;
 
   /**

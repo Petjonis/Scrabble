@@ -22,25 +22,21 @@ public class RegisterController implements Initializable {
   @FXML private Label userError;
   @FXML private Label passwordError;
   @FXML private JFXButton createButton;
-
   @FXML private TextField usernameField;
-
   @FXML private PasswordField passwordField;
-
   @FXML private PasswordField confirmField;
-
   @FXML private Button closeButton;
-
-  @FXML
-  void close(ActionEvent event) {
-    Stage stage = (Stage) closeButton.getScene().getWindow();
-    stage.close();
-  }
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     this.userError.setVisible(false);
     this.passwordError.setVisible(false);
+  }
+
+  @FXML
+  void close(ActionEvent event) {
+    Stage stage = (Stage) closeButton.getScene().getWindow();
+    stage.close();
   }
 
   /**
@@ -53,7 +49,6 @@ public class RegisterController implements Initializable {
   void createAccount(ActionEvent event) {
     Locale.setDefault(new Locale("en", "English"));
 
-
     MainController.mainController.db.connect();
     MainController.mainController.db.createUserTable();
     this.userError.setVisible(false);
@@ -64,8 +59,9 @@ public class RegisterController implements Initializable {
      * page.
      */
     if (!MainController.mainController.db.userExists(usernameField.getText())
-        && confirmField.getText().equals(passwordField.getText()) && !passwordField.getText().isEmpty()
-            && !usernameField.getText().isEmpty()) {
+        && confirmField.getText().equals(passwordField.getText())
+        && !passwordField.getText().isEmpty()
+        && !usernameField.getText().isEmpty()) {
       MainController.mainController.db.addUser(usernameField.getText(), passwordField.getText());
 
       MainController.mainController.openNewWindow("/view/Login.fxml", "Login");

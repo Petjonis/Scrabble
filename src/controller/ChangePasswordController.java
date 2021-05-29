@@ -5,7 +5,6 @@
  * @author fpetek
  * @version 1.0
  */
-
 package controller;
 
 import com.jfoenix.controls.JFXButton;
@@ -26,15 +25,10 @@ import javafx.stage.Stage;
 public class ChangePasswordController implements Initializable {
 
   @FXML private JFXButton changeButton;
-
   @FXML private PasswordField currentPasswordField;
-
   @FXML private PasswordField newPasswordField;
-
   @FXML private PasswordField confirmPasswordField;
-
   @FXML private Label errorLabel;
-
   @FXML private Button closeButton;
 
   /**
@@ -121,6 +115,7 @@ public class ChangePasswordController implements Initializable {
       confirmPasswordField.requestFocus();
     }
   }
+
   /** Method that user can use tab or enter to navigate through textfields. */
   public void confirmPasswordKeyPressed(KeyEvent keyEvent) {
     if (keyEvent.getCode() == KeyCode.TAB) {
@@ -129,6 +124,7 @@ public class ChangePasswordController implements Initializable {
       changeButton.requestFocus();
     }
   }
+
   /** Method that user can use enter to activate changeButton. */
   public void changeKeyPressed(KeyEvent keyEvent) throws IOException {
     if (keyEvent.getCode() == KeyCode.ENTER) {

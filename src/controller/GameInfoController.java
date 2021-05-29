@@ -36,30 +36,45 @@ import java.util.ResourceBundle;
 public class GameInfoController implements Initializable {
 
   public static GameInfoController gameInfoController;
-
   @FXML private AnchorPane gameInfoPane;
-
   @FXML private JFXListView<String> playerList;
-
   @FXML private JFXListView<Integer> scoreList;
-
   @FXML private Label lastPlayedWordsLabel;
-
   @FXML private JFXListView<String> lastWordList;
-
   @FXML private JFXButton startGameButton;
-
   @FXML private JFXListView<Label> chatList;
-
   @FXML private JFXTextArea sendText;
-
   @FXML private JFXButton sendButton;
-
   @FXML private JFXButton leaveGameButton;
-
   @FXML private VBox chatVbox;
-
   ConversationView conversationView;
+
+  /** chatList adds a welcome message to the user who joined to the game session. */
+  public void initialize(URL url, ResourceBundle resourceBundle) {
+    gameInfoController = this;
+
+    conversationView = new ConversationView();
+    chatVbox.getChildren().add(conversationView);
+
+    if (MainController.mainController.getHosting()) {
+      lastPlayedWordsLabel.setVisible(false);
+      lastWordList.setVisible(false);
+      addSystemMessage(
+          "[System]: "
+              + MainController.mainController.getUser().getUserName()
+              + ", you are the host!");
+    } else {
+      startGameButton.setVisible(false);
+      addSystemMessage(
+          "[System]: Hello " + MainController.mainController.getUser().getUserName() + "!");
+    }
+
+    try {
+      sendRequestMessage();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 
   /**
    * Listview "chatList" adds the text, which was written from the textfield "sendText" and the
@@ -74,24 +89,20 @@ public class GameInfoController implements Initializable {
     if (MainController.mainController.getHosting() && !text.isEmpty()) {
       MainController.mainController
           .getConnection()
-          .sendToServer(
-              new SendChatMessage(
-                  MainController.mainController.getUser(), text, true));
-    } else if(!text.isEmpty()){
+          .sendToServer(new SendChatMessage(MainController.mainController.getUser(), text, true));
+    } else if (!text.isEmpty()) {
       MainController.mainController
           .getConnection()
-          .sendToServer(
-              new SendChatMessage(
-                  MainController.mainController.getUser(), text, false));
+          .sendToServer(new SendChatMessage(MainController.mainController.getUser(), text, false));
     }
     sendText.clear();
   }
 
   @FXML
   void startGame(ActionEvent actionEvent) throws IOException {
-    if(playerList.getItems().size() < 2){
+    if (playerList.getItems().size() < 2) {
       addSystemMessage("Not enough Players");
-    }else{
+    } else {
       if (MainController.mainController.getHosting()) {
         lastPlayedWordsLabel.setVisible(true);
         lastWordList.setVisible(true);
@@ -99,46 +110,76 @@ public class GameInfoController implements Initializable {
       }
       for (Player player : MainController.mainController.getGameSession().getPlayers()) {
         TileRack playerTiles =
-                new TileRack(MainController.mainController.getGameSession().getTilebag());
+            new TileRack(MainController.mainController.getGameSession().getTilebag());
         Tile[] tileRack = new Tile[7];
         playerTiles.getTileRack().toArray(tileRack);
         boolean isActive =
-                MainController.mainController.getGameSession().getPlayers().indexOf(player) == 1;
+            MainController.mainController.getGameSession().getPlayers().indexOf(player) == 1;
         MainController.mainController
-                .getServer()
-                .getClientsHashMap()
-                .get(player)
-                .sendToClient(new StartGameFirstMessage(player, tileRack, isActive));
+            .getServer()
+            .getClientsHashMap()
+            .get(player)
+            .sendToClient(new StartGameFirstMessage(player, tileRack, isActive));
       }
     }
   }
 
-  /** chatList adds a welcome message to the user who joined to the game session. */
-  public void initialize(URL url, ResourceBundle resourceBundle) {
-    gameInfoController = this;
+  /**
+   * Use Case 3.4 leaving game. you have to confirm to leave. if host leaves, server stops. if
+   * client leaves, game will be ended and everyone except the leaver will see the scoreboard.
+   *
+   * @author socho, fjaehrli
+   */
+  @FXML
+  void leave(ActionEvent actionEvent) throws IOException {
+    Alert confirmationAlert = new Alert(AlertType.CONFIRMATION);
+    confirmationAlert.setTitle("Leaving game confirmation");
+    confirmationAlert.setHeaderText("Do you want to leave this game session?");
+    Optional<ButtonType> result = confirmationAlert.showAndWait();
+    if (result.get() == ButtonType.OK) {
+      switch (String.valueOf(MainController.mainController.getHosting())) {
+        case "true":
+          if (GameBoardController.gameBoardController.isTimerOn()) {
+            GameBoardController.gameBoardController.startTimer();
+            System.out.println("timer stopped.");
+          }
+          MainController.mainController
+              .getConnection()
+              .sendToServer(
+                  new ShutDownMessage(
+                      MainController.mainController.getUser(),
+                      MainController.mainController.getUser().getPlayerID()));
 
-    conversationView = new ConversationView();
-    chatVbox.getChildren().add(conversationView);
+          MainController.mainController.changePane(
+              MainController.mainController.getCenterPane(), "/view/Start.fxml");
+          MainController.mainController.getRightPane().getChildren().clear();
 
-    if (MainController.mainController.getHosting()) {
-      lastPlayedWordsLabel.setVisible(false);
-      lastWordList.setVisible(false);
-      addSystemMessage(
-              "[System]: "
-                  + MainController.mainController.getUser().getUserName()
-                  + ", you are the host!");
-    } else {
-      startGameButton.setVisible(false);
-      addSystemMessage("[System]: Hello " + MainController.mainController.getUser().getUserName() + "!");
-    }
-
-    try {
-      sendRequestMessage();
-    } catch (IOException e) {
-      e.printStackTrace();
+          MainController.mainController.getPlayButton().setDisable(false);
+          MainController.mainController.getRulebookButton().setDisable(false);
+          break;
+        case "false":
+          if (GameBoardController.gameBoardController.isTimerOn()) {
+            GameBoardController.gameBoardController.startTimer();
+            System.out.println("timer stopped.");
+          }
+          MainController.mainController.changePane(
+              MainController.mainController.getCenterPane(), "/view/Start.fxml");
+          MainController.mainController.getRightPane().getChildren().clear();
+          MainController.mainController.getPlayButton().setDisable(false);
+          MainController.mainController.getRulebookButton().setDisable(false);
+          MainController.mainController.disconnect();
+          break;
+        default:
+          break;
+      }
     }
   }
 
+  /**
+   * method which sends a request message to the server, to update the player list.
+   *
+   * @author socho
+   */
   public void sendRequestMessage() throws IOException {
     MainController.mainController
         .getConnection()
@@ -146,7 +187,7 @@ public class GameInfoController implements Initializable {
   }
 
   /**
-   * update methods for players list.
+   * update method for players list (especially when new player joins the game session).
    *
    * @author socho
    */
@@ -164,7 +205,8 @@ public class GameInfoController implements Initializable {
   }
 
   /**
-   * removing player from player list and removing score from score list.
+   * removing player from player list and removing their score from the score list, when they leave
+   * the game.
    *
    * @author socho
    */
@@ -176,6 +218,11 @@ public class GameInfoController implements Initializable {
     }
   }
 
+  /**
+   * update method for the last word played list.
+   *
+   * @author fjaehrli
+   */
   public void updateLastWordList(ArrayList<Pair<String, Integer>> playedWords) {
     for (Pair<String, Integer> p : playedWords) {
       lastWordList.getItems().add("Word: " + p.getKey() + ", Score: " + p.getValue());
@@ -183,6 +230,11 @@ public class GameInfoController implements Initializable {
     lastWordList.scrollTo(lastWordList.getItems().size() - 1);
   }
 
+  /**
+   * update the score list.
+   *
+   * @author fjaehrli, fpetek
+   */
   public void updateScoreBoard(
       int index, ArrayList<Pair<String, Integer>> playedWords, boolean isBonus) {
     int score = 0;
@@ -205,10 +257,14 @@ public class GameInfoController implements Initializable {
     playerList.getSelectionModel().select(index);
   }
 
-
-  private int getIndexByPlayerName(String playerName){
-    for(int i = 0; i < playerList.getItems().size(); i++){
-      if(playerList.getItems().get(i).equals(playerName)){
+  /**
+   * method for getting the index by the player name.
+   *
+   * @author fjaehrli
+   */
+  private int getIndexByPlayerName(String playerName) {
+    for (int i = 0; i < playerList.getItems().size(); i++) {
+      if (playerList.getItems().get(i).equals(playerName)) {
         return i;
       }
     }
@@ -216,21 +272,26 @@ public class GameInfoController implements Initializable {
   }
 
   /**
-   * updates chat, distinguishes between host and clients.
+   * updates chat (receiving), distinguishes between host and clients.
    *
-   * @author socho
+   * @author socho, fjaehrli
    */
   public void updateChatReceived(Player from, String text, boolean host) {
     if (host) {
-      conversationView.receiveMessage(from.getUserName()+" [Host]",text);
+      conversationView.receiveMessage(from.getUserName() + " [Host]", text);
     } else {
       conversationView.receiveMessage(from.getUserName(), text);
     }
   }
 
-  public void updateChatSent(Player from,String text, boolean host){
+  /**
+   * updates chat (sending), distinguishes between host and clients.
+   *
+   * @author socho, fjaehrli
+   */
+  public void updateChatSent(Player from, String text, boolean host) {
     if (host) {
-      conversationView.sendMessage(from.getUserName()+" [Host]", text);
+      conversationView.sendMessage(from.getUserName() + " [Host]", text);
     } else {
       conversationView.sendMessage(from.getUserName(), text);
     }
@@ -250,57 +311,11 @@ public class GameInfoController implements Initializable {
   }
 
   /**
-   * Use Case 3.4 leaving game. you have to confirm to leave. if host leaves, server stops. if
-   * clients leave, they will disconnect.
+   * system messages are handled differently than client's messages.
    *
-   * @author socho
+   * @author fjaehrli
    */
-  @FXML
-  void leave(ActionEvent actionEvent) throws IOException {
-    Alert confirmationAlert = new Alert(AlertType.CONFIRMATION);
-    confirmationAlert.setTitle("Leaving game confirmation");
-    confirmationAlert.setHeaderText("Do you want to leave this game session?");
-    Optional<ButtonType> result = confirmationAlert.showAndWait();
-    if (result.get() == ButtonType.OK) {
-      switch (String.valueOf(MainController.mainController.getHosting())) {
-        case "true":
-          if(GameBoardController.gameBoardController.isTimerOn()){
-            GameBoardController.gameBoardController.startTimer();
-            System.out.println("timer stopped.");
-          }
-          MainController.mainController
-              .getConnection()
-              .sendToServer(
-                  new ShutDownMessage(
-                      MainController.mainController.getUser(),
-                      MainController.mainController.getUser().getPlayerID()));
-
-          MainController.mainController.changePane(
-              MainController.mainController.getCenterPane(), "/view/Start.fxml");
-          MainController.mainController.getRightPane().getChildren().clear();
-
-          MainController.mainController.getPlayButton().setDisable(false);
-          MainController.mainController.getRulebookButton().setDisable(false);
-          break;
-        case "false":
-          if(GameBoardController.gameBoardController.isTimerOn()){
-            GameBoardController.gameBoardController.startTimer();
-            System.out.println("timer stopped.");
-          }
-          MainController.mainController.changePane(
-              MainController.mainController.getCenterPane(), "/view/Start.fxml");
-          MainController.mainController.getRightPane().getChildren().clear();
-          MainController.mainController.getPlayButton().setDisable(false);
-          MainController.mainController.getRulebookButton().setDisable(false);
-          MainController.mainController.disconnect();
-          break;
-        default:
-          break;
-      }
-    }
-  }
-
-  public void addSystemMessage(String message){
+  public void addSystemMessage(String message) {
     Color fromColor = Color.RED;
     Color toColor = Color.web("#dbd9d7");
 
@@ -308,26 +323,37 @@ public class GameInfoController implements Initializable {
     chatList.getItems().add(label);
     chatList.scrollTo(chatList.getItems().size() - 1);
 
-    Timeline timeline = new Timeline(
+    Timeline timeline =
+        new Timeline(
             new KeyFrame(Duration.ZERO, new KeyValue(label.textFillProperty(), fromColor)),
-            new KeyFrame(Duration.seconds(3), new KeyValue(label.textFillProperty(), toColor))
-    );
+            new KeyFrame(Duration.seconds(3), new KeyValue(label.textFillProperty(), toColor)));
     timeline.play();
   }
 
+  /**
+   * getter method for label.
+   *
+   * @author fjaehrli, fpetek
+   */
   public Label getLastPlayedWordsLabel() {
     return lastPlayedWordsLabel;
   }
 
+  /**
+   * getter method for the last word played list.
+   *
+   * @author fjaehrli, fpetek
+   */
   public JFXListView<String> getLastWordList() {
     return lastWordList;
   }
 
+  /**
+   * getter method for the "Start game" button.
+   *
+   * @author fjaehrli, fpetek
+   */
   public JFXButton getStartGameButton() {
     return startGameButton;
   }
 }
-
-
-
-

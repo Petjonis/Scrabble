@@ -3,7 +3,8 @@ package messages;
 import model.Player;
 
 /**
- * ConnectMessage which will be sent if the client connects with the server successfully.
+ * ConnectMessage which will be sent if the client wants to connect (client to server)
+ * And server sends one back if the client connects with the server successfully.
  *
  * @author socho
  * @version 1.0

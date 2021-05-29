@@ -5,7 +5,6 @@
  * @author fpetek
  * @version 1.0
  */
-
 package controller;
 
 import com.jfoenix.controls.JFXButton;
@@ -23,13 +22,9 @@ import javafx.stage.Stage;
 public class DeleteAccountController implements Initializable {
 
   @FXML private JFXButton deleteButton;
-
   @FXML private TextField usernameField;
-
   @FXML private PasswordField passwordField;
-
   @FXML private Label errorLabel;
-
   @FXML private Button closeButton;
 
   /**

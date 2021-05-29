@@ -19,26 +19,26 @@ import java.util.ResourceBundle;
 public class LoginController implements Initializable {
 
   @FXML private JFXButton loginButton;
-
   @FXML private Button closeButton;
-
   @FXML private TextField usernameField;
-
   @FXML private PasswordField passwordField;
-
   @FXML private Label errorLabel;
-
   @FXML private Hyperlink signupLink;
 
+  /**
+   * initialization of the window to hide "error" label.
+   *
+   * @author socho
+   */
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     this.errorLabel.setVisible(false);
-    this.usernameField.requestFocus();
   }
 
   /**
-   * when pressing "login" button, three different scenarios can occur. First, login is successful.
-   * Second, password is wrong. Third, user does not exist.
+   * When pressing "login" button, three different scenarios can occur. First, login is successful.
+   * Second, password is wrong. Third, user does not exist. If user logs in, statistics will be
+   * displayed on the left panel.
    *
    * @author socho, fpetek
    */
@@ -139,13 +139,25 @@ public class LoginController implements Initializable {
     stage.close();
   }
 
+  /**
+   * closing the window.
+   *
+   * @author socho
+   */
   @FXML
   void close(ActionEvent event) {
     Stage stage = (Stage) closeButton.getScene().getWindow();
     stage.close();
   }
 
-  /** Methods that user can use tab or enter to navigate through textfields. */
+  /**
+   * Methods that user can use tab or enter to navigate through textfields.
+   *
+   * <p>after entering username in the username text field and pressing "TAB" or "ENTER" key,
+   * password text field will be focused.
+   *
+   * @author socho
+   */
   public void userNameKeyPressed(KeyEvent keyEvent) {
     if (keyEvent.getCode() == KeyCode.TAB) {
       passwordField.requestFocus();
@@ -154,7 +166,11 @@ public class LoginController implements Initializable {
     }
   }
 
-  /** when "Login" button is selected, it can be pressed with an "ENTER" key. */
+  /**
+   * when "Login" button is selected, it can be pressed with an "ENTER" key.
+   *
+   * @author socho
+   */
   public void loginKeyPressed(KeyEvent keyEvent) throws IOException {
     if (keyEvent.getCode() == KeyCode.ENTER) {
       login(new ActionEvent());
@@ -164,6 +180,8 @@ public class LoginController implements Initializable {
   /**
    * after entering password in the password-text field and pressing "TAB" or "ENTER" key, login
    * button will be selected.
+   *
+   * @author socho
    */
   public void passwordKeyPressed(KeyEvent keyEvent) throws IOException {
     if (keyEvent.getCode() == KeyCode.TAB) {

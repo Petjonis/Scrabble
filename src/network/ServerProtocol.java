@@ -4,10 +4,8 @@ package network;
  * This class contains all functions which is connected with the client(s).
  *
  * @author socho
- * @author fpetek
  * @version 1.0
  */
-
 import controller.GameInfoController;
 import controller.MainController;
 import java.io.IOException;
@@ -15,7 +13,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
-
 import javafx.application.Platform;
 import javafx.util.Pair;
 import messages.ConnectMessage;
@@ -49,6 +46,14 @@ public class ServerProtocol extends Thread {
   private GameSession gameSession;
   private boolean running = true;
 
+  /**
+   * constructor for the ServerProtocol
+   *
+   * @param client is the client who connects to the server.
+   * @param server is the server, which the client connects to.
+   * @param session is the game session which was opened.
+   * @author socho
+   */
   ServerProtocol(Socket client, Server server, GameSession session) throws IOException {
     this.socket = client;
     this.server = server;
@@ -61,14 +66,22 @@ public class ServerProtocol extends Thread {
     }
   }
 
-  /** sends to this client. */
+  /**
+   * sends to the client who just messaged the server.
+   *
+   * @author socho
+   */
   public void sendToClient(Message m) throws IOException {
     this.out.writeObject(m);
     out.flush();
     out.reset();
   }
 
-  /** close streams and socket. */
+  /**
+   * close streams and socket.
+   *
+   * @author socho
+   */
   public void disconnect() {
     running = false;
     try {
@@ -79,9 +92,10 @@ public class ServerProtocol extends Thread {
   }
 
   /**
-   * Clients will be connected to the server only when they send the Connect-Message. and Clients
-   * will get a ApproveConnectMessage with the game session which the server host is part of. Server
-   * sends a "UpdatePlayerList" message to all clients to update the player list.
+   * Clients will be connected to the server only when they send the Connect-Message. After the
+   * connect message, all other messages will be handled differently.
+   *
+   * @author socho, fpetek
    */
   public void run() {
     Message m;
@@ -90,7 +104,6 @@ public class ServerProtocol extends Thread {
     Player nextPlayer;
     TileRack playerTiles;
     int currentPlayerIndex;
-
     ArrayList<Pair<String, Integer>> words;
 
     try {
@@ -110,7 +123,6 @@ public class ServerProtocol extends Thread {
       /** while the server runs many different messages will reach the server. */
       while (running) {
         m = (Message) in.readObject();
-
         switch (m.getMessageType()) {
           case PLAY_MESSAGE:
             passCount = 0;
@@ -144,9 +156,10 @@ public class ServerProtocol extends Thread {
             playerTiles.refillFromBag(MainController.mainController.getGameSession().getTilebag());
             Tile[] newTileRack = new Tile[playerTiles.getTileRack().size()];
             playerTiles.getTileRack().toArray(newTileRack);
-            if(playerTiles.getTileRack().isEmpty()){
-              server.sendToAll(new EndGameMessage(pMsg.getPlayer(), server.getGameSession().getPlayers()));
-            } else{
+            if (playerTiles.getTileRack().isEmpty()) {
+              server.sendToAll(
+                  new EndGameMessage(pMsg.getPlayer(), server.getGameSession().getPlayers()));
+            } else {
               sendToClient(new EndPlayMessage(pMsg.getPlayer(), newTileRack));
               server.sendToAll(new StartPlayMessage(nextPlayer));
             }
@@ -168,7 +181,7 @@ public class ServerProtocol extends Thread {
             name = dcMsg.getName();
             server.sendToAll(new DisconnectMessage(user, name));
             server.sendToAll(
-                    new EndGameMessage(server.getServerHost(), server.getGameSession().getPlayers()));
+                new EndGameMessage(server.getServerHost(), server.getGameSession().getPlayers()));
             server.removeClient(user);
             gameSession.getPlayers().remove(user);
             System.out.println(user.getUserName() + " left the Lobby.");
@@ -183,14 +196,15 @@ public class ServerProtocol extends Thread {
             incrementPass();
             if (passCount == 6) {
               server.sendToAll(
-                      new EndGameMessage(server.getServerHost(), server.getGameSession().getPlayers()));
+                  new EndGameMessage(server.getServerHost(), server.getGameSession().getPlayers()));
               Platform.runLater(
-                      new Runnable() {
-                        @Override
-                        public void run() {
-                          GameInfoController.gameInfoController.addSystemMessage("No Words played for six turns. GAME OVER!");
-                        }
-                      });
+                  new Runnable() {
+                    @Override
+                    public void run() {
+                      GameInfoController.gameInfoController.addSystemMessage(
+                          "No Words played for six turns. GAME OVER!");
+                    }
+                  });
               break;
             }
             PassMessage passMessage = (PassMessage) m;
@@ -218,12 +232,13 @@ public class ServerProtocol extends Thread {
               server.sendToAll(
                   new EndGameMessage(server.getServerHost(), server.getGameSession().getPlayers()));
               Platform.runLater(
-                      new Runnable() {
-                        @Override
-                        public void run() {
-                          GameInfoController.gameInfoController.addSystemMessage("No Words played for six turns. GAME OVER!");
-                        }
-                      });
+                  new Runnable() {
+                    @Override
+                    public void run() {
+                      GameInfoController.gameInfoController.addSystemMessage(
+                          "No Words played for six turns. GAME OVER!");
+                    }
+                  });
               break;
             }
             SwapTilesMessage swtMsg = (SwapTilesMessage) m;
@@ -270,6 +285,11 @@ public class ServerProtocol extends Thread {
     }
   }
 
+  /**
+   * method to increase the pass count by one.
+   *
+   * @author socho
+   */
   public void incrementPass() {
     this.passCount++;
   }

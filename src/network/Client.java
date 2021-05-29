@@ -2,10 +2,8 @@
  * This class establish the connection to the server and operates the client-side.
  *
  * @author socho
- * @author fpetek
  * @version 1.0
  */
-
 package network;
 
 import controller.GameBoardController;
@@ -40,7 +38,13 @@ public class Client extends Thread {
   private ObjectInputStream in;
   private boolean running = true;
 
-  /** Constructor for the client. */
+  /**
+   * Constructor for the client.
+   *
+   * @param ip for the ip address of the host.
+   * @param port for the port number of the host.
+   * @author socho.
+   */
   public Client(String ip, int port) throws IOException {
     try {
 
@@ -59,12 +63,20 @@ public class Client extends Thread {
     }
   }
 
-  /** checks if the connection is alright. */
+  /**
+   * checks if the connection is alright.
+   *
+   * @author socho
+   */
   public boolean isOk() {
     return (clientSocket != null) && (clientSocket.isConnected()) && !(clientSocket.isClosed());
   }
 
-  /** this method is crucial for getting the info for the client-side. */
+  /**
+   * this method is crucial for getting the info for the client-side. Message-handler
+   *
+   * @author socho, fpetek, fjaehrli
+   */
   public void run() {
     while (running) {
       try {
@@ -228,11 +240,11 @@ public class Client extends Thread {
                   @Override
                   public void run() {
                     try {
-                        if(GameBoardController.gameBoardController.isTimerOn()){
-                            GameBoardController.gameBoardController.startTimer();
-                            System.out.println("timer stopped.");
-                        }
-                        MainController.mainController.changePane(
+                      if (GameBoardController.gameBoardController.isTimerOn()) {
+                        GameBoardController.gameBoardController.startTimer();
+                        System.out.println("timer stopped.");
+                      }
+                      MainController.mainController.changePane(
                           MainController.mainController.getCenterPane(), "/view/Result.fxml");
                       ResultController.resultController.setPlayers(egMsg.getPlayers());
                       ResultController.resultController.setResults();
@@ -254,14 +266,22 @@ public class Client extends Thread {
     }
   }
 
-  /** method for sending out a message to the server. */
+  /**
+   * method for sending out a message to the server.
+   *
+   * @author socho
+   */
   public void sendToServer(Message m) throws IOException {
     this.out.writeObject(m);
     out.flush();
     out.reset();
   }
 
-  /** clients disconnects and closes sockets. */
+  /**
+   * clients disconnects and closes sockets.
+   *
+   * @author socho
+   */
   public void disconnect() {
     running = false;
     try {
@@ -271,7 +291,7 @@ public class Client extends Thread {
                 MainController.mainController.getUser(),
                 MainController.mainController.getUser().getUserName()));
         clientSocket.close();
-          System.out.println("client socket closed");
+        System.out.println("client socket closed");
       }
     } catch (IOException e) {
       e.printStackTrace();

@@ -12,6 +12,8 @@ public class AcceptSwapTilesMessage extends Message {
    *
    * @param player is the user.
    * @param newTiles are all new tiles which the user will receive.
+   *
+   * @author fjaehrli
    */
   public AcceptSwapTilesMessage(Player player, Tile[] newTiles) {
     super(MessageType.ACCEPT_SWAP_TILES, player);
