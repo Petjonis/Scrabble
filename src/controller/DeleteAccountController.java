@@ -9,7 +9,6 @@
 package controller;
 
 import com.jfoenix.controls.JFXButton;
-import db.Database;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;

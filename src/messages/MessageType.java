@@ -25,6 +25,5 @@ public enum MessageType {
   SWAP_TILES,
   ACCEPT_SWAP_TILES,
   PASS_MESSAGE,
-  RESULT_MESSAGE,
   PLAY_MESSAGE;
 }

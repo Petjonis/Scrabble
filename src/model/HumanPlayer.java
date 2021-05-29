@@ -4,9 +4,8 @@
  * @author fpetek
  * @version 1.0
  */
-package model;
 
-import controller.GameBoardController;
+package model;
 
 import java.io.Serializable;
 

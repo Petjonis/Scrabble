@@ -4,15 +4,15 @@
  * @author fpetek, fjaehrli
  * @version 2.0
  */
-package model;
 
-import settings.GlobalSettings;
+package model;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+import settings.GlobalSettings;
 
 public class TileBag {
   private static Random random = new Random();

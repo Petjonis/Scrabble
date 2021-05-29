@@ -5,6 +5,7 @@
  * @author fpetek
  * @version 1.0
  */
+
 package network;
 
 import controller.GameBoardController;

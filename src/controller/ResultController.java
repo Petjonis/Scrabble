@@ -8,9 +8,8 @@
 
 package controller;
 
-import com.jfoenix.controls.JFXButton;
+
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
