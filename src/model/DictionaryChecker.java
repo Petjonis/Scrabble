@@ -6,14 +6,20 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+/**
+ * This class holds a {@code TrieSET} which represents an ordered set of strings, containing all the
+ * words of the Collins Scrabble Words (2019) with definitions.txt file.
+ * It provides two methods, {@code contains()} and {@code isAnagram()}
+ *
+ * @author fjaehrli
+ */
 public class DictionaryChecker {
 
-  /*
-   * this dictionary has the size 26 for 26 letters. at each index we have different length due to
-   * the amount of words per character
-   */
   private TrieSET dictionary;
 
+  /**
+   * Initializes the dictionary with words.
+   */
   public DictionaryChecker() {
     dictionary = new TrieSET();
     try (FileReader fileReader =
@@ -34,10 +40,24 @@ public class DictionaryChecker {
     }
   }
 
+  /**
+   * Does the set contain the given key?
+   *
+   * @param key the key
+   * @return {@code true} if the set contains {@code key} and {@code false} otherwise
+   * @throws IllegalArgumentException if {@code key} is {@code null}
+   */
   public boolean contains(String key) {
     return dictionary.contains(key);
   }
 
+  /**
+   * Are two words an anagram?
+   *
+   * @param s1 first string
+   * @param s2 second string
+   * @return {@code true} if strings are anagram and {@code false} otherwise
+   */
   public boolean isAnagram(String s1, String s2) {
     if (s1.length() != s2.length()) {
       return false;

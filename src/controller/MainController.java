@@ -159,12 +159,12 @@ public class MainController implements Initializable {
   }
 
   /**
-   * method for rulebookButton. opens a new window.
+   * method for rulebookButton. changes the center pane to rule book view.
    *
-   * @author fjaehrli, fpetek
+   * @author fjaehrli
    */
   @FXML
-  void openRulebook(ActionEvent event) throws IOException {
+  void openRulebook(ActionEvent event) {
     centerPane.getChildren().clear();
     centerPane.getChildren().add(ruleBook);
   }
@@ -214,7 +214,10 @@ public class MainController implements Initializable {
     openNewWindow("/view/DeleteAccount.fxml", "ChangeAccount");
   }
 
-  /** method for opening a new window. */
+  /** method for opening a new window.
+   *
+   * @author fjaehrli
+   */
   public void openNewWindow(String filename, String title) {
     try {
       FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(filename));
@@ -238,7 +241,10 @@ public class MainController implements Initializable {
     }
   }
 
-  /** method for changing the pane, especially for the center and right pane. */
+  /** method for changing the pane, especially for the center and right pane.
+   *
+   * @author fjaehrli
+   */
   public void changePane(StackPane pane, String fxmlPath) throws IOException {
     pane.getChildren().clear();
     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlPath));

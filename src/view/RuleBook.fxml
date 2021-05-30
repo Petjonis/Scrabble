@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.web.WebView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.StackPane?>
 
 
-<WebView fx:id="webView" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RuleBookController" />
+<StackPane style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ScrollPane maxWidth="-Infinity" prefHeight="768.0" prefWidth="570.0">
+          <content>
+              <ImageView fitHeight="1500.0" fitWidth="551.0" pickOnBounds="true">
+                  <image>
+                      <Image url="@../img/rules.png" />
+                  </image>
+              </ImageView>
+          </content>
+      </ScrollPane>
+   </children>
+</StackPane>

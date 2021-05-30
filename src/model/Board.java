@@ -3,7 +3,6 @@ package model;
 import controller.GameInfoController;
 import javafx.util.Pair;
 import settings.GlobalSettings;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -12,10 +11,13 @@ import java.util.HashSet;
 
 
 /**
- * This class represents the board of the game.
+ * This class represents the Board of the game and handles the checking of valid moves
+ * with the dictionary checker.
+ * If a tile gets dropped on the game board, it gets added to the {@code ArrayList<Tile> tilesPendingConfirmation}.
+ * If the player presses the play button, the {@code playedWords()} method returns the valid moves,
+ * or {@code null} otherwise.
  *
  * @author fjaehrli
- * @version 1.0
  */
 public class Board {
 
@@ -23,11 +25,18 @@ public class Board {
   private final ArrayList<Tile> tilesPendingConfirmation = new ArrayList<>();
   private DictionaryChecker dictionary;
 
+  /**
+   * Constructor for the board class.
+   * Calls the {@code initializeBoard()} and {@code initializeSpecialSquares()} method.
+   */
   public Board() {
     initializeBoard();
     initializeSpecialSquares();
   }
 
+  /**
+   * Initializes the Board with empty Squares.
+   */
   private void initializeBoard() {
     for (int i = 0; i < GlobalSettings.ROWS; i++) {
       for (int j = 0; j < GlobalSettings.COLUMNS; j++) {
@@ -36,6 +45,10 @@ public class Board {
     }
   }
 
+  /**
+   * Initializes the board with the special squares.
+   * Reads the type and position of the special squares from a .csv file.
+   */
   private void initializeSpecialSquares() {
     try (FileReader fileReader = new FileReader(GlobalSettings.filepath + "specialSquares.csv");
         BufferedReader bufferedReader = new BufferedReader(fileReader)) {
@@ -52,10 +65,20 @@ public class Board {
     }
   }
 
+  /**
+   * Initializes the dictionary.
+   */
   public void initializeDictionary() {
     this.dictionary = new DictionaryChecker();
   }
 
+  /**
+   * Flips one special square on the board 4 times to initialize the board symmetrical.
+   *
+   * @param row the row of the board
+   * @param col the column of the board
+   * @param bonusType the bonus type of the square.
+   */
   private void flipsOf(int row, int col, String bonusType) {
     squares[row][col].setType(bonusType);
     squares[row][GlobalSettings.COLUMNS - col - 1].setType(bonusType);
@@ -63,21 +86,48 @@ public class Board {
     squares[GlobalSettings.ROWS - row - 1][GlobalSettings.COLUMNS - col - 1].setType(bonusType);
   }
 
+  /**
+   * Returns the whole board array.
+   *
+   * @return the board which is represented by a 2d array of squares.
+   */
   public Square[][] getSquares() {
     return squares;
   }
 
+  /**
+   * Place a tile on the bord
+   *
+   * @param letter the Letter of the tile
+   * @param value the value of the tile
+   * @param row the row of the tile on the board
+   * @param col the column of the tile on the board
+   */
   public void placeTile(char letter, int value, int row, int col) {
     Tile tile = new Tile(letter, value, new Position(row, col));
     squares[row][col].setTile(tile);
     squares[row][col].setOccupied(true);
   }
 
+  /**
+   * Removes a tile from the board
+   *
+   * @param row the row of the tile on the board
+   * @param col the column of the tile on the board
+   */
   private void removeTile(int row, int col) {
     squares[row][col].setTile(null);
     squares[row][col].setOccupied(false);
   }
 
+  /**
+   * Checks whether the tiles pending confirmation (tiles dropped on the board by a player)
+   * form a valid word on the board. If so, the method returns an ArrayList with the valid words
+   * and their corresponding score,
+   * otherwise it returns null and the Player gets an error message.
+   *
+   * @return {@code newWord} of validated words and their corresponding score or {@code null}
+   */
   public ArrayList<Pair<String, Integer>> playedWords() {
     if (tilesPendingConfirmation.isEmpty()) {
       printErrorToGaminController("No word played");
@@ -148,6 +198,12 @@ public class Board {
     }
   }
 
+  /**
+   * Checks if tiles pending were played vertical.
+   *
+   * @return {@code true} if the tiles were played vertical, {@code false} if they were played horizontal
+   * and {@code null} otherwise.
+   */
   private Boolean tilesPendingVertical() {
     HashSet<Integer> col = new HashSet<>();
     HashSet<Integer> row = new HashSet<>();
@@ -164,31 +220,62 @@ public class Board {
     }
   }
 
+  /**
+   * Shows an error Message to the player.
+   *
+   * @param error The string with the error description
+   */
   public void printErrorToGaminController(String error){
     GameInfoController.gameInfoController.addSystemMessage(error);
   }
 
+  /**
+   * Adds all tiles pending confirmation to the board
+   */
   private void addTilesPendingToBoard() {
     for (Tile t : tilesPendingConfirmation) {
       placeTile(t.getLetter(), t.getValue(), t.getRow(), t.getCol());
     }
   }
 
+  /**
+   * If the player drops a tile from his rack to the board, it gets added to
+   * the tile pending confirmation list.
+   *
+   * @param letter the Letter of the tile
+   * @param value the value of the tile
+   * @param row the row of the tile on the board
+   * @param col the column of the tile on the board
+   */
   public void addTilePending(char letter, int value, int row, int col) {
     Tile tile = new Tile(letter, value, new Position(row, col));
     tilesPendingConfirmation.add(tile);
   }
 
+  /**
+   * Removes specific tile from the tiles pending confirmation
+   *
+   * @param row the row of the tile on the board
+   * @param col the column of the tile on the board
+   */
   public void removeTilePending(int row, int col) {
     tilesPendingConfirmation.removeIf(tile -> tile.getRow() == row && tile.getCol() == col);
   }
 
+  /**
+   * Removes the tiles pending confirmation from the game board
+   */
   private void removeTilesPendingFromBoard() {
     for (Tile t : tilesPendingConfirmation) {
       removeTile(t.getRow(), t.getCol());
     }
   }
 
+  /**
+   * Checks if at least one played tile has a neighbor on the board
+   *
+   * @return {@code true} if tiles pending have neighbors on the board, {@code false} otherwise
+   */
   private boolean tilesPendingHaveNeighbors() {
     for (Tile t : tilesPendingConfirmation) {
       if (hasNeighbor(t.getRow(), t.getCol())) {
@@ -198,6 +285,14 @@ public class Board {
     return false;
   }
 
+  /**
+   * Checks if tiles pending contain a tile with the specified coordinates. Mainly used for checking
+   * if the first move is made over the middle of the board.
+   *
+   * @param row the row of the tile on the board
+   * @param col the column of the tile on the board
+   * @return {@code true} if tile with the specified row and column is on the board, {@code false} otherwise.
+   */
   private boolean tilesPendingContains(int row, int col) {
     for (Tile t : tilesPendingConfirmation) {
       if (t.getRow() == row && t.getCol() == col) return true;
@@ -205,6 +300,13 @@ public class Board {
     return false;
   }
 
+  /**
+   * Checks if a tile on the board has a neighbor / is connected to another tile
+   *
+   * @param row the row of the tile on the board
+   * @param col the column of the tile on the board
+   * @return {@code true} if tile has neighbor, {@code false} otherwise.
+   */
   private boolean hasNeighbor(int row, int col) {
     if (row > 0 && squares[row - 1][col].isOccupied()) {
       return true;
@@ -215,6 +317,14 @@ public class Board {
     } else return col < 14 && squares[row][col + 1].isOccupied();
   }
 
+  /**
+   * Gets the Index of the first letter from a played word.
+   *
+   * @param row the row of the tile on the board
+   * @param col the column of the tile on the board
+   * @param vertical is the word played vertical or horizontal?
+   * @return {@code index} of the first letter of a word.
+   */
   private int getWordStartIndex(int row, int col, boolean vertical) {
     int index = (vertical) ? row : col;
     for (int i = (vertical) ? row : col; i >= 0; i--) {
@@ -227,6 +337,14 @@ public class Board {
     return index;
   }
 
+  /**
+   * Get the String of a played word and the corresponding score.
+   *
+   * @param row the row of the first letter of a word
+   * @param col the column of the first letter of a word
+   * @param vertical is the word played vertical or horizontal?
+   * @return {@code Pair<String,Integer>} with {@code String} of the word and {@code Integer} of the score.
+   */
   private Pair<String, Integer> getWordAndScore(int row, int col, boolean vertical) {
     addTilesPendingToBoard();
     StringBuilder sb = new StringBuilder();
@@ -270,14 +388,29 @@ public class Board {
     return new Pair<>(sb.toString(), score * wordMultiplier);
   }
 
+  /**
+   * Clears the tiles pending confirmation list.
+   */
   public void clearTilesPending() {
     tilesPendingConfirmation.clear();
   }
 
+  /**
+   * Return the letter of a tile on the bord
+   *
+   * @param row the row of the tile on the board
+   * @param col the column of the tile on the board
+   * @return {@code char} of a tile
+   */
   private char getLetter(int row, int col) {
     return squares[row][col].getTile().getLetter();
   }
 
+  /**
+   * Return the Array of tiles pending confirmation
+   *
+   * @return {@code ArrayList<Tile>} of tiles pending confirmation
+   */
   public ArrayList<Tile> getTilesPendingConfirmation() {
     return tilesPendingConfirmation;
   }
